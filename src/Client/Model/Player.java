@@ -5,10 +5,9 @@ import java.util.List;
 public class Player {
     private int playerID, AP;
     private boolean upgradeTokens;
-    private Deck deck;
-    private Hand hand;
     private List<Spell> spells;
-
+    private List<Unit> hand;
+    private List<Unit> deck;
 
     public int getPlayerID() {
         return playerID;
@@ -34,21 +33,6 @@ public class Player {
         this.upgradeTokens = upgradeTokens;
     }
 
-    public Deck getDeck() {
-        return deck;
-    }
-
-    public void setDeck(Deck deck) {
-        this.deck = deck;
-    }
-
-    public Hand getHand() {
-        return hand;
-    }
-
-    public void setHand(Hand hand) {
-        this.hand = hand;
-    }
 
     public List<Spell> getSpells() {
         return spells;
@@ -56,5 +40,21 @@ public class Player {
 
     public void setSpells(List<Spell> spells) {
         this.spells = spells;
+    }
+
+    public List<Unit> getHand() {
+        return hand;
+    }
+
+    public void setHand(List<Unit> hand) {
+        this.hand = hand;
+    }
+
+    public List<Unit> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(List<Unit> deck) {
+        this.deck = deck;
     }
 }
