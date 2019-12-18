@@ -3,13 +3,13 @@ package Client.Model;
 import java.util.List;
 
 public class Deck {
-    private List<Deck> decks;
+    private List<Unit> units;
 
-    public List<Deck> getDecks() {
-        return decks;
+    public List<Unit> getUnits() {
+        return units;
     }
 
-    public void setDecks(List<Deck> decks) {
-        this.decks = decks;
+    public void setUnits(List<Unit> units) {
+        this.units = units;
     }
 }
