@@ -1,20 +1,19 @@
 package Client.Model;
 
-import Client.dto.ClientCell;
 import Client.dto.init.ClientBaseKing;
 import Client.dto.init.ClientInitMessage;
 import Client.dto.init.InitMessage;
 import Client.dto.turn.ClientTurnMessage;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import Client.dto.init.ClientInitMessage;
+import Client.dto.turn.TurnMessage;
 
 public class Galaxy implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
+    private TurnMessage turnMessage;
 
 
     @Override
@@ -40,7 +39,7 @@ public class Galaxy implements World {
 
     @Override
     public Cell getPLayerPosition(int playerId) {
-        for(King king : initMessage.getMap().getKings())
+        for(King king : initMessage.getMapp().getKings())
             if(king.getPlayerID() == playerId)
                 return king.getCenter();
         return null; // impossible
@@ -69,7 +68,6 @@ public class Galaxy implements World {
     public int getMapWidth() {
         return clientInitMessage.getMap().getCols();
     }
-    private ClientInitMessage clientInitMessage
 
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
