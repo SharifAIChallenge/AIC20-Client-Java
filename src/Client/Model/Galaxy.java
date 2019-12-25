@@ -21,6 +21,7 @@ public class Galaxy implements World {
 
     @Override
     public void chooseDeck(List<Integer> typeIds) {
+        //tOdO
     }
 
     @Override
@@ -89,17 +90,19 @@ public class Galaxy implements World {
 
     @Override
     public List<Unit> getCellUnits(Cell cell) {
-        return null;
+        List<Unit> units = new ArrayList<>(cell.getUnitList());
+        return units;
     }
 
     @Override
     public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
+        //todo
         return null;
     }
 
     @Override
     public int getMaxAP() {
-        return 0;
+        return clientInitMessage.getGameConstants().getMaxAP();
     }
 
     @Override
@@ -109,67 +112,86 @@ public class Galaxy implements World {
 
     @Override
     public List<Unit> getHand() {
-        return null;
+        List<Unit> hand = new ArrayList<>();
+        for(int unitId : clientTurnMessage.getHand())
+            for(Unit unit : turnMessage.getUnits())
+                if(unit.getUnitID() == unitId) {
+                    hand.add(unit);
+                    break;
+                }
+        return hand;
     }
 
     @Override
     public List<Unit> getDeck() {
-        return null;
+        List<Unit> deck = new ArrayList<>();
+        for(int unitId:clientTurnMessage.getDeck())
+            for(Unit unit : turnMessage.getUnits())
+                if(unit.getUnitID() == unitId) {
+                    deck.add(unit);
+                    break;
+                }
+        return deck;
     }
 
     @Override
     public void playUnit(int typeId, int pathId) {
-
+        // todo
+        return;
     }
 
     @Override
     public int getCurrentTurn() {
-        return 0;
+        return clientTurnMessage.getCurrTurn();
     }
 
     @Override
     public int getMaxTurns() {
-        return 0;
+        return clientInitMessage.getGameConstants().getMaxTurns();
     }
 
     @Override
-    public int getpickTimeout() {
-        return 0;
+    public int getPickTimeout() {
+        return clientInitMessage.getGameConstants().getPickTimeout();
     }
 
     @Override
     public int getTurnTimeout() {
-        return 0;
+        return clientInitMessage.getGameConstants().getTurnTimeout();
     }
 
     @Override
     public int getRemainingTime() {
+        //TODO
         return 0;
     }
 
     @Override
     public int getPlayerHP(int playerId) {
-        return 0;
+        for(King king : turnMessage.getKings())
+            if(king.getPlayerID() == playerId)
+                return king.getHP();
+        return -1; // impossible
     }
 
     @Override
     public void castUnitSpell(int unitId, int pathId, int index, int spellId) {
-
+        //todo
     }
 
     @Override
     public void castUnitSpell(int unitId, int pathId, int index, Spell spell) {
-
+        //todo
     }
 
     @Override
     public void castAreaSpell(Cell center, int spellId) {
-
+        //todo
     }
 
     @Override
     public void castAreaSpell(Cell center, Spell spell) {
-
+        //todo
     }
 
     @Override
