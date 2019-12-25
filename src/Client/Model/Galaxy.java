@@ -97,6 +97,7 @@ public class Galaxy implements World {
 
     @Override
     public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
+        //todo
         return null;
     }
 
@@ -113,17 +114,32 @@ public class Galaxy implements World {
 
     @Override
     public List<Unit> getHand() {
-        return null;
+        List<Unit> hand = new ArrayList<>();
+        for(int unitId : clientTurnMessage.getHand())
+            for(Unit unit : turnMessage.getUnits())
+                if(unit.getUnitID() == unitId) {
+                    hand.add(unit);
+                    break;
+                }
+        return hand;
     }
 
     @Override
     public List<Unit> getDeck() {
-        return null;
+        List<Unit> deck = new ArrayList<>();
+        for(int unitId:clientTurnMessage.getDeck())
+            for(Unit unit : turnMessage.getUnits())
+                if(unit.getUnitID() == unitId) {
+                    deck.add(unit);
+                    break;
+                }
+        return deck;
     }
 
     @Override
     public void playUnit(int typeId, int pathId) {
-
+        // todo
+        return;
     }
 
     @Override
