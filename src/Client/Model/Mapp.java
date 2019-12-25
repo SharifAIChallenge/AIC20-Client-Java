@@ -2,7 +2,7 @@ package Client.Model;
 
 import java.util.List;
 
-public class Map {
+public class Mapp {
     private int width, height;
     private List<Path> paths;
     private List<Unit> units;

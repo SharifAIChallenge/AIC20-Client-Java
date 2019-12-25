@@ -1,22 +1,22 @@
 package Client.dto.init;
 
 import Client.Model.BaseUnit;
-import Client.Model.Map;
+import Client.Model.Mapp;
 import Client.Model.Spell;
 
 import java.util.List;
 
 public class InitMessage {
-    private Map map;
+    private Mapp mapp;
     private List<BaseUnit> baseUnitList;
     private List<Spell> spells;
 
-    public Map getMap() {
-        return map;
+    public Mapp getMapp() {
+        return mapp;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setMapp(Mapp mapp) {
+        this.mapp = mapp;
     }
 
     public List<BaseUnit> getBaseUnitList() {
