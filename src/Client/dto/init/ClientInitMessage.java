@@ -1,6 +1,5 @@
 package Client.dto.init;
 
-
 import java.util.List;
 
 public class ClientInitMessage {

@@ -77,8 +77,8 @@ public interface World {
 
     public List<Spell> getSpells();
 
-    public Spell getRecievedSpell();
+    public Spell getReceivedSpell();
 
-    public Spell getFriendRecievedSpell();
+    public Spell getFriendReceivedSpell();
 
 }

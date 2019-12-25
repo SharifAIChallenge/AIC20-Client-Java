@@ -1,6 +1,5 @@
 package Client.dto.init;
 
-
 public class ClientBaseUnit {
     private int typeId;
     private int maxHP;
