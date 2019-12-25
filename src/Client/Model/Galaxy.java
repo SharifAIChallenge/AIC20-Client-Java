@@ -6,7 +6,6 @@ import Client.dto.init.ClientInitMessage;
 import Client.dto.init.InitMessage;
 import Client.dto.turn.ClientTurnMessage;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class Galaxy implements World {
 
     @Override
     public Cell getPLayerPosition(int playerId) {
-        for(King king : initMessage.getMap().getKings())
+        for(King king : initMessage.getMapp().getKings())
             if(king.getPlayerID() == playerId)
                 return king.getCenter();
         return null; // impossible
@@ -73,6 +72,7 @@ public class Galaxy implements World {
         return clientInitMessage.getMap().getCols();
     }
 
+
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
         return null;
@@ -89,10 +89,7 @@ public class Galaxy implements World {
 
     @Override
     public List<Unit> getCellUnits(Cell cell) {
-        List<Unit> units = new ArrayList<>();
-        for(Unit unit : cell.getUnitList())
-            units.add(unit);
-        return units;
+        return null;
     }
 
     @Override
@@ -103,12 +100,11 @@ public class Galaxy implements World {
 
     @Override
     public int getMaxAP() {
-        return clientInitMessage.getGameConstants().getMaxAP();
+        return 0;
     }
 
     @Override
     public int getRemainingAP() {
-        // TODO
         return 0;
     }
 
