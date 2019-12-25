@@ -9,8 +9,8 @@ public class ClientTurnMessage {
     private List<TurnKing> kings;
     private List<TurnUnit> units;
     private List<TurnCastSpell> castSpells;
-    private int aquiredSpell;
-    private int friendAquiredSpell;
+    private int acquiredSpell;
+    private int friendAcquiredSpell;
     private List<Integer> mySpells;
     private List<Integer> friendSpells;
     private boolean gotRangeUpgrade;
@@ -66,20 +66,20 @@ public class ClientTurnMessage {
         this.castSpells = castSpells;
     }
 
-    public int getAquiredSpell() {
-        return aquiredSpell;
+    public int getAcquiredSpell() {
+        return acquiredSpell;
     }
 
-    public void setAquiredSpell(int aquiredSpell) {
-        this.aquiredSpell = aquiredSpell;
+    public void setAcquiredSpell(int acquiredSpell) {
+        this.acquiredSpell = acquiredSpell;
     }
 
-    public int getFriendAquiredSpell() {
-        return friendAquiredSpell;
+    public int getFriendAcquiredSpell() {
+        return friendAcquiredSpell;
     }
 
-    public void setFriendAquiredSpell(int friendAquiredSpell) {
-        this.friendAquiredSpell = friendAquiredSpell;
+    public void setFriendAcquiredSpell(int friendAcquiredSpell) {
+        this.friendAcquiredSpell = friendAcquiredSpell;
     }
 
     public List<Integer> getMySpells() {
