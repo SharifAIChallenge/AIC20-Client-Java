@@ -4,9 +4,10 @@ public class BaseUnit {
     private int type;
     private int maxHP;
     private int attack;
-    private int level;
     private int range;
     private int target;
+    private int rangeLevel;
+    private int damageLevel;
     private boolean isFlying;
     private boolean isMultiple;
 
@@ -32,14 +33,6 @@ public class BaseUnit {
 
     public void setAttack(int attack) {
         this.attack = attack;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
     public int getRange() {
@@ -72,5 +65,21 @@ public class BaseUnit {
 
     public void setMultiple(boolean multiple) {
         isMultiple = multiple;
+    }
+
+    public int getRangeLevel() {
+        return rangeLevel;
+    }
+
+    public void setRangeLevel(int rangeLevel) {
+        this.rangeLevel = rangeLevel;
+    }
+
+    public int getDamageLevel() {
+        return damageLevel;
+    }
+
+    public void setDamageLevel(int damageLevel) {
+        this.damageLevel = damageLevel;
     }
 }
