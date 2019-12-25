@@ -43,7 +43,7 @@ public interface World {
 
     public int getMaxTurns();
 
-    public int getpickTimeout();
+    public int getPickTimeout();
 
     public int getTurnTimeout();
 
