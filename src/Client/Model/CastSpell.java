@@ -1,6 +1,6 @@
 package Client.Model;
 
-public class CastSpell {
+public class CastSpell extends Spell{
     private int playerId;
     private int type;
 

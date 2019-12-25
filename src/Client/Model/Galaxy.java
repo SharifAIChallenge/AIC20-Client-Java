@@ -199,31 +199,51 @@ public class Galaxy implements World {
 
     @Override
     public CastUnitSpell getCastUnitSpell(int playerId) {
+
         return null;
     }
 
     @Override
     public List<CastAreaSpell> getActiveSpellsOnCell(Cell cell) {
-        return null;
+        List<CastAreaSpell> activeSpells = new ArrayList<CastAreaSpell>();
+        for(CastSpell castSpell : turnMessage.getCastSpells()){
+            if(castSpell instanceof CastAreaSpell){
+                CastAreaSpell castAreaSpell = (CastAreaSpell) castSpell;
+                Cell spellCell = castAreaSpell.getCenter();
+                if(spellCell.getCol() == cell.getCol() && spellCell.getRow() == cell.getRow())
+                    activeSpells.add(castAreaSpell);
+            }
+        }
+        return activeSpells;
     }
 
     @Override
     public int getUpgradeTokenNumber() {
+        // todo nadarim ke ino jaei
         return 0;
     }
 
     @Override
     public List<Spell> getSpells() {
-        return null;
+        // todo in chio daghighan bar migardune ?
+        return initMessage.getSpells();
     }
 
     @Override
     public Spell getReceivedSpell() {
+        for (Spell spell : initMessage.getSpells()){
+            if(spell.getType() == clientTurnMessage.getAcquiredSpell())
+                return spell;
+        }
         return null;
     }
 
     @Override
     public Spell getFriendReceivedSpell() {
+        for(Spell spell : initMessage.getSpells()){
+            if(spell.getType() == clientTurnMessage.getFriendAcquiredSpell())
+                return spell;
+        }
         return null;
     }
     public ClientInitMessage getClientInitMessage() {
