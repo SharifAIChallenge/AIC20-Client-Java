@@ -6,15 +6,18 @@ import Client.dto.init.ClientInitMessage;
 import Client.dto.init.InitMessage;
 import Client.dto.turn.ClientTurnMessage;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.List;
 
 import Client.dto.init.ClientInitMessage;
+import Client.dto.turn.TurnMessage;
 
 public class Galaxy implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
+    private TurnMessage turnMessage;
 
 
     @Override
@@ -69,7 +72,6 @@ public class Galaxy implements World {
     public int getMapWidth() {
         return clientInitMessage.getMap().getCols();
     }
-    private ClientInitMessage clientInitMessage
 
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
@@ -78,13 +80,19 @@ public class Galaxy implements World {
 
     @Override
     public List<Unit> getPlayerUnits(int playerId) {
-
-        return null;
+        List<Unit> units = new ArrayList<>();
+        for(Unit unit : turnMessage.getUnits())
+            if(unit.getPlayerID() == playerId)
+                units.add(unit);
+        return units;
     }
 
     @Override
     public List<Unit> getCellUnits(Cell cell) {
-        return null;
+        List<Unit> units = new ArrayList<>();
+        for(Unit unit : cell.getUnitList())
+            units.add(unit);
+        return units;
     }
 
     @Override
@@ -94,11 +102,12 @@ public class Galaxy implements World {
 
     @Override
     public int getMaxAP() {
-        return 0;
+        return clientInitMessage.getGameConstants().getMaxAP();
     }
 
     @Override
     public int getRemainingAP() {
+        // TODO
         return 0;
     }
 
