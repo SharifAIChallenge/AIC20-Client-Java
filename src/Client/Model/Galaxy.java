@@ -9,6 +9,8 @@ import Client.dto.turn.ClientTurnMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import Client.dto.init.ClientInitMessage;
+
 public class Galaxy implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
@@ -67,6 +69,7 @@ public class Galaxy implements World {
     public int getMapWidth() {
         return clientInitMessage.getMap().getCols();
     }
+    private ClientInitMessage clientInitMessage
 
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
@@ -217,5 +220,12 @@ public class Galaxy implements World {
     @Override
     public Spell getFriendReceivedSpell() {
         return null;
+    }
+    public ClientInitMessage getClientInitMessage() {
+        return clientInitMessage;
+    }
+
+    public void setClientInitMessage(ClientInitMessage clientInitMessage) {
+        this.clientInitMessage = clientInitMessage;
     }
 }
