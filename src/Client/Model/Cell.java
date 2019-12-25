@@ -5,14 +5,14 @@ import java.util.List;
 public class Cell {
     private int row;
     private int col;
-    private List<Unit> unitlist;
+    private List<Unit> unitList;
 
-    public List<Unit> getUnitlist() {
-        return unitlist;
+    public List<Unit> getUnitList() {
+        return unitList;
     }
 
-    public void setUnitlist(List<Unit> unitlist) {
-        this.unitlist = unitlist;
+    public void setUnitList(List<Unit> unitList) {
+        this.unitList = unitList;
     }
 
     public int getCol() {
