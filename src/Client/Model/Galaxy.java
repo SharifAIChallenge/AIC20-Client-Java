@@ -3,18 +3,16 @@ package Client.Model;
 import Client.dto.ClientCell;
 import Client.dto.init.ClientBaseKing;
 import Client.dto.init.ClientInitMessage;
+import Client.dto.init.InitMessage;
 import Client.dto.turn.ClientTurnMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Galaxy implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
-
-    private Cell castToCell(ClientCell clientCell){
-        return null;
-    }
-
+    private InitMessage initMessage;
 
 
     @Override
@@ -40,19 +38,21 @@ public class Galaxy implements World {
 
     @Override
     public Cell getPLayerPosition(int playerId) {
-        for(ClientBaseKing clientBaseKing : clientInitMessage.getMap().getKings())
-            if(clientBaseKing.getPlayerId() == playerId)
-                return castToCell(clientBaseKing.getCenter());
+        for(King king : initMessage.getMap().getKings())
+            if(king.getPlayerID() == playerId)
+                return king.getCenter();
         return null; // impossible
     }
 
     @Override
     public List<Path> getPathsFromPlayer(int playerID) {
+        //todo
         return null;
     }
 
     @Override
     public Path getPathToFriend(int playerId) {
+        //todo
         return null;
     }
 
@@ -75,6 +75,7 @@ public class Galaxy implements World {
 
     @Override
     public List<Unit> getPlayerUnits(int playerId) {
+
         return null;
     }
 
