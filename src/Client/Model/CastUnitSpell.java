@@ -1,6 +1,6 @@
 package Client.Model;
 
-public class CastUnitSpell {
+public class CastUnitSpell extends CastSpell{
     private int UnitId;
     private Cell targetCell;
 
