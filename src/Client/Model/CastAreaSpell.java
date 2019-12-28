@@ -1,6 +1,6 @@
 package Client.Model;
 
-public class CastAreaSpell
+public class CastAreaSpell extends CastSpell
 {
     private Cell center;
     private int remainingTurns;
