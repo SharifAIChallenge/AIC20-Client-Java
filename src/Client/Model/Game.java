@@ -6,13 +6,15 @@ import Client.dto.init.ClientInitMessage;
 import Client.dto.init.InitMessage;
 import Client.dto.turn.ClientTurnMessage;
 
+import java.awt.geom.Area;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import Client.dto.init.ClientInitMessage;
 import Client.dto.turn.TurnMessage;
 
-public class Galaxy implements World {
+public class Game implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
@@ -194,24 +196,51 @@ public class Galaxy implements World {
         //todo
     }
 
-    @Override
-    public List<Unit> getAreaSpellTargets(Cell center, Spell spell) {
-        return null;
+    private boolean inRange(Cell cell, Cell center, int range){
+        if(Math.abs(cell.getCol() - center.getCol()) > range)
+            return false;
+        if(Math.abs(cell.getRow() - center.getRow()) > range)
+            return false;
+        return true;
+    }
+
+    private ArrayList<Unit> unique(List<Unit> listOfUnits) {
+        ArrayList<Unit> uniqueList = new ArrayList<>();
+        for(Unit unit : listOfUnits) {
+            if (uniqueList.contains(unit))
+                continue;
+            uniqueList.add(unit);
+        }
+        return uniqueList;
     }
 
     @Override
-    public List<Unit> getAreaSpellTargets(Cell center, int SpellId) {
-        return null;
+    public List<Unit> getAreaSpellTargets(Cell center, Spell spell) {
+        //AreaSpell dade she hatman
+        List<Unit> units = new ArrayList<>();
+        AreaSpell areaSpell = (AreaSpell) spell;
+        for(Path path: initMessage.getMapp().getPaths()){
+            for (Cell cell : path.getCellList())
+                if(inRange(cell, center, areaSpell.getRange()))
+                    units.addAll(cell.getUnitList());
+        }
+        return unique(units);
+    }
+    @Override
+    public List<Unit> getAreaSpellTargets(Cell center, int spellId) {
+        //spellId hamun type ?
+        Spell spell = getSpellById(spellId);
+        return getAreaSpellTargets(center, spell);
     }
 
     @Override
     public int getRemainingTurnsToUpgrade() {
-        return 0;
+        return clientTurnMessage.getCurrTurn() % clientInitMessage.getGameConstants().getTurnsToUpgrade();
     }
 
     @Override
     public int getRemainingTurnsToGetSpell() {
-        return 0;
+        return clientTurnMessage.getCurrTurn() % clientInitMessage.getGameConstants().getTurnsToSpell();
     }
 
     @Override
@@ -225,28 +254,52 @@ public class Galaxy implements World {
     }
 
     @Override
-    public List<CastAreaSpell> getActiveSpellsOnCell(Cell cell) {
+    public List<CastAreaSpell> getActiveSpellsOnUnit(Unit unit) {
+        //todo
         return null;
     }
 
     @Override
-    public int getUpgradeTokenNumber() {
-        return 0;
+    public int getDamageUpgradeTokenNumbers() {
+        //avaz kardimesh
+        return clientTurnMessage.getAvailableDamageUpgrades();
+    }
+
+    public int getRangeUpgradeTokenNumbers() {
+        //inam khodemnu ezade kardim
+        return clientTurnMessage.getAvailableRangeUpgrades();
+    }
+
+    private List<Spell> getSpellsByIds(List<Integer> list){
+        List<Spell> spells = new ArrayList<>();
+        for(int spellId : list){
+            for(Spell spell : initMessage.getSpells()){
+                if(spell.getType() == spellId)
+                    spells.add(spell);
+            }
+        }
+        return spells;
+
     }
 
     @Override
-    public List<Spell> getSpells() {
-        return null;
+    public List<Spell> getMySpells() {
+        //spellId hamun type e ?
+        return getSpellsByIds(clientTurnMessage.getMySpells());
     }
 
     @Override
     public Spell getReceivedSpell() {
-        return null;
+        return getReceivedSpell();
+    }
+
+    private List<Spell> getFriendSpells(){
+        return getSpellsByIds(clientTurnMessage.getFriendSpells());
     }
 
     @Override
     public Spell getFriendReceivedSpell() {
-        return null;
+        return getSpellById(clientTurnMessage.getFriendReceivedSpell());
     }
     public ClientInitMessage getClientInitMessage() {
         return clientInitMessage;
@@ -254,5 +307,13 @@ public class Galaxy implements World {
 
     public void setClientInitMessage(ClientInitMessage clientInitMessage) {
         this.clientInitMessage = clientInitMessage;
+    }
+
+    private Spell getSpellById(int spellId){
+        for(Spell spell : initMessage.getSpells())
+            if(spell.getType() == spellId)
+                return spell;
+
+        return null;
     }
 }

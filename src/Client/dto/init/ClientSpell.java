@@ -1,6 +1,8 @@
 package Client.dto.init;
 
 
+import Client.Model.Spell;
+
 public class ClientSpell {
     private int typeId;
     private int turnEffect;

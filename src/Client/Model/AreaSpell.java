@@ -1,6 +1,6 @@
 package Client.Model;
 
-public class AreaSpell {
+public class AreaSpell extends Spell{
     private int range;
     private int power;
     private boolean isDamaging;

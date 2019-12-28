@@ -4,6 +4,8 @@ import java.util.List;
 
 public class ClientTurnMessage {
     private int currTurn;
+    private int friendReceivedSpell;
+    private int receivedSpell;
     private List<Integer> deck;
     private List<Integer> hand;
     private List<TurnKing> kings;
@@ -17,6 +19,9 @@ public class ClientTurnMessage {
     private boolean gotDamageUpgrade;
     private int availableRangeUpgrades;
     private int availableDamageUpgrades;
+
+    public ClientTurnMessage() {
+    }
 
     public int getCurrTurn() {
         return currTurn;
@@ -128,5 +133,21 @@ public class ClientTurnMessage {
 
     public void setAvailableDamageUpgrades(int availableDamageUpgrades) {
         this.availableDamageUpgrades = availableDamageUpgrades;
+    }
+
+    public int getFriendReceivedSpell() {
+        return friendReceivedSpell;
+    }
+
+    public void setFriendReceivedSpell(int friendReceivedSpell) {
+        this.friendReceivedSpell = friendReceivedSpell;
+    }
+
+    public int getReceivedSpell() {
+        return receivedSpell;
+    }
+
+    public void setReceivedSpell(int receivedSpell) {
+        this.receivedSpell = receivedSpell;
     }
 }
