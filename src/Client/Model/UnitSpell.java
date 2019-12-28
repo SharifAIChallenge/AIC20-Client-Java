@@ -1,4 +1,4 @@
 package Client.Model;
 
-public class UnitSpell {
+public class UnitSpell extends Spell{
 }
