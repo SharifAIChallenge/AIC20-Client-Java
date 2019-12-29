@@ -3,22 +3,22 @@ package Client.Model;
 import java.util.List;
 
 public class Path {
-    private int pathID;
-    private List<Cell> cellList;
+    private int id;
+    private List<Cell> cells;
 
-    public int getPathID() {
-        return pathID;
+    public int getId() {
+        return id;
     }
 
-    public void setPathID(int pathID) {
-        this.pathID = pathID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public List<Cell> getCellList() {
-        return cellList;
+    public List<Cell> getCells() {
+        return cells;
     }
 
-    public void setCellList(List<Cell> cellList) {
-        this.cellList = cellList;
+    public void setCells(List<Cell> cells) {
+        this.cells = cells;
     }
 }

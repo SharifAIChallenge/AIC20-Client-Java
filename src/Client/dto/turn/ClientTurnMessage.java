@@ -6,8 +6,11 @@ public class ClientTurnMessage {
     private int currTurn;
     private int friendReceivedSpell;
     private int receivedSpell;
+    private int remainigAP;
+    //deck o hand class nistan?
     private List<Integer> deck;
     private List<Integer> hand;
+
     private List<TurnKing> kings;
     private List<TurnUnit> units;
     private List<TurnCastSpell> castSpells;
@@ -21,9 +24,11 @@ public class ClientTurnMessage {
     private int availableDamageUpgrades;
 
     public ClientTurnMessage() {
+
     }
 
     public int getCurrTurn() {
+
         return currTurn;
     }
 
@@ -149,5 +154,13 @@ public class ClientTurnMessage {
 
     public void setReceivedSpell(int receivedSpell) {
         this.receivedSpell = receivedSpell;
+    }
+
+    public int getRemainigAP() {
+        return remainigAP;
+    }
+
+    public void setRemainigAP(int remainigAP) {
+        this.remainigAP = remainigAP;
     }
 }
