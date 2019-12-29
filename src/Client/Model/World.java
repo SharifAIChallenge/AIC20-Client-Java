@@ -71,14 +71,22 @@ public interface World {
 
     public CastUnitSpell getCastUnitSpell(int playerId);
 
-    public List<CastAreaSpell> getActiveSpellsOnCell(Cell cell);
+   // public List<CastAreaSpell> getActiveSpellsOnCell(Cell cell);
 
-    public int getUpgradeTokenNumber();
+    public List<CastAreaSpell> getActiveSpellsOnUnit(Unit unit);
 
-    public List<Spell> getSpells();
+  //  public int getUpgradeTokenNumber();
+
+    public int getDamageUpgradeTokenNumbers();
+
+    //  public List<Spell> getSpells();
 
     public Spell getReceivedSpell();
 
     public Spell getFriendReceivedSpell();
+
+    public List<Spell> getMySpells();
+
+
 
 }
