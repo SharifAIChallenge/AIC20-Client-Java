@@ -11,7 +11,7 @@ public interface World {
 
     public int getFriendId();
 
-    public Cell getPLayerPosition(int playerId);
+    public Cell getPlayerPosition(int playerId);
 
     public List<Path> getPathsFromPlayer(int playerID);
 
