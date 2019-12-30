@@ -6,6 +6,7 @@ import Client.dto.init.InitMessage;
 import Client.dto.turn.ClientTurnMessage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import Client.dto.turn.TurnMessage;
@@ -152,7 +153,7 @@ public class Game implements World {
 
     @Override
     public int getRemainingAP() {
-        return clientTurnMessage.getRemainigAP();
+        return clientTurnMessage.getRemainingAP();
     }
 
     @Override
@@ -338,6 +339,19 @@ public class Game implements World {
         return unit.getActivePoisons();
     }
 
+    private Unit getUnitById(int unitId){
+        for(Unit unit : turnMessage.getUnits())
+            if(unit.getUnitID() == unitId)
+                return unit;;
+        return null;
+    }
+
+    @Override
+    public int getActivePoisonsOnUnit(int unitId) {
+        Unit unit = getUnitById(unitId);
+        return getActivePoisonsOnUnit(unit);
+    }
+
     @Override
     public int getDamageUpgradeNumber() {
         //avaz kardimesh
@@ -363,18 +377,30 @@ public class Game implements World {
     }
 
     @Override
-    public List<Spell> getMySpells() {
+    public List<Spell> getSpellsList() {
         //spellId hamun type e ?
         return getSpellsByIds(clientTurnMessage.getMySpells());
     }
 
     @Override
-    public Spell getReceivedSpell() {
-        return getReceivedSpell();
+    public HashMap<Spell, Integer> getSpells(){
+        List<Spell> spells = getSpellsByIds(clientTurnMessage.getMySpells());
+        HashMap<Spell, Integer> hashMap = new HashMap<Spell, Integer>();
+        for (Spell spell : spells){
+            int currentCounter = 0;
+            if(hashMap.containsKey(spell)){
+                currentCounter = hashMap.get(spell);
+                hashMap.remove(spell);
+            }
+            currentCounter ++;
+            hashMap.put(spell, currentCounter + 1);
+        }
+        return hashMap;
     }
 
-    private List<Spell> getFriendSpells() {
-        return getSpellsByIds(clientTurnMessage.getFriendSpells());
+    @Override
+    public Spell getReceivedSpell() {
+        return getSpellById(clientTurnMessage.getReceivedSpell());
     }
 
     @Override
