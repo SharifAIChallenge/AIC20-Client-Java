@@ -6,7 +6,7 @@ public class ClientTurnMessage {
     private int currTurn;
     private int friendReceivedSpell;
     private int receivedSpell;
-    private int remainigAP;
+    private int remainingAP;
     //deck o hand class nistan?
     private List<Integer> deck;
     private List<Integer> hand;
@@ -156,11 +156,11 @@ public class ClientTurnMessage {
         this.receivedSpell = receivedSpell;
     }
 
-    public int getRemainigAP() {
-        return remainigAP;
+    public int getRemainingAP() {
+        return remainingAP;
     }
 
-    public void setRemainigAP(int remainigAP) {
-        this.remainigAP = remainigAP;
+    public void setRemainingAP(int remainingAP) {
+        this.remainingAP = remainingAP;
     }
 }
