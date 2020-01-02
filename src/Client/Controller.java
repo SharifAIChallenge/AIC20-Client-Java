@@ -1,8 +1,5 @@
-package client;
+package Client;
 
-import Client.Model.Game;
-import client.model.Game;
-import client.model.Phase;
 import common.model.Event;
 import common.network.data.Message;
 import common.util.Log;
@@ -107,6 +104,9 @@ public class Controller
             case "init":
                 handleInitMessage(msg);
                 break;
+            case "pick":
+                handlePickMessage(msg);
+                break;
             case "turn":
                 handleTurnMessage(msg);
                 break;
@@ -131,6 +131,14 @@ public class Controller
         game.handleInitMessage(msg);
         Event endEvent = new Event("init-end", new Object[]{});
         preProcess(game, endEvent);
+    }
+
+    private void handlePickMessage(Message msg)
+    {
+        Game newGame = new Game(game);
+        newGame.handlePickMessage(msg);
+        Event endEvent = new Event("pick-end", new Object[]{newGame.getCurrentTurn()});
+        pickTurn(newGame, endEvent);
     }
 
     private void handleTurnMessage(Message msg)

@@ -6,8 +6,6 @@ import java.util.List;
 public interface World {
     public void chooseDeck(List<Integer> typeIds);
 
-    // todo void chooseDeck(List<Enum> typeIds)
-
     public int getMyId();
 
     public int getFriendId();
