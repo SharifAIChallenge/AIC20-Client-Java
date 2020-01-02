@@ -127,7 +127,7 @@ public class Controller
     {
         game = new Game(game);
         game.handleInitMessage(msg);
-        Message endMsg = new Message("endTurn", new JsonObject(), game.getCurrentTurn());
+        Message endMsg = new Message("endTurn", new JsonObject(), 0);
         preProcess(game, endMsg);
     }
 

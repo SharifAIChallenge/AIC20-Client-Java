@@ -74,16 +74,6 @@ public class Game implements World {
         return clientInitMessage.getMap().getKings().get(3).getPlayerId();
     }
 
-    private List<ClientBaseKing> getEnemyKings() {
-        List<ClientBaseKing> enemyKings = new ArrayList<>();
-        for (ClientBaseKing clientBaseKing : clientInitMessage.getMap().getKings()) {
-            if (clientBaseKing.isYourFriend() || clientBaseKing.isYou())
-                continue;
-            enemyKings.add(clientBaseKing);
-        }
-        return enemyKings;
-    }
-
     @Override
     public Cell getPlayerPosition(int playerId) {
         return getPlayerKing(playerId).getCenter();
@@ -711,4 +701,30 @@ public class Game implements World {
         spell.setPower(clientSpell.getPower());
         return spell;
     }
+
+    /*private Spell castToCastSpell(TurnCastSpell turnCastSpell){
+        Spell spell = new Spell();
+        spell.setAreaSpell();
+        spell.setDamaging();
+        spell.getType();
+        spell.setPower();
+        spell.setTypeId();
+        spell.setHaste();
+        spell.setTurnEffect();
+        spell.setRange();
+        return spell;
+    }
+
+    private King castToKing(TurnKing turnKing){
+        King king = new King();
+        king.setAlive(turnKing.isAlive());
+        king.setAttack();
+        king.setCenter();
+        king.setHp(turnKing.getHp());
+        king.setLevel();
+        king.setPlayerId(turnKing.getPlayerId());
+        king.setRange();
+        king.setTarget(turnKing.getTarget());
+        return king;
+    }*/
 }

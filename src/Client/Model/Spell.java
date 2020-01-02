@@ -1,14 +1,14 @@
 package Client.Model;
 
 public class Spell {
-    private int turnEffect;
+    private String type;
     private int typeId;
+    private int turnEffect;
     private boolean isAreaSpell;
     private boolean isHaste;
     private int range;
     private int power;
     private boolean isDamaging;
-    private String type;
 
     public int getTypeId() {
         return typeId;
