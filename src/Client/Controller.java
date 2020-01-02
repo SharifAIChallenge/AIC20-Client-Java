@@ -1,6 +1,7 @@
 package Client;
 
-import common.model.Event;
+import Client.Model.Game;
+import com.google.gson.JsonObject;
 import common.network.data.Message;
 import common.util.Log;
 
@@ -35,7 +36,7 @@ public class Controller
     private Game game;
 
     // Client side network
-    private client.Network network;
+    private Client.Network network;
 
     // Terminator. Controller waits for this object to be notified. Then it will be terminated.
     private final Object terminator;
@@ -59,6 +60,7 @@ public class Controller
         this.retryDelay = retryDelay;
     }
 
+
     /**
      * Starts a client by connecting to the server and sending a token.
      */
@@ -66,7 +68,7 @@ public class Controller
     {
         try
         {
-            network = new client.Network(this::handleMessage);
+            network = new Client.Network(this::handleMessage);
             sender = network::send;
             game = new Game(sender);
             ai = new AI();
@@ -91,21 +93,17 @@ public class Controller
 
     /**
      * Handles incoming message. This method will be called from
-     * {@link client.Network} when a new message is received.
+     * {@link Client.Network} when a new message is received.
      *
      * @param msg incoming message
      */
     private void handleMessage(Message msg)
     {
-
-        Log.v(TAG, msg.name + " received.");
-        switch (msg.name)
+        Log.v(TAG, msg.type + " received.");
+        switch (msg.type)
         {
             case "init":
                 handleInitMessage(msg);
-                break;
-            case "pick":
-                handlePickMessage(msg);
                 break;
             case "turn":
                 handleTurnMessage(msg);
@@ -114,10 +112,10 @@ public class Controller
                 handleShutdownMessage(msg);
                 break;
             default:
-                Log.w(TAG, "Undefined message received: " + msg.name);
+                Log.w(TAG, "Undefined message received: " + msg.type);
                 break;
-        }
-        Log.v(TAG, msg.name + " handle finished.");
+            }
+        Log.v(TAG, msg.type + " handle finished.");
     }
 
     /**
@@ -129,32 +127,16 @@ public class Controller
     {
         game = new Game(game);
         game.handleInitMessage(msg);
-        Event endEvent = new Event("init-end", new Object[]{});
-        preProcess(game, endEvent);
-    }
-
-    private void handlePickMessage(Message msg)
-    {
-        Game newGame = new Game(game);
-        newGame.handlePickMessage(msg);
-        Event endEvent = new Event("pick-end", new Object[]{newGame.getCurrentTurn()});
-        pickTurn(newGame, endEvent);
+        Message endMsg = new Message("endTurn", new JsonObject(), game.getCurrentTurn());
+        preProcess(game, endMsg);
     }
 
     private void handleTurnMessage(Message msg)
     {
         Game newGame = new Game(game);
         newGame.handleTurnMessage(msg);
-        Event endEvent;
-        if (newGame.getCurrentPhase() == Phase.MOVE)
-        {
-            endEvent = new Event("move-end", new Object[]{newGame.getCurrentTurn(), newGame.getMovePhaseNum()});
-            moveTurn(newGame, endEvent);
-        } else
-        {
-            endEvent = new Event("action-end", new Object[]{newGame.getCurrentTurn()});
-            actionTurn(newGame, endEvent);
-        }
+        Message endMsg = new Message("endTurn", new JsonObject(), game.getCurrentTurn());
+        turn(newGame, endMsg);
     }
 
     /**
@@ -168,45 +150,27 @@ public class Controller
         System.exit(0);
     }
 
-    private void preProcess(Game game, Event endEvent)
+    private void preProcess(Game game, Message endMsg)
     {
+        //pick
         new Thread(() -> {
-            ai.preProcess(game);
-            sendEndMsg(endEvent);
+            ai.pick(game);
+            sendEndMsg(endMsg);
         }).start();
     }
 
-    private void pickTurn(Game game, Event endEvent)
+    private void turn(Game game, Message msg)
     {
         new Thread(() ->
         {
-            ai.pickTurn(game);
-            sendEndMsg(endEvent);
+            ai.turn(game);
+            sendEndMsg(msg);
         }).start();
     }
 
-    private void moveTurn(Game game, Event endEvent)
+    private void sendEndMsg(Message message)
     {
-        new Thread(() ->
-        {
-            ai.moveTurn(game);
-            sendEndMsg(endEvent);
-        }).start();
-    }
-
-    private void actionTurn(Game game, Event endEvent)
-    {
-        new Thread(() ->
-        {
-            ai.actionTurn(game);
-            sendEndMsg(endEvent);
-        }).start();
-    }
-
-
-    private void sendEndMsg(Event event)
-    {
-        sender.accept(new Message(Event.EVENT, event));
+        sender.accept(message);
     }
 
 }

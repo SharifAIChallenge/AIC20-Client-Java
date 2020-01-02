@@ -1,4 +1,4 @@
-package client;
+package Client;
 
 import common.util.Log;
 
@@ -35,7 +35,7 @@ public class Main {
         }
 
         try {
-            client.Controller c = new client.Controller(args[0], Integer.parseInt(args[1]), args[2], Long.parseLong(args[3]));
+            Client.Controller c = new Client.Controller(args[0], Integer.parseInt(args[1]), args[2], Long.parseLong(args[3]));
             c.start();
         } catch (Exception e) {
             System.err.println("Client terminated with error: " + e.getMessage());
