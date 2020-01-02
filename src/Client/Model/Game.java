@@ -1,17 +1,14 @@
 package Client.Model;
 
-import Client.dto.ClientCell;
 import Client.dto.init.ClientBaseKing;
 import Client.dto.init.ClientInitMessage;
 import Client.dto.init.InitMessage;
 import Client.dto.turn.ClientTurnMessage;
 
-import java.awt.geom.Area;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-import Client.dto.init.ClientInitMessage;
 import Client.dto.turn.TurnMessage;
 
 public class Game implements World {
@@ -28,43 +25,74 @@ public class Game implements World {
 
     @Override
     public int getMyId() {
-        for(ClientBaseKing clientBaseKing : clientInitMessage.getMap().getKings()){
-            if(clientBaseKing.isYou())
-                return clientBaseKing.getPlayerId();
-        }
-        return -1; // impossible
+        return clientInitMessage.getMap().getKings().get(0).getPlayerId();
     }
 
     @Override
     public int getFriendId() {
-        for(ClientBaseKing clientBaseKing : clientInitMessage.getMap().getKings())
-            if(clientBaseKing.isYourFriend())
-                return clientBaseKing.getPlayerId();
-        return -1; // impossible
+        return clientInitMessage.getMap().getKings().get(1).getPlayerId();
+    }
+
+    private List<ClientBaseKing> getEnemyKings(){
+        List<ClientBaseKing> enemyKings = new ArrayList<>();
+        for(ClientBaseKing clientBaseKing : clientInitMessage.getMap().getKings()){
+            if(clientBaseKing.isYourFriend() || clientBaseKing.isYou())
+                continue;
+            enemyKings.add(clientBaseKing);
+        }
+        return enemyKings;
+    }
+
+    public int getFirstEnemyId() {
+        return clientInitMessage.getMap().getKings().get(2).getPlayerId();
+    }
+
+    public int getSecondEnemyId() {
+            return clientInitMessage.getMap().getKings().get(3).getPlayerId();
     }
 
     @Override
-    public Cell getPLayerPosition(int playerId) {
+    public Cell getPlayerPosition(int playerId) {
+        return getPlayerKing(playerId).getCenter();
+    }
+
+    private King getPlayerKing(int playerId){
         for(King king : initMessage.getMapp().getKings())
-            if(king.getPlayerID() == playerId)
-                return king.getCenter();
-        return null; // impossible
+            if(king.getPlayerId() == playerId){
+                return king;
+            }
+        return null;
     }
 
     @Override
     public List<Path> getPathsFromPlayer(int playerID) {
         //todo
-        return null;
+        King playerKing = getPlayerKing(playerID);
+        List<Path> paths = new ArrayList<>();
+        for(Path path : initMessage.getMapp().getPaths())
+            if(path.getCells().contains(playerKing.getCenter()))
+                paths.add(path);
+        return paths;
     }
 
     @Override
     public Path getPathToFriend(int playerId) {
         //todo
+        Cell myCell = getPlayerPosition(playerId);
+        Cell friendCell = getPlayerPosition(getFriendId());
+        Cell firstEnemyCell = getPlayerPosition(getFirstEnemyId());
+        Cell secondEnemyCell = getPlayerPosition(getSecondEnemyId());
+
+        for(Path path : initMessage.getMapp().getPaths()) {
+            List<Cell> pathCells = path.getCells();
+            if (pathCells.contains(myCell) && pathCells.contains(friendCell))
+                if (!pathCells.contains(firstEnemyCell) && !pathCells.contains(secondEnemyCell))
+                    return path;
+        }
         return null;
     }
 
 
-    // is it right ?
     @Override
     public int getMapHeight() {
         return clientInitMessage.getMap().getRows();
@@ -78,18 +106,22 @@ public class Game implements World {
 
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
-        return null;
+        List<Path> paths = new ArrayList<>();
+        for (Path path : initMessage.getMapp().getPaths())
+            if(path.getCells().contains(cell))
+                paths.add(path);
+        return paths;
     }
 
     @Override
     public List<Unit> getPlayerUnits(int playerId) {
         List<Unit> units = new ArrayList<>();
-        for(Unit unit : turnMessage.getUnits())
-            if(unit.getPlayerID() == playerId)
+        for (Unit unit : turnMessage.getUnits())
+            if (unit.getPlayerId() == playerId)
                 units.add(unit);
         return units;
     }
-
+//path ha ro tavajoh nakardim hatman vase khode player bashe
     @Override
     public List<Unit> getCellUnits(Cell cell) {
         List<Unit> units = new ArrayList<>(cell.getUnitList());
@@ -97,9 +129,21 @@ public class Game implements World {
     }
 
     @Override
-    public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
-        //todo
-        return null;
+     public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
+        //todo tartibe khune haye masira che sheklie
+        int minDis = 100 * 1000;
+        Cell playerCell = getPlayerPosition(fromPlayerId);
+        Path bestPath = null;
+        for(Path path : initMessage.getMapp().getPaths()){
+            if(path.getCells().contains(cell) && path.getCells().contains(playerCell)){
+                int index = path.getCells().indexOf(cell);
+                if(index < minDis){
+                    minDis = index;
+                    bestPath = path;
+                }
+            }
+        }
+        return bestPath;
     }
 
     @Override
@@ -109,15 +153,15 @@ public class Game implements World {
 
     @Override
     public int getRemainingAP() {
-        return 0;
+        return clientTurnMessage.getRemainingAP();
     }
 
     @Override
     public List<Unit> getHand() {
         List<Unit> hand = new ArrayList<>();
-        for(int unitId : clientTurnMessage.getHand())
-            for(Unit unit : turnMessage.getUnits())
-                if(unit.getUnitID() == unitId) {
+        for (int unitId : clientTurnMessage.getHand())
+            for (Unit unit : turnMessage.getUnits())
+                if (unit.getUnitID() == unitId) {
                     hand.add(unit);
                     break;
                 }
@@ -127,9 +171,9 @@ public class Game implements World {
     @Override
     public List<Unit> getDeck() {
         List<Unit> deck = new ArrayList<>();
-        for(int unitId:clientTurnMessage.getDeck())
-            for(Unit unit : turnMessage.getUnits())
-                if(unit.getUnitID() == unitId) {
+        for (int unitId : clientTurnMessage.getDeck())
+            for (Unit unit : turnMessage.getUnits())
+                if (unit.getUnitID() == unitId) {
                     deck.add(unit);
                     break;
                 }
@@ -137,7 +181,7 @@ public class Game implements World {
     }
 
     @Override
-    public void playUnit(int typeId, int pathId) {
+    public void putUnit(int typeId, int pathId) {
         // todo
         return;
     }
@@ -164,15 +208,16 @@ public class Game implements World {
 
     @Override
     public int getRemainingTime() {
-        //TODO
+
+        //TODO mamadoo mizane
         return 0;
     }
 
     @Override
     public int getPlayerHP(int playerId) {
-        for(King king : turnMessage.getKings())
-            if(king.getPlayerID() == playerId)
-                return king.getHP();
+        for (King king : turnMessage.getKings())
+            if (king.getPlayerId() == playerId)
+                return king.getHp();//getHp chera p sh kuchike ??
         return -1; // impossible
     }
 
@@ -187,26 +232,26 @@ public class Game implements World {
     }
 
     @Override
-    public void castAreaSpell(Cell center, int spellId) {
+    public void castAreaSpell(int row, int col, int spellId) {
         //todo
     }
 
     @Override
-    public void castAreaSpell(Cell center, Spell spell) {
+    public void castAreaSpell(int row, int col, Spell spell) {
         //todo
     }
 
-    private boolean inRange(Cell cell, Cell center, int range){
-        if(Math.abs(cell.getCol() - center.getCol()) > range)
+    private boolean inRange(Cell cell, Cell center, int range) {
+        if (Math.abs(cell.getCol() - center.getCol()) > range)
             return false;
-        if(Math.abs(cell.getRow() - center.getRow()) > range)
+        if (Math.abs(cell.getRow() - center.getRow()) > range)
             return false;
         return true;
     }
 
     private ArrayList<Unit> unique(List<Unit> listOfUnits) {
         ArrayList<Unit> uniqueList = new ArrayList<>();
-        for(Unit unit : listOfUnits) {
+        for (Unit unit : listOfUnits) {
             if (uniqueList.contains(unit))
                 continue;
             uniqueList.add(unit);
@@ -218,14 +263,17 @@ public class Game implements World {
     public List<Unit> getAreaSpellTargets(Cell center, Spell spell) {
         //AreaSpell dade she hatman
         List<Unit> units = new ArrayList<>();
+        if (!(spell instanceof AreaSpell))
+            return null;
         AreaSpell areaSpell = (AreaSpell) spell;
-        for(Path path: initMessage.getMapp().getPaths()){
-            for (Cell cell : path.getCellList())
-                if(inRange(cell, center, areaSpell.getRange()))
+        for (Path path : initMessage.getMapp().getPaths()) {
+            for (Cell cell : path.getCells())
+                if (inRange(cell, center, areaSpell.getRange()))
                     units.addAll(cell.getUnitList());
         }
         return unique(units);
     }
+
     @Override
     public List<Unit> getAreaSpellTargets(Cell center, int spellId) {
         //spellId hamun type ?
@@ -233,8 +281,29 @@ public class Game implements World {
         return getAreaSpellTargets(center, spell);
     }
 
+    private Cell getCellByCoordination(int row, int col){
+        for(Path path : initMessage.getMapp().getPaths())
+            for(Cell cell : path.getCells())
+                if(cell.getRow() == row && cell.getCol() == col)
+                    return cell;
+        return null;
+    }
+
+    @Override
+    public List<Unit> getAreaSpellTargets(int row, int col, Spell spell){
+        Cell cell = getCellByCoordination(row, col);
+        return getAreaSpellTargets(cell, spell);
+    }
+
+    @Override
+    public List<Unit> getAreaSpellTargets(int row, int col, int spellId){
+        Cell cell = getCellByCoordination(row, col);
+        return getAreaSpellTargets(cell, spellId);
+    }
+
     @Override
     public int getRemainingTurnsToUpgrade() {
+        //+=1 esho havasemun bashe
         return clientTurnMessage.getCurrTurn() % clientInitMessage.getGameConstants().getTurnsToUpgrade();
     }
 
@@ -245,18 +314,42 @@ public class Game implements World {
 
     @Override
     public CastAreaSpell getCastAreaSpell(int playerId) {
+        for (CastSpell castSpell : turnMessage.getCastSpells()) {
+            if (castSpell instanceof CastAreaSpell) {
+                if (castSpell.getCasterId() == playerId)
+                    return (CastAreaSpell) castSpell;
+            }
+        }
         return null;
     }
 
     @Override
     public CastUnitSpell getCastUnitSpell(int playerId) {
+        for (CastSpell castSpell : turnMessage.getCastSpells()) {
+            if (castSpell instanceof CastUnitSpell) {
+                if (castSpell.getCasterId() == playerId)
+                    return (CastUnitSpell) castSpell;
+            }
+        }
         return null;
     }
 
     @Override
-    public List<CastAreaSpell> getActiveSpellsOnUnit(Unit unit) {
-        //todo
+    public int getActivePoisonsOnUnit(Unit unit) {
+        return unit.getActivePoisons();
+    }
+
+    private Unit getUnitById(int unitId){
+        for(Unit unit : turnMessage.getUnits())
+            if(unit.getUnitID() == unitId)
+                return unit;;
         return null;
+    }
+
+    @Override
+    public int getActivePoisonsOnUnit(int unitId) {
+        Unit unit = getUnitById(unitId);
+        return getActivePoisonsOnUnit(unit);
     }
 
     @Override
@@ -265,16 +358,17 @@ public class Game implements World {
         return clientTurnMessage.getAvailableDamageUpgrades();
     }
 
+    @Override
     public int getRangeUpgradeNumber() {
         //inam khodemnu ezade kardim
         return clientTurnMessage.getAvailableRangeUpgrades();
     }
 
-    private List<Spell> getSpellsByIds(List<Integer> list){
+    private List<Spell> getSpellsByIds(List<Integer> list) {
         List<Spell> spells = new ArrayList<>();
-        for(int spellId : list){
-            for(Spell spell : initMessage.getSpells()){
-                if(spell.getType() == spellId)
+        for (int spellId : list) {
+            for (Spell spell : initMessage.getSpells()) {
+                if (spell.getTypeId() == spellId)
                     spells.add(spell);
             }
         }
@@ -283,24 +377,37 @@ public class Game implements World {
     }
 
     @Override
-    public List<Spell> getMySpells() {
+    public List<Spell> getSpellsList() {
         //spellId hamun type e ?
         return getSpellsByIds(clientTurnMessage.getMySpells());
     }
 
     @Override
-    public Spell getReceivedSpell() {
-        return getReceivedSpell();
+    public HashMap<Spell, Integer> getSpells(){
+        List<Spell> spells = getSpellsByIds(clientTurnMessage.getMySpells());
+        HashMap<Spell, Integer> hashMap = new HashMap<Spell, Integer>();
+        for (Spell spell : spells){
+            int currentCounter = 0;
+            if(hashMap.containsKey(spell)){
+                currentCounter = hashMap.get(spell);
+                hashMap.remove(spell);
+            }
+            currentCounter ++;
+            hashMap.put(spell, currentCounter + 1);
+        }
+        return hashMap;
     }
 
-    private List<Spell> getFriendSpells(){
-        return getSpellsByIds(clientTurnMessage.getFriendSpells());
+    @Override
+    public Spell getReceivedSpell() {
+        return getSpellById(clientTurnMessage.getReceivedSpell());
     }
 
     @Override
     public Spell getFriendReceivedSpell() {
         return getSpellById(clientTurnMessage.getFriendReceivedSpell());
     }
+
     public ClientInitMessage getClientInitMessage() {
         return clientInitMessage;
     }
@@ -309,9 +416,9 @@ public class Game implements World {
         this.clientInitMessage = clientInitMessage;
     }
 
-    private Spell getSpellById(int spellId){
-        for(Spell spell : initMessage.getSpells())
-            if(spell.getType() == spellId)
+    private Spell getSpellById(int spellId) {
+        for (Spell spell : initMessage.getSpells())
+            if (spell.getTypeId() == spellId)
                 return spell;
 
         return null;
