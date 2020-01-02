@@ -10,8 +10,11 @@ import java.util.function.Consumer;
 
 import Client.dto.turn.TurnMessage;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import common.network.Json;
 import common.network.data.Message;
+
+import javax.swing.*;
 
 public class Game implements World {
     private ClientInitMessage clientInitMessage;
@@ -50,6 +53,10 @@ public class Game implements World {
     @Override
     public void chooseDeck(List<Integer> typeIds) {
         //tOdO
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("units", Json.GSON.toJsonTree(typeIds));
+        Message message = new Message("pick", jsonObject, this.getCurrentTurn());
+        sender.accept(message);
     }
 
     @Override
@@ -221,8 +228,11 @@ public class Game implements World {
 
     @Override
     public void putUnit(int typeId, int pathId) {
-        // todo
-        return;
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("typeId", Json.GSON.toJsonTree(typeId));
+        jsonObject.add("pathId", Json.GSON.toJsonTree(pathId));
+        Message message = new Message("putUnit", this.getCurrentTurn(), jsonObject);
+        sender.accept(message);
     }
 
     @Override
@@ -260,24 +270,48 @@ public class Game implements World {
         return -1; // impossible
     }
 
+    private Path getPathById(int pathId){
+        for(Path path : this.initMessage.getMapp().getPaths())
+            if(path.getId() == pathId)
+                return path;
+        return null;
+    }
+
     @Override
     public void castUnitSpell(int unitId, int pathId, int index, int spellId) {
-        //todo
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
+        jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
+        jsonObject.add("pathId", Json.GSON.toJsonTree(pathId));
+        Path path = getPathById(pathId);
+        Cell cell = null;
+        if(path != null && index < path.getCells().size())
+            cell = path.getCells().get(index);
+        jsonObject.add("cell", Json.GSON.toJsonTree(cell));
+        Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
+        sender.accept(message);
     }
 
     @Override
     public void castUnitSpell(int unitId, int pathId, int index, Spell spell) {
-        //todo
+        int spellId = spell.getTypeId();
+        castUnitSpell(unitId, pathId, index, spellId);
     }
 
     @Override
     public void castAreaSpell(int row, int col, int spellId) {
-        //todo
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
+        Cell cell = getCellByCoordination(row, col);
+        jsonObject.add("cell", Json.GSON.toJsonTree(cell));
+        Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
+        sender.accept(message);
     }
 
     @Override
     public void castAreaSpell(int row, int col, Spell spell) {
-        //todo
+        int spellId = spell.getTypeId();
+        castAreaSpell(row, col, spellId);
     }
 
     private boolean inRange(Cell cell, Cell center, int range) {
