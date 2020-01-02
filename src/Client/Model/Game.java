@@ -1,14 +1,11 @@
 package Client.Model;
 
-import Client.dto.init.ClientBaseKing;
-import Client.dto.init.ClientInitMessage;
-import Client.dto.init.InitMessage;
-import Client.dto.turn.ClientTurnMessage;
+import Client.dto.init.*;
+import Client.dto.turn.*;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-import Client.dto.turn.TurnMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import common.network.Json;
@@ -20,7 +17,7 @@ public class Game implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
-    private TurnMessage turnMessage;
+    private TurnMessage turnMessage = new TurnMessage();
     private Consumer sender;
 
     public Game(Consumer sender){
@@ -630,10 +627,69 @@ public class Game implements World {
 
 
     public void castToTurnMessage(ClientTurnMessage clientTurnMessage){
-
+        turnMessage.setCastSpells(castToCastSpells(clientTurnMessage.getCastSpells()));
+        turnMessage.setKings(castToKings(clientTurnMessage.getKings()));
+        turnMessage.setUnits(castToUnits(clientTurnMessage.getUnits()));
     }
 
     public void castToInitMessage(ClientInitMessage clientInitMessage){
+        this.initMessage = new InitMessage();
+        initMessage.setBaseUnitList(castToBaseUnits(clientInitMessage.getBaseUnits()));
+        initMessage.setMapp(castToMap(clientInitMessage.getMap()));
+        initMessage.setSpells(castToSpells(clientInitMessage.getSpells()));
+    }
 
+    private List<CastSpell> castToCastSpells(List<TurnCastSpell> turnCastSpells){
+        return null;
+    }
+
+    private List<King> castToKings(List<TurnKing> turnKings){
+        return null;
+    }
+
+    private List<Unit> castToUnits(List<TurnUnit> turnUnits){
+        return null;
+    }
+
+    private List<BaseUnit> castToBaseUnits(List<ClientBaseUnit> clientBaseUnits){
+        List<BaseUnit> baseUnits = new ArrayList<>();
+        for(ClientBaseUnit clientBaseUnit : clientBaseUnits)
+            baseUnits.add(castToBaseUnit(clientBaseUnit));
+        return baseUnits;
+    }
+
+    private Mapp castToMap(ClientMap clientMap){
+        return null;
+    }
+
+    private List<Spell> castToSpells(List<ClientSpell> clientSpells){
+        List<Spell> spells = new ArrayList<>();
+        for(ClientSpell clientSpell : clientSpells)
+            spells.add(castToSpell(clientSpell));
+        return spells;
+    }
+
+    private BaseUnit castToBaseUnit(ClientBaseUnit clientBaseUnit){
+        BaseUnit baseUnit = new BaseUnit();
+        baseUnit.setTypeId(clientBaseUnit.getTypeId());
+        baseUnit.setAp(clientBaseUnit.getAp());
+        baseUnit.setBaseAttack(clientBaseUnit.getBaseAttack());
+        baseUnit.setBaseRange(clientBaseUnit.getBaseRange());
+        baseUnit.setMaxHP(clientBaseUnit.getMaxHP());
+        baseUnit.setTarget(clientBaseUnit.getTarget());
+        baseUnit.setFlying(clientBaseUnit.isFlying());
+        baseUnit.setMultiple(clientBaseUnit.isMultiple());
+        return baseUnit;
+    }
+
+    private Spell castToSpell(ClientSpell clientSpell){
+        Spell spell = new Spell();
+        spell.setType(clientSpell.getType());
+        spell.setTypeId(clientSpell.getTypeId());
+        //duration hamun turneffecte?
+        spell.setTurnEffect(clientSpell.getDuration());
+        spell.setRange(clientSpell.getRange());
+        spell.setPower(clientSpell.getPower());
+        return spell;
     }
 }
