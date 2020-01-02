@@ -97,7 +97,7 @@ public interface World {
 
     public Spell getFriendReceivedSpell();
 
-    public void upgareUnitRange(Unit unit);
+    public void upgradeUnitRange(Unit unit);
 
     public void upgradeUnitRange(int unitId);
 
@@ -113,7 +113,7 @@ public interface World {
 
     public Unit getUnitTarget(Unit unit);
 
-    public Unit getUnitTarge(int unitId);
+    Unit getUnitTarget(int unitId);
 
     public Cell getUnitTargetCell(Unit unit);
 
