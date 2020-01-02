@@ -2,12 +2,11 @@ package Client;
 
 import Client.Model.World;
 
+import java.sql.SQLOutput;
 import java.util.Random;
 
 public class AI
 {
-
-    private Random random = new Random();
 
     public void pick(World world)
     {
@@ -16,6 +15,7 @@ public class AI
 
 
     public void turn(World world) {
+        System.out.println("turn started");
     }
 
 }

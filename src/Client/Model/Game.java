@@ -6,15 +6,46 @@ import Client.dto.init.InitMessage;
 import Client.dto.turn.ClientTurnMessage;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import Client.dto.turn.TurnMessage;
+import com.google.gson.Gson;
+import common.network.Json;
+import common.network.data.Message;
 
 public class Game implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
     private TurnMessage turnMessage;
+    private Consumer sender;
 
+    public Game(Consumer sender){
+        this.sender = sender;
+    }
+
+    public Game(Game game){
+        this.clientInitMessage = game.getClientInitMessage();
+        this.initMessage = game.getInitMessage();
+        this.sender = game.getSender();
+    }
+
+
+    public Consumer getSender() {
+        return sender;
+    }
+
+    public void setSender(Consumer sender) {
+        this.sender = sender;
+    }
+
+    public InitMessage getInitMessage() {
+        return initMessage;
+    }
+
+    public ClientTurnMessage getClientTurnMessage() {
+        return clientTurnMessage;
+    }
 
     @Override
     public void chooseDeck(List<Integer> typeIds) {
@@ -352,22 +383,12 @@ public class Game implements World {
         return null;
     }
 
-    @Override
-    public int getActivePoisonsOnUnit(Unit unit) {
-        return unit.getActivePoisons();
-    }
 
     private Unit getUnitById(int unitId){
         for(Unit unit : turnMessage.getUnits())
             if(unit.getUnitID() == unitId)
                 return unit;;
         return null;
-    }
-
-    @Override
-    public int getActivePoisonsOnUnit(int unitId) {
-        Unit unit = getUnitById(unitId);
-        return getActivePoisonsOnUnit(unit);
     }
 
     @Override
@@ -515,5 +536,24 @@ public class Game implements World {
                 return spell;
 
         return null;
+    }
+
+    public void handleTurnMessage(Message msg) {
+        this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
+        castToTurnMessage(this.getClientTurnMessage());
+    }
+
+    public void handleInitMessage(Message msg) {
+        this.clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
+        castToInitMessage(this.getClientInitMessage());
+    }
+
+
+    public void castToTurnMessage(ClientTurnMessage clientTurnMessage){
+
+    }
+
+    public void castToInitMessage(ClientInitMessage clientInitMessage){
+
     }
 }
