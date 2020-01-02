@@ -8,6 +8,7 @@ public class ClientBaseUnit {
     private String target;      //can be enum, values: GROUND, AIR, BOTH
     private boolean isFlying;
     private boolean isMultiple;
+    private int ap;
 
     public int getTypeId() {
         return typeId;
@@ -63,5 +64,13 @@ public class ClientBaseUnit {
 
     public void setMultiple(boolean multiple) {
         isMultiple = multiple;
+    }
+
+    public int getAp() {
+        return ap;
+    }
+
+    public void setAp(int ap) {
+        this.ap = ap;
     }
 }

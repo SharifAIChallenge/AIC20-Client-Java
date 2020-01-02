@@ -4,6 +4,7 @@ public class TurnKing {
     private int playerId;
     private boolean isAlive;
     private int hp;
+    private int target;
 
     public int getPlayerId() {
         return playerId;
@@ -27,5 +28,13 @@ public class TurnKing {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    public int getTarget() {
+        return target;
+    }
+
+    public void setTarget(int target) {
+        this.target = target;
     }
 }
