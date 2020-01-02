@@ -1,7 +1,5 @@
-package client;
+package Client;
 
-import client.model.Game;
-import client.model.Phase;
 import common.model.Event;
 import common.network.data.Message;
 import common.util.Log;
