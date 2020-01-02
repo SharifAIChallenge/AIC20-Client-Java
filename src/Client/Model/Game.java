@@ -260,12 +260,12 @@ public class Game implements World {
     }
 
     @Override
-    public int getDamageUpgradeTokenNumbers() {
+    public int getDamageUpgradeNumber() {
         //avaz kardimesh
         return clientTurnMessage.getAvailableDamageUpgrades();
     }
 
-    public int getRangeUpgradeTokenNumbers() {
+    public int getRangeUpgradeNumber() {
         //inam khodemnu ezade kardim
         return clientTurnMessage.getAvailableRangeUpgrades();
     }
