@@ -7,6 +7,7 @@ public class King {
     private int attack;
     private int range;
     private int playerId;
+    private int target;
     private boolean isAlive;
 
     public int getPlayerId() {
@@ -63,5 +64,13 @@ public class King {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
+
+    public int getTarget() {
+        return target;
+    }
+
+    public void setTarget(int target) {
+        this.target = target;
     }
 }
