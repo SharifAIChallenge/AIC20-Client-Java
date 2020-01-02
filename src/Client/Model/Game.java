@@ -105,7 +105,6 @@ public class Game implements World {
         return -1;
     }
 
-
     @Override
     public List<Path> getPathsFromPlayer(int playerId) {
         //todo
@@ -648,7 +647,27 @@ public class Game implements World {
     }
 
     private List<Unit> castToUnits(List<TurnUnit> turnUnits){
-        return null;
+        List<Unit> units = new ArrayList<>();
+        for(TurnUnit turnUnit : turnUnits)
+            units.add(castToUnit(turnUnit));
+        return units;
+    }
+
+    private Unit castToUnit(TurnUnit turnUnit){
+        Unit unit = new Unit();
+        unit.setAffectedSpells(turnUnit.getAffectedSpells());
+        unit.setAttack(turnUnit.getAttack());
+        unit.setBaseUnit();
+        unit.setCell(turnUnit.getCell());
+        unit.setClone(turnUnit.isClone());
+        unit.setDamageLevel(turnUnit.getDamageLevel());
+        unit.setHasted(turnUnit.isHasted());
+        unit.setHp(turnUnit.getHp());
+        unit.setPath();
+        unit.setPlayerId(turnUnit.getPlayerId());
+        unit.setRange(turnUnit.getRange());
+
+        return unit;
     }
 
     private List<BaseUnit> castToBaseUnits(List<ClientBaseUnit> clientBaseUnits){
