@@ -94,12 +94,12 @@ public class Game implements World {
 
 
     @Override
-    public int getMapHeight() {
+    public int getMapRowNum() {
         return clientInitMessage.getMap().getRows();
     }
 
     @Override
-    public int getMapWidth() {
+    public int getMapColNum() {
         return clientInitMessage.getMap().getCols();
     }
 
