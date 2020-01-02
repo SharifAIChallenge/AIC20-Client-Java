@@ -1,22 +1,23 @@
 package Client.Model;
 
 public class BaseUnit {
-    private int type;
+    private int typeId;
     private int maxHP;
-    private int attack;
-    private int range;
-    private int target;
+    private int baseAttack;
+    private int baseRange;
+    private String target;
     private int rangeLevel;
     private int damageLevel;
     private boolean isFlying;
     private boolean isMultiple;
+    private int ap;
 
-    public int getType() {
-        return type;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public int getMaxHP() {
@@ -27,27 +28,27 @@ public class BaseUnit {
         this.maxHP = maxHP;
     }
 
-    public int getAttack() {
-        return attack;
+    public int getBaseAttack() {
+        return baseAttack;
     }
 
-    public void setAttack(int attack) {
-        this.attack = attack;
+    public void setBaseAttack(int baseAttack) {
+        this.baseAttack = baseAttack;
     }
 
-    public int getRange() {
-        return range;
+    public int getBaseRange() {
+        return baseRange;
     }
 
-    public void setRange(int range) {
-        this.range = range;
+    public void setBaseRange(int baseRange) {
+        this.baseRange = baseRange;
     }
 
-    public int getTarget() {
+    public String getTarget() {
         return target;
     }
 
-    public void setTarget(int target) {
+    public void setTarget(String target) {
         this.target = target;
     }
 
@@ -81,5 +82,13 @@ public class BaseUnit {
 
     public void setDamageLevel(int damageLevel) {
         this.damageLevel = damageLevel;
+    }
+
+    public int getAp() {
+        return ap;
+    }
+
+    public void setAp(int ap) {
+        this.ap = ap;
     }
 }

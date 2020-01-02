@@ -2,18 +2,19 @@ package Client.Model;
 
 public class King {
     private Cell center;
-    private int HP;
+    private int hp;
     private int level;
     private int attack;
     private int range;
-    private int playerID;
+    private int playerId;
+    private boolean isAlive;
 
-    public int getPlayerID() {
-        return playerID;
+    public int getPlayerId() {
+        return playerId;
     }
 
-    public void setPlayerID(int playerID) {
-        this.playerID = playerID;
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 
     public int getRange() {
@@ -40,12 +41,12 @@ public class King {
         this.level = level;
     }
 
-    public int getHP() {
-        return HP;
+    public int getHp() {
+        return hp;
     }
 
-    public void setHP(int HP) {
-        this.HP = HP;
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
     public Cell getCenter() {
@@ -54,5 +55,13 @@ public class King {
 
     public void setCenter(Cell center) {
         this.center = center;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 }

@@ -1,5 +1,6 @@
 package Client.Model;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface World {
@@ -11,7 +12,27 @@ public interface World {
 
     public int getFriendId();
 
-    public Cell getPLayerPosition(int playerId);
+    public HashMap<Spell, Integer> getSpells();
+
+    public int getActivePoisonsOnUnit(int unitId);
+
+    public int getDamageUpgradeNumber();
+
+    public void putUnit(int typeId, int pathId) ;
+
+        public void castAreaSpell(int row, int col, int spellId) ;
+
+        public void castAreaSpell(int row, int col, Spell spell) ;
+
+        public List<Unit> getAreaSpellTargets(int row, int col, Spell spell);
+
+        public List<Unit> getAreaSpellTargets(int row, int col, int spellId);
+
+        public int getActivePoisonsOnUnit(Unit unit);
+
+    public int getRangeUpgradeNumber();
+
+    public Cell getPlayerPosition(int playerId);
 
     public List<Path> getPathsFromPlayer(int playerID);
 
@@ -37,7 +58,6 @@ public interface World {
 
     public List<Unit> getDeck();
 
-    void playUnit(int typeId, int pathId);
 
     public int getCurrentTurn();
 
@@ -55,10 +75,6 @@ public interface World {
 
     public void castUnitSpell(int unitId, int pathId, int index, Spell spell);
 
-    public void castAreaSpell(Cell center, int spellId);
-
-    public void castAreaSpell(Cell center, Spell spell);
-
     public List<Unit> getAreaSpellTargets(Cell center, Spell spell);
 
     public List<Unit> getAreaSpellTargets(Cell center, int SpellId);
@@ -71,14 +87,11 @@ public interface World {
 
     public CastUnitSpell getCastUnitSpell(int playerId);
 
-    public List<CastAreaSpell> getActiveSpellsOnCell(Cell cell);
-
-    public int getUpgradeTokenNumber();
-
-    public List<Spell> getSpells();
-
     public Spell getReceivedSpell();
 
     public Spell getFriendReceivedSpell();
+
+    public List<Spell> getSpellsList();
+
 
 }
