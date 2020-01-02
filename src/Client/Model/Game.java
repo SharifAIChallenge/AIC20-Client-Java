@@ -483,26 +483,28 @@ public class Game implements World {
 
     @Override
     public void upgradeUnitRange(Unit unit) {
-        //todo
+        upgradeUnitRange(unit.getUnitID());
     }
 
     @Override
     public void upgradeUnitRange(int unitId) {
-        Unit unit = getUnitById(unitId);
-        upgradeUnitRange(unit);
-        return;
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
+        Message message = new Message("rangeUpgrade", this.getCurrentTurn(), jsonObject);
+        sender.accept(message);
     }
 
     @Override
     public void upgradeUnitDamage(Unit unit) {
-        //todo
+        upgradeUnitDamage(unit.getUnitID());
     }
 
     @Override
     public void upgradeUnitDamage(int unitId) {
-        Unit unit = getUnitById(unitId);
-        upgradeUnitDamage(unit);
-        return;
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
+        Message message = new Message("damageUpgrade", this.getCurrentTurn(), jsonObject);
+        sender.accept(message);
     }
 
     @Override
