@@ -2,6 +2,7 @@ package Client.Model;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface World {
     public void chooseDeck(List<Integer> typeIds);
@@ -10,25 +11,9 @@ public interface World {
 
     public int getFriendId();
 
-    public HashMap<Spell, Integer> getSpells();
+    public int getFirstEnemyId();
 
-    public int getActivePoisonsOnUnit(int unitId);
-
-    public int getDamageUpgradeNumber();
-
-    public void putUnit(int typeId, int pathId) ;
-
-        public void castAreaSpell(int row, int col, int spellId) ;
-
-        public void castAreaSpell(int row, int col, Spell spell) ;
-
-        public List<Unit> getAreaSpellTargets(int row, int col, Spell spell);
-
-        public List<Unit> getAreaSpellTargets(int row, int col, int spellId);
-
-        public int getActivePoisonsOnUnit(Unit unit);
-
-    public int getRangeUpgradeNumber();
+    public int getSecondEnemyId();
 
     public Cell getPlayerPosition(int playerId);
 
@@ -36,9 +21,9 @@ public interface World {
 
     public Path getPathToFriend(int playerId);
 
-    public int getMapHeight();
+    public int getMapRowNum();
 
-    public int getMapWidth();
+    public int getMapColNum();
 
     public List<Path> getPathsCrossingCell(Cell cell);
 
@@ -56,6 +41,8 @@ public interface World {
 
     public List<Unit> getDeck();
 
+    public void putUnit(int typeId, int pathId);
+    // todo, we have also 3 types else
 
     public int getCurrentTurn();
 
@@ -73,6 +60,15 @@ public interface World {
 
     public void castUnitSpell(int unitId, int pathId, int index, Spell spell);
 
+    public void castAreaSpell(int row, int col, int spellId);
+
+    public void castAreaSpell(int row, int col, Spell spell);
+    // todo we have also 2 types else
+
+    public List<Unit> getAreaSpellTargets(int row, int col, Spell spell);
+
+    public List<Unit> getAreaSpellTargets(int row, int col, int spellId);
+
     public List<Unit> getAreaSpellTargets(Cell center, Spell spell);
 
     public List<Unit> getAreaSpellTargets(Cell center, int SpellId);
@@ -85,11 +81,51 @@ public interface World {
 
     public CastUnitSpell getCastUnitSpell(int playerId);
 
+    public List<CastSpell> getCastSpellOnUnit(Unit unit);
+
+    public List<CastSpell> getCastSpellOnUnit(int unitId);
+
+    public int getDamageUpgradeNumber();
+
+    public int getRangeUpgradeNumber();
+
+    public List<Spell> getSpellsList();
+
+    public HashMap<Spell, Integer> getSpells();
+
     public Spell getReceivedSpell();
 
     public Spell getFriendReceivedSpell();
 
-    public List<Spell> getSpellsList();
+    public void upgareUnitRange(Unit unit);
+
+    public void upgradeUnitRange(int unitId);
+
+    public void upgradeUnitDamage(Unit unit);
+
+    public void upgradeUnitDamage(int unitId);
+
+    public List<Unit> getPlayerDuplicateUnits(int playerId);
+
+    public List<Unit> getPlayerHastedUnits(int playerId);
+
+    public List<Unit> getPlayerPlayedUnits(int playerId);
+
+    public Unit getUnitTarget(Unit unit);
+
+    public Unit getUnitTarge(int unitId);
+
+    public Cell getUnitTargetCell(Unit unit);
+
+    public Cell getUnitTargetCell(int unitId);
+
+    public Unit getKingTarget(int playerId);
+
+    public Cell getKingTargetCell(int playerId);
+
+    public int getKingUnitIsAttackingTo(Unit unit);
+
+    public int getKingUnitIsAttackingTo(int unitId);
 
 
 }
