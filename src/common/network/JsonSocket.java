@@ -55,7 +55,7 @@ public class JsonSocket {
      * Initiates new socket with specified host and port and uses
      * that socket to transmit json strings.
      *
-     * @param host the host name.
+     * @param host the host type.
      * @param port the port number.
      * @throws IOException if an I/O error occurs when creating the socket or
      *                     its input or output stream.
