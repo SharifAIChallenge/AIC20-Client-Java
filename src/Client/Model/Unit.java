@@ -1,8 +1,11 @@
 package Client.Model;
 
+import java.util.List;
+
 public class Unit {
     private int unitId, hp, playerId, typeId, pathId, damageLevel, rangeLevel, activePoisons, range, attack, target;
     private boolean isClone, isHasted, wasDamageUpgraded, wasRangeUpgraded, wasPlayedThisTurn;
+    private List<Integer> affectedSpells;
     private Cell cell;
     private BaseUnit baseUnit;
     private Path path;
@@ -168,5 +171,13 @@ public class Unit {
 
     public void setTarget(int target) {
         this.target = target;
+    }
+
+    public List<Integer> getAffectedSpells() {
+        return affectedSpells;
+    }
+
+    public void setAffectedSpells(List<Integer> affectedSpells) {
+        this.affectedSpells = affectedSpells;
     }
 }
