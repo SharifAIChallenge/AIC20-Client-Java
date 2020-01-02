@@ -7,8 +7,6 @@ public class ClientBaseKing {
     private int hp;
     private int attack;
     private int range;
-    private boolean isYou;
-    private boolean isYourFriend;
     private ClientCell center;
 
     public int getPlayerId() {
@@ -17,22 +15,6 @@ public class ClientBaseKing {
 
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
-    }
-
-    public boolean isYou() {
-        return isYou;
-    }
-
-    public void setYou(boolean you) {
-        isYou = you;
-    }
-
-    public boolean isYourFriend() {
-        return isYourFriend;
-    }
-
-    public void setYourFriend(boolean yourFriend) {
-        isYourFriend = yourFriend;
     }
 
     public ClientCell getCenter() {
