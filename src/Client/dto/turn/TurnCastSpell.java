@@ -6,10 +6,13 @@ import java.util.List;
 
 public class TurnCastSpell {
     private int typeId;
+    private int id;
     private int casterId;
     private ClientCell cell;
     private int unitId;         // for unit spell
     private int pathId;         // for unit spell and caster == player,friend
+    private int remainingTurns;
+    private boolean wasCastThisTurn;
     private List<Integer> affectedUnits;
 
     public int getTypeId() {
@@ -58,5 +61,29 @@ public class TurnCastSpell {
 
     public void setAffectedUnits(List<Integer> affectedUnits) {
         this.affectedUnits = affectedUnits;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRemainingTurns() {
+        return remainingTurns;
+    }
+
+    public void setRemainingTurns(int remainingTurns) {
+        this.remainingTurns = remainingTurns;
+    }
+
+    public boolean isWasCastThisTurn() {
+        return wasCastThisTurn;
+    }
+
+    public void setWasCastThisTurn(boolean wasCastThisTurn) {
+        this.wasCastThisTurn = wasCastThisTurn;
     }
 }

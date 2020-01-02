@@ -64,6 +64,7 @@ public interface World {
 
     public void castAreaSpell(int row, int col, Spell spell);
     // todo we have also 2 types else
+
     public List<Unit> getAreaSpellTargets(int row, int col, Spell spell);
 
     public List<Unit> getAreaSpellTargets(int row, int col, int spellId);

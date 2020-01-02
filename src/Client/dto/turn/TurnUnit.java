@@ -1,7 +1,10 @@
 package Client.dto.turn;
 
 
+import Client.Model.Cell;
 import Client.dto.ClientCell;
+
+import java.util.List;
 
 public class TurnUnit {
     private int unitId;
@@ -14,10 +17,15 @@ public class TurnUnit {
     private int rangeLevel;
     private boolean wasDamageUpgraded;
     private boolean wasRangeUpgraded;
+    private boolean isDamaged;
     private boolean isHasted;
     private boolean isClone;
     private int range;
     private int attack;
+    private boolean wasPlayedThisTurn;
+    private List<Integer> affectedSpells;
+    private int target;
+    //todo target cell i darim ke nemidunam chie
 
     public int getUnitId() {
         return unitId;
@@ -49,14 +57,6 @@ public class TurnUnit {
 
     public void setPathId(int pathId) {
         this.pathId = pathId;
-    }
-
-    public ClientCell getCell() {
-        return cell;
-    }
-
-    public void setCell(ClientCell cell) {
-        this.cell = cell;
     }
 
     public int getHp() {
@@ -129,5 +129,45 @@ public class TurnUnit {
 
     public void setAttack(int attack) {
         this.attack = attack;
+    }
+
+    public boolean isDamaged() {
+        return isDamaged;
+    }
+
+    public void setDamaged(boolean damaged) {
+        isDamaged = damaged;
+    }
+
+    public boolean isWasPlayedThisTurn() {
+        return wasPlayedThisTurn;
+    }
+
+    public void setWasPlayedThisTurn(boolean wasPlayedThisTurn) {
+        this.wasPlayedThisTurn = wasPlayedThisTurn;
+    }
+
+    public int getTarget() {
+        return target;
+    }
+
+    public void setTarget(int target) {
+        this.target = target;
+    }
+
+    public ClientCell getCell() {
+        return cell;
+    }
+
+    public void setCell(ClientCell cell) {
+        this.cell = cell;
+    }
+
+    public List<Integer> getAffectedSpells() {
+        return affectedSpells;
+    }
+
+    public void setAffectedSpells(List<Integer> affectedSpells) {
+        this.affectedSpells = affectedSpells;
     }
 }

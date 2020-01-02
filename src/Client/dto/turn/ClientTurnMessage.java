@@ -4,24 +4,26 @@ import java.util.List;
 
 public class ClientTurnMessage {
     private int currTurn;
-    private int friendReceivedSpell;
-    private int receivedSpell;
-    private int remainingAP;
-    //deck o hand class nistan?
     private List<Integer> deck;
     private List<Integer> hand;
 
     private List<TurnKing> kings;
     private List<TurnUnit> units;
     private List<TurnCastSpell> castSpells;
-    private int acquiredSpell;
-    private int friendAcquiredSpell;
+
+    private int receivedSpell;
+    private int friendReceivedSpell;
     private List<Integer> mySpells;
     private List<Integer> friendSpells;
+
+    //deck o hand class nistan?
+
     private boolean gotRangeUpgrade;
     private boolean gotDamageUpgrade;
     private int availableRangeUpgrades;
     private int availableDamageUpgrades;
+
+    private int remainingAP;
 
     public ClientTurnMessage() {
 
@@ -74,22 +76,6 @@ public class ClientTurnMessage {
 
     public void setCastSpells(List<TurnCastSpell> castSpells) {
         this.castSpells = castSpells;
-    }
-
-    public int getAcquiredSpell() {
-        return acquiredSpell;
-    }
-
-    public void setAcquiredSpell(int acquiredSpell) {
-        this.acquiredSpell = acquiredSpell;
-    }
-
-    public int getFriendAcquiredSpell() {
-        return friendAcquiredSpell;
-    }
-
-    public void setFriendAcquiredSpell(int friendAcquiredSpell) {
-        this.friendAcquiredSpell = friendAcquiredSpell;
     }
 
     public List<Integer> getMySpells() {
