@@ -8,6 +8,7 @@ public class Spell {
     private int range;
     private int power;
     private boolean isDamaging;
+    private String type;
 
     public int getTypeId() {
         return typeId;
@@ -63,5 +64,13 @@ public class Spell {
 
     public void setDamaging(boolean damaging) {
         isDamaging = damaging;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
