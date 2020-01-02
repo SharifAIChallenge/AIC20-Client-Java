@@ -692,4 +692,30 @@ public class Game implements World {
         spell.setPower(clientSpell.getPower());
         return spell;
     }
+
+    private Spell castToCastSpell(TurnCastSpell turnCastSpell){
+        Spell spell = new Spell();
+        spell.setAreaSpell();
+        spell.setDamaging();
+        spell.getType();
+        spell.setPower();
+        spell.setTypeId();
+        spell.setHaste();
+        spell.setTurnEffect();
+        spell.setRange();
+        return spell;
+    }
+
+    private King castToKing(TurnKing turnKing){
+        King king = new King();
+        king.setAlive(turnKing.isAlive());
+        king.setAttack();
+        king.setCenter();
+        king.setHp(turnKing.getHp());
+        king.setLevel();
+        king.setPlayerId(turnKing.getPlayerId());
+        king.setRange();
+        king.setTarget(turnKing.getTarget());
+        return king;
+    }
 }
