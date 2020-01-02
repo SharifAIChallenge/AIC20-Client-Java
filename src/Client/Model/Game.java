@@ -8,15 +8,52 @@ import Client.dto.turn.ClientTurnMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 import Client.dto.turn.TurnMessage;
+import com.google.gson.Gson;
+import common.network.Json;
+import common.network.data.Message;
 
 public class Game implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
     private TurnMessage turnMessage;
+    private Consumer<Message> sender;
 
+    public Game(Consumer sender){
+        this.sender = sender;
+    }
+
+    public Game(Game game){
+        this.clientInitMessage = game.getClientInitMessage();
+        this.initMessage = game.getInitMessage();
+    }
+
+    public InitMessage getInitMessage() {
+        return initMessage;
+    }
+
+    public void setInitMessage(InitMessage initMessage){
+        this.initMessage = initMessage;
+    }
+
+    public TurnMessage getTurnMessage() {
+        return turnMessage;
+    }
+
+    public void setTurnMessage(TurnMessage turnMessage){
+        this.turnMessage = turnMessage;
+    }
+
+    public ClientTurnMessage getClientTurnMessage() {
+        return clientTurnMessage;
+    }
+
+    public void setClientTurnMessage(ClientTurnMessage clientTurnMessage){
+        this.clientTurnMessage = clientTurnMessage;
+    }
 
     @Override
     public void chooseDeck(List<Integer> typeIds) {
@@ -420,7 +457,19 @@ public class Game implements World {
         for (Spell spell : initMessage.getSpells())
             if (spell.getTypeId() == spellId)
                 return spell;
-
         return null;
+    }
+
+    public void handleInitMessage(Message msg) {
+        this.clientInitMessage = Json.GSON.fromJson(msg.getInfo(), clientInitMessage.getClass());
+        castToInitMessage(this.clientInitMessage);
+    }
+
+    public void castToInitMessage(ClientInitMessage clientInitMessage){
+        //todo
+    }
+
+    public void handleTurnMessage(Message msg) {
+        this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), clientTurnMessage.getClass());
     }
 }

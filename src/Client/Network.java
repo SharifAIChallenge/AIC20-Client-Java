@@ -1,4 +1,4 @@
-package client;
+package Client;
 
 import common.network.JsonSocket;
 import common.network.data.Message;
@@ -87,7 +87,7 @@ public class Network {
             client = new JsonSocket(host, port);
             client.send(new Message("token", token));
             init = client.get(Message.class);
-            if (!init.name.equals("init")) {
+            if (!init.type.equals("init")) {
                 client.close();
                 throw new Exception("First message of the server was not init message.");
             }

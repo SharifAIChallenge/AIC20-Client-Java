@@ -1,6 +1,7 @@
 package common.network.data;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import common.network.Json;
 
 
@@ -9,17 +10,36 @@ import common.network.Json;
  */
 public class Message
 {
-    public final String name;
-    public final JsonArray args;
+    public final String type;
+    public final JsonObject info;
+    public int turn;
 
-    public Message(String name, JsonArray args)
-    {
-        this.name = name;
-        this.args = args;
+    public int getTurn() {
+        return turn;
     }
 
-    public Message(String name, Object... args)
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+
+    public String getType(){
+        return this.type;
+    }
+
+    public JsonObject getInfo(){
+        return this.info;
+    }
+
+    public Message(String type, JsonObject args, int turn)
     {
-        this(name, Json.GSON.toJsonTree(args).getAsJsonArray());
+        this.type = type;
+        this.info = args;
+        this.turn = turn;
+    }
+
+    public Message(String name, int turn, Object... args)
+    {
+        this(name, Json.GSON.toJsonTree(args).getAsJsonObject(), turn);
     }
 }
