@@ -135,7 +135,7 @@ public class Controller
     {
         Game newGame = new Game(game);
         newGame.handleTurnMessage(msg);
-        Message endMsg = new Message("endTurn", new JsonObject(), game.getCurrentTurn());
+        Message endMsg = new Message("endTurn", new JsonObject(), newGame.getCurrentTurn());
         turn(newGame, endMsg);
     }
 
