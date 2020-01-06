@@ -14,8 +14,8 @@ public class ClientPath {
 
     public Path castToPath() {
         Path path = new Path();
-        path.setId(id);
-        path.setCells(cells.stream().map(
+        path.setId(getId());
+        path.setCells(getCells().stream().map(
                 ClientCell::castToCell
         ).collect(Collectors.toList()));
         return path;
