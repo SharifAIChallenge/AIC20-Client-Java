@@ -1,12 +1,28 @@
 package Client.dto.init;
 
+import Client.Model.InitMessage;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientInitMessage {
     private GameConstants gameConstants;
     private ClientMap map;
     private List<ClientBaseUnit> baseUnits;
     private List<ClientSpell> spells;
+
+    public InitMessage castToInitMessage() {
+        InitMessage initMessage = new InitMessage();
+        initMessage.setGameConstants(gameConstants);
+        initMessage.setMapp(map.castToMap());
+        initMessage.setBaseUnitList(
+                baseUnits.stream().map(ClientBaseUnit::castToBaseUnit).collect(Collectors.toList())
+        );
+        initMessage.setSpells(
+                spells.stream().map(ClientSpell::castToSpell).collect(Collectors.toList())
+        );
+        return initMessage;
+    }
 
     public GameConstants getGameConstants() {
         return gameConstants;

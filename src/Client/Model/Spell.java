@@ -1,12 +1,13 @@
 package Client.Model;
 
 public class Spell {
-    private String type;
+    private SpellType type;
     private int typeId;
     private int duration;
     private int range;
     private int power;
-    private TargetType target;
+    private SpellTarget target;
+    //todo priority?
 
     public int getTypeId() {
         return typeId;
@@ -22,14 +23,6 @@ public class Spell {
 
     public void setDuration(int duration) {
         this.duration = duration;
-    }
-
-    public boolean isAreaSpell() {
-        return isAreaSpell;
-    }
-
-    public void setAreaSpell(boolean areaSpell) {
-        isAreaSpell = areaSpell;
     }
 
     public int getRange() {
@@ -48,19 +41,19 @@ public class Spell {
         this.power = power;
     }
 
-    public String getType() {
+    public SpellType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(SpellType type) {
         this.type = type;
     }
 
-    public TargetType getTarget() {
+    public SpellTarget getTarget() {
         return target;
     }
 
-    public void setTarget(TargetType target) {
+    public void setTarget(SpellTarget target) {
         this.target = target;
     }
 }

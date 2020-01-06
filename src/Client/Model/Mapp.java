@@ -5,7 +5,7 @@ import java.util.List;
 public class Mapp {
     private int cols, rows;
     private List<Path> paths;
-    private List<BaseUnit> baseUnits;
+    private List<Unit> units;
     private List<King> kings;
 
     public int getCols() {
@@ -32,12 +32,12 @@ public class Mapp {
         this.paths = paths;
     }
 
-    public List<BaseUnit> getBaseUnits() {
-        return baseUnits;
+    public List<Unit> getUnits() {
+        return units;
     }
 
-    public void setBaseUnits(List<BaseUnit> baseUnits) {
-        this.baseUnits = baseUnits;
+    public void setUnits(List<Unit> units) {
+        this.units = units;
     }
 
     public List<King> getKings() {
