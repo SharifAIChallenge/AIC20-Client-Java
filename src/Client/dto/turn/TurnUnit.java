@@ -2,6 +2,8 @@ package Client.dto.turn;
 
 
 import Client.Model.Cell;
+import Client.Model.Game;
+import Client.Model.Path;
 import Client.Model.Unit;
 import Client.dto.ClientCell;
 
@@ -29,7 +31,11 @@ public class TurnUnit {
     //todo target cell i darim ke nemidunam chie
 
     public Unit castToUnit(){
-        return null;
+        Unit unit = new Unit();
+        unit.setRange(range);
+        unit.setPlayerId(playerId);
+
+        return unit;
     }
 
     public int getUnitId() {
