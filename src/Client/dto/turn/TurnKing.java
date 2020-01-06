@@ -10,10 +10,6 @@ public class TurnKing {
 
     public King castToKing(){
         King king = new King();
-        king.setPlayerId(playerId);
-        king.setAlive(isAlive);
-        king.setHp(hp);
-        king.setTarget(target);
         return king;
     }
 
