@@ -3,7 +3,6 @@ package Client.Model;
 public class King {
     private Cell center;
     private int hp;
-    private int level;
     private int attack;
     private int range;
     private int playerId;
@@ -32,14 +31,6 @@ public class King {
 
     public void setAttack(int attack) {
         this.attack = attack;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
     }
 
     public int getHp() {
