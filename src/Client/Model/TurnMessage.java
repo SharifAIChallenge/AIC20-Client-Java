@@ -1,8 +1,4 @@
-package Client.dto.turn;
-
-import Client.Model.CastSpell;
-import Client.Model.King;
-import Client.Model.Unit;
+package Client.Model;
 
 import java.util.List;
 
