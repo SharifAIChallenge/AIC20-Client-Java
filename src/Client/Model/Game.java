@@ -1,5 +1,6 @@
 package Client.Model;
 
+import Client.dto.ClientCell;
 import Client.dto.init.*;
 import Client.dto.turn.*;
 
@@ -547,9 +548,7 @@ public class Game implements World {
 
     @Override
     public Cell getUnitTargetCell(Unit unit) {
-        Unit target = getUnitTarget(unit);
-        if (target == null) return null;
-        return target.getCell();
+        return unit.getTargetCell();
     }
 
     @Override
@@ -636,29 +635,29 @@ public class Game implements World {
         return null;
     }
 
-    private List<Unit> castToUnits(List<TurnUnit> turnUnits){
-        List<Unit> units = new ArrayList<>();
-        for(TurnUnit turnUnit : turnUnits)
-            units.add(castToUnit(turnUnit));
-        return units;
-    }
+//    private List<Unit> castToUnits(List<TurnUnit> turnUnits){
+//        List<Unit> units = new ArrayList<>();
+//        for(TurnUnit turnUnit : turnUnits)
+//            units.add(castToUnit(turnUnit));
+//        return units;
+//    }
 
-    private Unit castToUnit(TurnUnit turnUnit){
-        Unit unit = new Unit();
-        unit.setAffectedSpells(turnUnit.getAffectedSpells());
-        unit.setAttack(turnUnit.getAttack());
-        unit.setBaseUnit();
-        unit.setCell(turnUnit.getCell());
-        unit.setClone(turnUnit.isClone());
-        unit.setDamageLevel(turnUnit.getDamageLevel());
-        unit.setHasted(turnUnit.isHasted());
-        unit.setHp(turnUnit.getHp());
-        unit.setPath();
-        unit.setPlayerId(turnUnit.getPlayerId());
-        unit.setRange(turnUnit.getRange());
-
-        return unit;
-    }
+//    private Unit castToUnit(TurnUnit turnUnit){
+//        Unit unit = new Unit();
+//        unit.setAffectedSpells(turnUnit.getAffectedSpells());
+//        unit.setAttack(turnUnit.getAttack());
+//        unit.setBaseUnit();
+//        unit.setCell(turnUnit.getCell());
+//        unit.setClone(turnUnit.isClone());
+//        unit.setDamageLevel(turnUnit.getDamageLevel());
+//        unit.setHasted(turnUnit.isHasted());
+//        unit.setHp(turnUnit.getHp());
+//        unit.setPath();
+//        unit.setPlayerId(turnUnit.getPlayerId());
+//        unit.setRange(turnUnit.getRange());
+//
+//        return unit;
+//    }
 
     private List<BaseUnit> castToBaseUnits(List<ClientBaseUnit> clientBaseUnits){
         List<BaseUnit> baseUnits = new ArrayList<>();
@@ -668,7 +667,11 @@ public class Game implements World {
     }
 
     private Mapp castToMap(ClientMap clientMap){
-        return null;
+        //todo
+        Mapp map = new Mapp();
+        map.setRows(clientMap.getRows());
+        map.setCols(clientMap.getCols());
+        return map;
     }
 
     private List<Spell> castToSpells(List<ClientSpell> clientSpells){
@@ -727,4 +730,23 @@ public class Game implements World {
         king.setTarget(turnKing.getTarget());
         return king;
     }*/
+
+
+
+    private Cell castClientCellToCell(ClientCell clientCell){
+        Cell cell = new Cell();
+        cell.setCol(clientCell.getCol());
+        cell.setRow(clientCell.getRow());
+        cell.setUnitList(clientCell.);
+        return cell;
+    }
+
+    private King CastClientKingToKing(ClientBaseKing clientBaseKing){
+        King king = new King();
+        king.setAlive(true);
+        king.setAttack(clientBaseKing.getAttack());
+        king.setCenter(clientBaseKing.getCenter());
+
+        return king;
+    }
 }

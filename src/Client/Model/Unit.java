@@ -9,6 +9,8 @@ public class Unit {
     private Cell cell;
     private BaseUnit baseUnit;
     private Path path;
+    private Cell targetCell;
+
 
     public Unit() {
     }
@@ -179,5 +181,13 @@ public class Unit {
 
     public void setAffectedSpells(List<Integer> affectedSpells) {
         this.affectedSpells = affectedSpells;
+    }
+
+    public Cell getTargetCell() {
+        return targetCell;
+    }
+
+    public void setTargetCell(Cell targetCell) {
+        this.targetCell = targetCell;
     }
 }
