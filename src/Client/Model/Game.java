@@ -18,9 +18,9 @@ public class Game implements World {
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
     private TurnMessage turnMessage = new TurnMessage();
-    private Consumer sender;
+    private Consumer<Message> sender;
 
-    public Game(Consumer sender){
+    public Game(Consumer<Message> sender){
         this.sender = sender;
     }
 
@@ -31,12 +31,8 @@ public class Game implements World {
     }
 
 
-    public Consumer getSender() {
+    private Consumer<Message> getSender() {
         return sender;
-    }
-
-    public void setSender(Consumer sender) {
-        this.sender = sender;
     }
 
     public InitMessage getInitMessage() {
@@ -224,6 +220,8 @@ public class Game implements World {
 
     @Override
     public int getCurrentTurn() {
+        if (clientTurnMessage == null)
+            return 0;
         return clientTurnMessage.getCurrTurn();
     }
 
@@ -647,13 +645,13 @@ public class Game implements World {
         Unit unit = new Unit();
         unit.setAffectedSpells(turnUnit.getAffectedSpells());
         unit.setAttack(turnUnit.getAttack());
-        unit.setBaseUnit();
-        unit.setCell(turnUnit.getCell());
+//        unit.setBaseUnit();
+//        unit.setCell(turnUnit.getCell());
         unit.setClone(turnUnit.isClone());
         unit.setDamageLevel(turnUnit.getDamageLevel());
         unit.setHasted(turnUnit.isHasted());
         unit.setHp(turnUnit.getHp());
-        unit.setPath();
+//        unit.setPath();
         unit.setPlayerId(turnUnit.getPlayerId());
         unit.setRange(turnUnit.getRange());
 
