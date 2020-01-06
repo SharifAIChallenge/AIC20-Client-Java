@@ -1,5 +1,8 @@
 package Client.dto.init;
 
+import Client.Model.BaseUnit;
+import Client.Model.UnitTarget;
+
 public class ClientBaseUnit {
     private int typeId;
     private int maxHP;
@@ -9,6 +12,19 @@ public class ClientBaseUnit {
     private boolean isFlying;
     private boolean isMultiple;
     private int ap;
+
+    public BaseUnit castToBaseUnit() {
+        BaseUnit baseUnit = new BaseUnit();
+        baseUnit.setTypeId(typeId);
+        baseUnit.setMaxHP(maxHP);
+        baseUnit.setBaseAttack(baseAttack);
+        baseUnit.setBaseRange(baseRange);
+        baseUnit.setTargetType(UnitTarget.valueOf(target));
+        baseUnit.setFlying(isFlying);
+        baseUnit.setMultiple(isMultiple);
+        baseUnit.setAp(ap);
+        return baseUnit;
+    }
 
     public int getTypeId() {
         return typeId;

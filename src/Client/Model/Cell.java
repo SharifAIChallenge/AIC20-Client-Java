@@ -7,6 +7,11 @@ public class Cell {
     private int col;
     private List<Unit> unitList;
 
+    public Cell(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
     public List<Unit> getUnitList() {
         return unitList;
     }

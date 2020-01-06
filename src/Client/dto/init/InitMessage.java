@@ -7,9 +7,18 @@ import Client.Model.Spell;
 import java.util.List;
 
 public class InitMessage {
+    private GameConstants gameConstants;
     private Mapp mapp;
     private List<BaseUnit> baseUnitList;
     private List<Spell> spells;
+
+    public GameConstants getGameConstants() {
+        return gameConstants;
+    }
+
+    public void setGameConstants(GameConstants gameConstants) {
+        this.gameConstants = gameConstants;
+    }
 
     public Mapp getMapp() {
         return mapp;
