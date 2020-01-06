@@ -41,7 +41,7 @@ public class ClientTurnMessage {
         turnMessage.setUnits(
                 units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
         );
-        return null;
+        return turnMessage;
     }
 
     public ClientTurnMessage() {
