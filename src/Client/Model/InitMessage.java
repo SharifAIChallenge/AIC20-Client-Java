@@ -2,6 +2,7 @@ package Client.Model;
 
 import Client.dto.init.GameConstants;
 
+import java.net.PortUnreachableException;
 import java.util.List;
 
 public class InitMessage {
@@ -15,8 +16,19 @@ public class InitMessage {
         return initMessage;
     }
 
-    private InitMessage(){
+    public static InitMessage getInitMessage() {
+        return initMessage;
+    }
 
+    private InitMessage() {
+
+    }
+
+    public Path getPathById(int pathId){
+        for(Path path : Mapp.getMapp().getPaths())
+            if(path.getId() == pathId)
+                return path;
+        return null;
     }
 
     public Spell getSpellById(int spellId) {
