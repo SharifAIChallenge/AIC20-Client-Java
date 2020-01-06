@@ -44,4 +44,5 @@ public class TurnKing {
     public void setTarget(int target) {
         this.target = target;
     }
-}
+
+    }
