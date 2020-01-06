@@ -1,5 +1,6 @@
 package Client.dto.turn;
 
+
 import java.util.List;
 
 public class ClientTurnMessage {

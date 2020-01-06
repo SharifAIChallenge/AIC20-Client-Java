@@ -4,9 +4,19 @@ import java.util.List;
 
 public class Mapp {
     private int cols, rows;
+    private Cell[][] cells;
     private List<Path> paths;
     private List<Unit> units;
     private List<King> kings;
+
+    public Mapp(int rows, int cols) {
+        this.rows = rows;
+        this.cols = cols;
+        this.cells = new Cell[rows][cols];
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                this.cells[i][j] = new Cell(i, j);
+    }
 
     public int getCols() {
         return cols;
@@ -46,5 +56,13 @@ public class Mapp {
 
     public void setKings(List<King> kings) {
         this.kings = kings;
+    }
+
+    public Cell[][] getCells() {
+        return cells;
+    }
+
+    public void setCells(Cell[][] cells) {
+        this.cells = cells;
     }
 }

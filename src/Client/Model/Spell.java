@@ -6,6 +6,7 @@ public class Spell {
     private int duration;
     private int range;
     private int power;
+    private int priority;
     private SpellTarget target;
     //todo priority?
 
@@ -55,5 +56,13 @@ public class Spell {
 
     public void setTarget(SpellTarget target) {
         this.target = target;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

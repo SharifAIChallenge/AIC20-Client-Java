@@ -8,7 +8,7 @@ public class ClientSpell {
     private String type;
     private int typeId;
     private int duration;
-    private int priority;
+    private int priority; // todo is it needed ?
     private int range;          //invalid for unit spell
     private int power;          //invalid for unit spell
     private String target;
@@ -20,6 +20,7 @@ public class ClientSpell {
         spell.setDuration(duration);
         spell.setRange(range);
         spell.setPower(power);
+        spell.setPriority(priority);
         spell.setTarget(SpellTarget.valueOf(target));
         return spell;
     }
