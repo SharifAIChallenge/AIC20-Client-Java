@@ -215,6 +215,18 @@ public class Game implements World {
         sender.accept(message);
     }
 
+    public void putUnit(BaseUnit baseUnit, int pathId){
+        putUnit(baseUnit.getTypeId(), pathId);
+    }
+
+    public void putUnit(int typeId, Path path){
+        putUnit(typeId, path.getId());
+    }
+
+    public void putUnit(BaseUnit baseUnit, Path path){
+        putUnit(baseUnit.getTypeId(), path.getId());
+    }
+
     @Override
     public int getCurrentTurn() {
         if (clientTurnMessage == null)
