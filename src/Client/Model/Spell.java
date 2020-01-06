@@ -1,14 +1,13 @@
 package Client.Model;
 
 public class Spell {
-    private String type;
+    private SpellType type;
     private int typeId;
-    private int turnEffect;
-    private boolean isAreaSpell;
-    private boolean isHaste;
+    private int duration;
     private int range;
     private int power;
-    private boolean isDamaging;
+    private SpellTarget target;
+    //todo priority?
 
     public int getTypeId() {
         return typeId;
@@ -18,28 +17,12 @@ public class Spell {
         this.typeId = typeId;
     }
 
-    public int getTurnEffect() {
-        return turnEffect;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setTurnEffect(int turnEffect) {
-        this.turnEffect = turnEffect;
-    }
-
-    public boolean isAreaSpell() {
-        return isAreaSpell;
-    }
-
-    public void setAreaSpell(boolean areaSpell) {
-        isAreaSpell = areaSpell;
-    }
-
-    public boolean isHaste() {
-        return isHaste;
-    }
-
-    public void setHaste(boolean haste) {
-        isHaste = haste;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public int getRange() {
@@ -58,19 +41,19 @@ public class Spell {
         this.power = power;
     }
 
-    public boolean isDamaging() {
-        return isDamaging;
-    }
-
-    public void setDamaging(boolean damaging) {
-        isDamaging = damaging;
-    }
-
-    public String getType() {
+    public SpellType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(SpellType type) {
         this.type = type;
+    }
+
+    public SpellTarget getTarget() {
+        return target;
+    }
+
+    public void setTarget(SpellTarget target) {
+        this.target = target;
     }
 }

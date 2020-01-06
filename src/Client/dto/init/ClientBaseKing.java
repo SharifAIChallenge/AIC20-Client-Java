@@ -1,5 +1,6 @@
 package Client.dto.init;
 
+import Client.Model.King;
 import Client.dto.ClientCell;
 
 public class ClientBaseKing {
@@ -8,6 +9,16 @@ public class ClientBaseKing {
     private int attack;
     private int range;
     private ClientCell center;
+
+    public King castToKing() {
+        King king = new King();
+        king.setCenter(center.castToCell());
+        king.setHp(hp);
+        king.setAlive(true);
+        king.setAttack(attack);
+        king.setPlayerId(playerId);
+        return king;
+    }
 
     public int getPlayerId() {
         return playerId;
