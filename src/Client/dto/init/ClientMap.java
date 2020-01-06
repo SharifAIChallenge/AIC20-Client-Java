@@ -14,7 +14,7 @@ public class ClientMap {
     private List<ClientBaseKing> kings;
 
     public Mapp castToMap() {
-        Mapp mapp = new Mapp(rows, cols);
+        Mapp mapp = Mapp.createMapp(rows, cols);
         mapp.setPaths(
                 paths.stream().map(ClientPath::castToPath).collect(Collectors.toList())
         );
