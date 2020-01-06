@@ -2,6 +2,7 @@ package Client.dto.turn;
 
 
 import Client.Model.Cell;
+import Client.Model.Unit;
 import Client.dto.ClientCell;
 
 import java.util.List;
@@ -26,6 +27,10 @@ public class TurnUnit {
     private List<Integer> affectedSpells;
     private int target;
     //todo target cell i darim ke nemidunam chie
+
+    public Unit castToUnit(){
+        return null;
+    }
 
     public int getUnitId() {
         return unitId;
