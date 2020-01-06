@@ -1,5 +1,7 @@
 package Client;
 
+import com.google.gson.JsonObject;
+import common.network.Json;
 import common.network.JsonSocket;
 import common.network.data.Message;
 import common.util.Log;
@@ -85,7 +87,9 @@ public class Network {
         Message init;
         try {
             client = new JsonSocket(host, port);
-            client.send(new Message("token", token));
+            JsonObject tokenObject = new JsonObject();
+            tokenObject.add("token", Json.GSON.toJsonTree(token));
+            client.send(new Message("token", tokenObject, 0));
             init = client.get(Message.class);
             if (!init.type.equals("init")) {
                 client.close();

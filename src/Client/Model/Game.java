@@ -1,27 +1,23 @@
 package Client.Model;
 
-import Client.dto.ClientCell;
 import Client.dto.init.*;
 import Client.dto.turn.*;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import common.network.Json;
 import common.network.data.Message;
-
-import javax.swing.*;
 
 public class Game implements World {
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
     private TurnMessage turnMessage = new TurnMessage();
-    private Consumer sender;
+    private Consumer<Message> sender;
 
-    public Game(Consumer sender){
+    public Game(Consumer<Message> sender){
         this.sender = sender;
     }
 
@@ -32,12 +28,8 @@ public class Game implements World {
     }
 
 
-    public Consumer getSender() {
+    private Consumer<Message> getSender() {
         return sender;
-    }
-
-    public void setSender(Consumer sender) {
-        this.sender = sender;
     }
 
     public InitMessage getInitMessage() {
@@ -225,6 +217,8 @@ public class Game implements World {
 
     @Override
     public int getCurrentTurn() {
+        if (clientTurnMessage == null)
+            return 0;
         return clientTurnMessage.getCurrTurn();
     }
 
@@ -496,27 +490,29 @@ public class Game implements World {
 
     @Override
     public List<Unit> getPlayerDuplicateUnits(int playerId) {
-        return getUnitsWithSpellOfPlayer("Duplicate", playerId);
+        return getUnitsWithSpellOfPlayer(SpellType.DUPLICATE, playerId);
     }
 
-    private String getSpellType(Spell spell){
+/*    private String getSpellType(Spell spell){   //todo why this method exists? -> spell.getType()
         for(Spell spell1 : initMessage.getSpells())
             if(spell1.getTypeId() == spell.getTypeId())
                 return spell1.getType();
         return null;
-    }
+    }*/
 
-    private List<Unit> getUnitsWithSpellOfPlayer(String spellType, int playerId){
+    private List<Unit> getUnitsWithSpellOfPlayer(SpellType spellType, int playerId){
         List<Unit> units = new ArrayList<>();
         for (Unit unit : turnMessage.getUnits()) {
-            if (unit.getPlayerId() != playerId) continue;
+            if (unit.getPlayerId() != playerId)
+                continue;
             for (int spellId : unit.getAffectedSpells()) {
-                Spell spell = getSpellById(spellId);
-                if(getSpellType(spell).equals(spellType)){
+                Spell spell = getSpellById(spellId);    //todo use a map for getting spell from spellId
+                if (spell == null)
+                    continue;
+                if(spell.getType() == spellType){
                     units.add(unit);
                     break;
                 }
-
             }
         }
         return units;
@@ -524,7 +520,7 @@ public class Game implements World {
 
     @Override
     public List<Unit> getPlayerHastedUnits(int playerId) {
-        return getUnitsWithSpellOfPlayer("Hasted", playerId);
+        return getUnitsWithSpellOfPlayer(SpellType.HASTE, playerId);
     }
 
     @Override
@@ -548,7 +544,9 @@ public class Game implements World {
 
     @Override
     public Cell getUnitTargetCell(Unit unit) {
-        return unit.getTargetCell();
+        Unit target = getUnitTarget(unit);
+        if (target == null) return null;
+        return target.getCell();
     }
 
     @Override
@@ -610,7 +608,7 @@ public class Game implements World {
 
     public void handleInitMessage(Message msg) {
         this.clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
-        castToInitMessage(this.getClientInitMessage());
+        this.initMessage = clientInitMessage.castToInitMessage();
     }
 
 
@@ -618,13 +616,6 @@ public class Game implements World {
         turnMessage.setCastSpells(castToCastSpells(clientTurnMessage.getCastSpells()));
         turnMessage.setKings(castToKings(clientTurnMessage.getKings()));
         turnMessage.setUnits(castToUnits(clientTurnMessage.getUnits()));
-    }
-
-    public void castToInitMessage(ClientInitMessage clientInitMessage){
-        this.initMessage = new InitMessage();
-        initMessage.setBaseUnitList(castToBaseUnits(clientInitMessage.getBaseUnits()));
-        initMessage.setMapp(castToMap(clientInitMessage.getMap()));
-        initMessage.setSpells(castToSpells(clientInitMessage.getSpells()));
     }
 
     private List<CastSpell> castToCastSpells(List<TurnCastSpell> turnCastSpells){
@@ -635,74 +626,28 @@ public class Game implements World {
         return null;
     }
 
-//    private List<Unit> castToUnits(List<TurnUnit> turnUnits){
-//        List<Unit> units = new ArrayList<>();
-//        for(TurnUnit turnUnit : turnUnits)
-//            units.add(castToUnit(turnUnit));
-//        return units;
-//    }
+    private List<Unit> castToUnits(List<TurnUnit> turnUnits){
+        List<Unit> units = new ArrayList<>();
+        for(TurnUnit turnUnit : turnUnits)
+            units.add(castToUnit(turnUnit));
+        return units;
+    }
 
-//    private Unit castToUnit(TurnUnit turnUnit){
-//        Unit unit = new Unit();
-//        unit.setAffectedSpells(turnUnit.getAffectedSpells());
-//        unit.setAttack(turnUnit.getAttack());
+    private Unit castToUnit(TurnUnit turnUnit){
+        Unit unit = new Unit();
+        unit.setAffectedSpells(turnUnit.getAffectedSpells());
+        unit.setAttack(turnUnit.getAttack());
 //        unit.setBaseUnit();
 //        unit.setCell(turnUnit.getCell());
-//        unit.setClone(turnUnit.isClone());
-//        unit.setDamageLevel(turnUnit.getDamageLevel());
-//        unit.setHasted(turnUnit.isHasted());
-//        unit.setHp(turnUnit.getHp());
+        unit.setClone(turnUnit.isClone());
+        unit.setDamageLevel(turnUnit.getDamageLevel());
+        unit.setHasted(turnUnit.isHasted());
+        unit.setHp(turnUnit.getHp());
 //        unit.setPath();
-//        unit.setPlayerId(turnUnit.getPlayerId());
-//        unit.setRange(turnUnit.getRange());
-//
-//        return unit;
-//    }
+        unit.setPlayerId(turnUnit.getPlayerId());
+        unit.setRange(turnUnit.getRange());
 
-    private List<BaseUnit> castToBaseUnits(List<ClientBaseUnit> clientBaseUnits){
-        List<BaseUnit> baseUnits = new ArrayList<>();
-        for(ClientBaseUnit clientBaseUnit : clientBaseUnits)
-            baseUnits.add(castToBaseUnit(clientBaseUnit));
-        return baseUnits;
-    }
-
-    private Mapp castToMap(ClientMap clientMap){
-        //todo
-        Mapp map = new Mapp();
-        map.setRows(clientMap.getRows());
-        map.setCols(clientMap.getCols());
-        return map;
-    }
-
-    private List<Spell> castToSpells(List<ClientSpell> clientSpells){
-        List<Spell> spells = new ArrayList<>();
-        for(ClientSpell clientSpell : clientSpells)
-            spells.add(castToSpell(clientSpell));
-        return spells;
-    }
-
-    private BaseUnit castToBaseUnit(ClientBaseUnit clientBaseUnit){
-        BaseUnit baseUnit = new BaseUnit();
-        baseUnit.setTypeId(clientBaseUnit.getTypeId());
-        baseUnit.setAp(clientBaseUnit.getAp());
-        baseUnit.setBaseAttack(clientBaseUnit.getBaseAttack());
-        baseUnit.setBaseRange(clientBaseUnit.getBaseRange());
-        baseUnit.setMaxHP(clientBaseUnit.getMaxHP());
-        baseUnit.setTarget(clientBaseUnit.getTarget());
-        baseUnit.setFlying(clientBaseUnit.isFlying());
-        baseUnit.setMultiple(clientBaseUnit.isMultiple());
-        return baseUnit;
-    }
-
-    private Spell castToSpell(ClientSpell clientSpell){
-        Spell spell = new Spell();
-        spell.setType(clientSpell.getType());
-        spell.setTypeId(clientSpell.getTypeId());
-        //duration hamun turneffecte?
-        spell.setTurnEffect(clientSpell.getDuration());
-        spell.setRange(clientSpell.getRange());
-        spell.setPower(clientSpell.getPower());
-        return spell;
+        return unit;
     }
 
     /*private Spell castToCastSpell(TurnCastSpell turnCastSpell){
@@ -713,7 +658,7 @@ public class Game implements World {
         spell.setPower();
         spell.setTypeId();
         spell.setHaste();
-        spell.setTurnEffect();
+        spell.setDuration();
         spell.setRange();
         return spell;
     }
@@ -727,26 +672,7 @@ public class Game implements World {
         king.setLevel();
         king.setPlayerId(turnKing.getPlayerId());
         king.setRange();
-        king.setTarget(turnKing.getTarget());
+        king.setTargetType(turnKing.getTargetType());
         return king;
     }*/
-
-
-
-    private Cell castClientCellToCell(ClientCell clientCell){
-        Cell cell = new Cell();
-        cell.setCol(clientCell.getCol());
-        cell.setRow(clientCell.getRow());
-        cell.setUnitList(clientCell.);
-        return cell;
-    }
-
-    private King CastClientKingToKing(ClientBaseKing clientBaseKing){
-        King king = new King();
-        king.setAlive(true);
-        king.setAttack(clientBaseKing.getAttack());
-        king.setCenter(clientBaseKing.getCenter());
-
-        return king;
-    }
 }
