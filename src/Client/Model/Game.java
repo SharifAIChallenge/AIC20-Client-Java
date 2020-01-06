@@ -251,13 +251,13 @@ public class Game implements World {
                 return king.getHp();//getHp chera p sh kuchike ??
         return -1; // impossible
     }
-
-    private Path getPathById(int pathId){
-        for(Path path : this.initMessage.getMapp().getPaths())
-            if(path.getId() == pathId)
-                return path;
-        return null;
-    }
+//
+//    private Path getPathById(int pathId){
+//        for(Path path : this.initMessage.getMapp().getPaths())
+//            if(path.getId() == pathId)
+//                return path;
+//        return null;
+//    }
 
     @Override
     public void castUnitSpell(int unitId, int pathId, int index, int spellId) {
@@ -265,7 +265,7 @@ public class Game implements World {
         jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
         jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
         jsonObject.add("pathId", Json.GSON.toJsonTree(pathId));
-        Path path = getPathById(pathId);
+        Path path = InitMessage.getInitMessage().getPathById(pathId);
         Cell cell = null;
         if(path != null && index < path.getCells().size())
             cell = path.getCells().get(index);

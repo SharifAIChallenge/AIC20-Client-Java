@@ -29,15 +29,7 @@ public class TurnUnit {
     private ClientCell targetCell;
     //todo target cell i darim ke nemidunam chie
 
-    private Path getPathById(int pathId){
-        //todo ino inja zadim
-        for(Path path : Mapp.getMapp().getPaths())
-            if(path.getId() == pathId)
-                return path;
-        return null;
-    }
-
-    public Unit castToUnit(InitMessage initMessage){
+    public Unit castToUnit(){
         Unit unit = new Unit();
         unit.setRange(range);
         unit.setPlayerId(playerId);
@@ -48,11 +40,11 @@ public class TurnUnit {
         unit.setRangeLevel(rangeLevel);
         unit.setAttack(attack);
 
-        for(BaseUnit gameBaseUnit: initMessage.getBaseUnitList())
+        for(BaseUnit gameBaseUnit: InitMessage.getInitMessage().getBaseUnitList())
             if(gameBaseUnit.getTypeId() == typeId)
                 unit.setBaseUnit(gameBaseUnit);
 
-        unit.setPath(getPathById(pathId));
+        unit.setPath(InitMessage.getInitMessage().getPathById(pathId));
 
         unit.setTargetCell(Mapp.getMapp().getCells()[targetCell.getRow()][targetCell.getCol()]);
         unit.setCell(Mapp.getMapp().getCells()[cell.getRow()][cell.getCol()]);
