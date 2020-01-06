@@ -26,6 +26,7 @@ public class InitMessage {
         this.baseUnitList = baseUnitList;
     }
 
+
     public List<Spell> getSpells() {
         return spells;
     }

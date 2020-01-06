@@ -35,7 +35,12 @@ public class ClientTurnMessage {
         turnMessage.setKings(
                 kings.stream().map(TurnKing::castToKing).collect(Collectors.toList())
         );
-
+        turnMessage.setCastSpells(
+                castSpells.stream().map(TurnCastSpell::castToCastSpell).collect(Collectors.toList())
+        );
+        turnMessage.setUnits(
+                units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
+        );
         return null;
     }
 
