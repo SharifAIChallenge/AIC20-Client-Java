@@ -5,6 +5,7 @@ import Client.Model.CastSpell;
 import Client.Model.InitMessage;
 import Client.Model.King;
 import Client.Model.TurnMessage;
+import Client.Model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,13 +57,36 @@ public class ClientTurnMessage {
 
 
         turnMessage.setUnits(
-                units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
+                units.stream().map(turnUnit -> turnUnit.castToUnit(initMessage)).collect(Collectors.toList())
         );
-
-
+        updateCellsUnits(turnMessage);
+        updateMapUnits(turnMessage);
         return turnMessage;
     }
 
+    private void updateMapUnits(TurnMessage turnMessage){
+        Mapp.getMapp().getUnits().clear();
+        for(Unit unit : turnMessage.getUnits())
+            Mapp.getMapp().getUnits().add(unit);
+    }
+
+    private void updateCellsUnits(TurnMessage turnMessage){
+        for(int i = 0; i < Mapp.getMapp().getRows(); i ++){
+            for(int j = 0; j < Mapp.getMapp().getCols(); j ++){
+                Mapp.getMapp().getCells()[i][j].getUnitList().clear();
+            }
+        }
+        for(Unit unit : turnMessage.getUnits()){
+            unit.getCell().getUnitList().add(unit);
+        }
+    }
+
+    private void updateKing(King king, TurnKing turnKing) {
+        king.setPlayerId(turnKing.getPlayerId());
+        king.setAlive(turnKing.isAlive());
+        king.setHp(turnKing.getHp());
+        king.setTarget(turnKing.getTarget());
+    }
 
 
 
