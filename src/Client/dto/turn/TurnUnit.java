@@ -1,13 +1,11 @@
 package Client.dto.turn;
 
 
-import Client.Model.Cell;
-import Client.Model.Game;
-import Client.Model.Path;
-import Client.Model.Unit;
+import Client.Model.*;
 import Client.dto.ClientCell;
 
 import java.util.List;
+import java.util.Map;
 
 public class TurnUnit {
     private int unitId;
@@ -28,13 +26,45 @@ public class TurnUnit {
     private boolean wasPlayedThisTurn;
     private List<Integer> affectedSpells;
     private int target;
+    private ClientCell targetCell;
     //todo target cell i darim ke nemidunam chie
 
-    public Unit castToUnit(){
+    private Path getPathById(int pathId){
+        //todo ino inja zadim
+        for(Path path : Mapp.getMapp().getPaths())
+            if(path.getId() == pathId)
+                return path;
+        return null;
+    }
+
+    public Unit castToUnit(InitMessage initMessage){
         Unit unit = new Unit();
         unit.setRange(range);
         unit.setPlayerId(playerId);
+        unit.setHp(hp);
+        unit.setHasted(isHasted);
+        unit.setClone(isClone);
+        unit.setDamageLevel(damageLevel);
+        unit.setRangeLevel(rangeLevel);
+        unit.setAttack(attack);
 
+        for(BaseUnit gameBaseUnit: initMessage.getBaseUnitList())
+            if(gameBaseUnit.getTypeId() == typeId)
+                unit.setBaseUnit(gameBaseUnit);
+
+        unit.setPath(getPathById(pathId));
+
+        unit.setTargetCell(Mapp.getMapp().getCells()[targetCell.getRow()][targetCell.getCol()]);
+        unit.setCell(Mapp.getMapp().getCells()[cell.getRow()][cell.getCol()]);
+
+        unit.setAffectedSpells(affectedSpells);
+        unit.setPathId(pathId);
+        unit.setTarget(target);
+        unit.setWasRangeUpgraded(wasRangeUpgraded);
+        unit.setWasDamageUpgraded(wasDamageUpgraded);
+        unit.setWasPlayedThisTurn(wasPlayedThisTurn);
+        unit.setUnitId(unitId);
+        unit.setTypeId(typeId);
         return unit;
     }
 
@@ -180,5 +210,13 @@ public class TurnUnit {
 
     public void setAffectedSpells(List<Integer> affectedSpells) {
         this.affectedSpells = affectedSpells;
+    }
+
+    public ClientCell getTargetCell() {
+        return targetCell;
+    }
+
+    public void setTargetCell(ClientCell targetCell) {
+        this.targetCell = targetCell;
     }
 }
