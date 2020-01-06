@@ -1,5 +1,6 @@
 package Client.dto.turn;
 
+import Client.Model.CastSpell;
 import Client.dto.ClientCell;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public class TurnCastSpell {
     private int remainingTurns;
     private boolean wasCastThisTurn;
     private List<Integer> affectedUnits;
+
+    public CastSpell castToCastSpell(){
+        return null;
+    }
 
     public int getTypeId() {
         return typeId;
