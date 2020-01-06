@@ -17,6 +17,12 @@ public class TurnCastSpell {
     private List<Integer> affectedUnits;
 
     public CastSpell castToCastSpell(){
+        CastSpell castSpell = new CastSpell();
+        castSpell.setCasterId(casterId);
+        castSpell.setUnitId(unitId);
+        castSpell.setPathId(pathId);
+        castSpell.setCell(cell.castToCell());
+        castSpell.setAffectedUnits(affectedUnits);
         return null;
     }
 

@@ -1,6 +1,7 @@
 package Client.dto.turn;
 
 
+import Client.Model.CastSpell;
 import Client.Model.InitMessage;
 import Client.Model.King;
 import Client.Model.TurnMessage;
@@ -40,25 +41,28 @@ public class ClientTurnMessage {
         for(int i = 0; i < kings.size(); i++){
             King king = initMessage.getMapp().getKings().get(i);
             TurnKing turnKing = kings.get(i);
-            updateKing(king, turnKing);
+            turnKing.updateKing(king);
             turnMessage.getKings().add(king);
         }
 
         turnMessage.setCastSpells(
                 castSpells.stream().map(TurnCastSpell::castToCastSpell).collect(Collectors.toList())
         );
+        for(int i = 0; i < castSpells.size(); i++){
+            TurnCastSpell turnCastSpell = castSpells.get(i);
+            CastSpell castSpell = turnMessage.getCastSpells().get(i);
+            castSpell.setSpell(initMessage.getSpellById(turnCastSpell.getTypeId()));
+        }
+
+
         turnMessage.setUnits(
                 units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
         );
+
+
         return turnMessage;
     }
 
-    private void updateKing(King king, TurnKing turnKing) {
-        king.setPlayerId(turnKing.getPlayerId());
-        king.setAlive(turnKing.isAlive());
-        king.setHp(turnKing.getHp());
-        king.setTarget(turnKing.getTarget());
-    }
 
 
 

@@ -2,19 +2,11 @@ package Client.Model;
 
 import java.util.List;
 
-public class CastSpell extends Spell{
+public class CastSpell {
+    private Spell spell;
     private int casterId, unitId, pathId;
-    private int typeId;
     private Cell cell;
     private List<Integer> affectedUnits;
-
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
 
     public List<Integer> getAffectedUnits() {
         return affectedUnits;
@@ -54,5 +46,13 @@ public class CastSpell extends Spell{
 
     public void setPathId(int pathId) {
         this.pathId = pathId;
+    }
+
+    public Spell getSpell() {
+        return spell;
+    }
+
+    public void setSpell(Spell spell) {
+        this.spell = spell;
     }
 }
