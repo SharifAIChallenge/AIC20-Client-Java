@@ -44,7 +44,13 @@ public class ClientTurnMessage {
             turnMessage.getKings().add(king);
         }
 
-        return null;
+        turnMessage.setCastSpells(
+                castSpells.stream().map(TurnCastSpell::castToCastSpell).collect(Collectors.toList())
+        );
+        turnMessage.setUnits(
+                units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
+        );
+        return turnMessage;
     }
 
     private void update(King king, TurnKing turnKing) {
