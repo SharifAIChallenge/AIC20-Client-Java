@@ -27,7 +27,6 @@ public class Game implements World {
         this.sender = game.getSender();
     }
 
-
     private Consumer<Message> getSender() {
         return sender;
     }
