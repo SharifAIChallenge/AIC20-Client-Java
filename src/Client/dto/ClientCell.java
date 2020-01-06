@@ -1,8 +1,14 @@
 package Client.dto;
 
+import Client.Model.Cell;
+
 public class ClientCell {
     private int row;
     private int col;
+
+    public Cell castToCell() {
+        return new Cell(row, col);
+    }
 
     public int getRow() {
         return row;

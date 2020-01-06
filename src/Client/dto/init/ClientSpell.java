@@ -1,18 +1,28 @@
 package Client.dto.init;
 
-import Client.Model.TargetType;
-\
+import Client.Model.Spell;
+import Client.Model.SpellTarget;
+import Client.Model.SpellType;
 
 public class ClientSpell {
     private String type;
     private int typeId;
     private int duration;
     private int priority;
-
     private int range;          //invalid for unit spell
     private int power;          //invalid for unit spell
-    private TargetType target;
+    private String target;
 
+    public Spell castToSpell() {
+        Spell spell = new Spell();
+        spell.setType(SpellType.valueOf(type));
+        spell.setTypeId(typeId);
+        spell.setDuration(duration);
+        spell.setRange(range);
+        spell.setPower(power);
+        spell.setTarget(SpellTarget.valueOf(target));
+        return spell;
+    }
 
     public int getTypeId() {
         return typeId;
@@ -62,12 +72,11 @@ public class ClientSpell {
         this.type = type;
     }
 
-
-    public TargetType getTarget() {
+    public String getTarget() {
         return target;
     }
 
-    public void setTarget(TargetType target) {
+    public void setTarget(String target) {
         this.target = target;
     }
 }
