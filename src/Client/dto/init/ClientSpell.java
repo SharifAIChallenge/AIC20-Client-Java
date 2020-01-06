@@ -1,5 +1,8 @@
 package Client.dto.init;
 
+import Client.Model.TargetType;
+\
+
 public class ClientSpell {
     private String type;
     private int typeId;
@@ -8,7 +11,7 @@ public class ClientSpell {
 
     private int range;          //invalid for unit spell
     private int power;          //invalid for unit spell
-    private String target;
+    private TargetType target;
 
 
     public int getTypeId() {
@@ -59,11 +62,12 @@ public class ClientSpell {
         this.type = type;
     }
 
-    public String getTarget() {
+
+    public TargetType getTarget() {
         return target;
     }
 
-    public void setTarget(String target) {
+    public void setTarget(TargetType target) {
         this.target = target;
     }
 }
