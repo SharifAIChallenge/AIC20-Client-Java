@@ -49,7 +49,14 @@ public class ClientTurnMessage {
                 units.stream().map(turnUnit -> turnUnit.castToUnit(initMessage)).collect(Collectors.toList())
         );
         updateCellsUnits(turnMessage);
+        updateMapUnits(turnMessage);
         return turnMessage;
+    }
+
+    private void updateMapUnits(TurnMessage turnMessage){
+        Mapp.getMapp().getUnits().clear();
+        for(Unit unit : turnMessage.getUnits())
+            Mapp.getMapp().getUnits().add(unit);
     }
 
     private void updateCellsUnits(TurnMessage turnMessage){
