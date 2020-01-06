@@ -57,7 +57,7 @@ public class ClientTurnMessage {
 
 
         turnMessage.setUnits(
-                units.stream().map(turnUnit -> turnUnit.castToUnit(initMessage)).collect(Collectors.toList())
+                units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
         );
         updateCellsUnits(turnMessage);
         updateMapUnits(turnMessage);
