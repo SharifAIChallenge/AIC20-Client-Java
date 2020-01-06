@@ -4,7 +4,6 @@ package Client.dto.turn;
 import Client.Model.InitMessage;
 import Client.Model.King;
 import Client.Model.TurnMessage;
-import Client.dto.init.ClientBaseUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +35,12 @@ public class ClientTurnMessage {
     public TurnMessage castToTurnMessage(InitMessage initMessage){
         TurnMessage turnMessage = new TurnMessage();
 
+        // if kings' orders doesn't change
         turnMessage.setKings(new ArrayList<>());
         for(int i = 0; i < kings.size(); i++){
             King king = initMessage.getMapp().getKings().get(i);
             TurnKing turnKing = kings.get(i);
-            update(king, turnKing);
+            updateKing(king, turnKing);
             turnMessage.getKings().add(king);
         }
 
@@ -53,12 +53,14 @@ public class ClientTurnMessage {
         return turnMessage;
     }
 
-    private void update(King king, TurnKing turnKing) {
+    private void updateKing(King king, TurnKing turnKing) {
         king.setPlayerId(turnKing.getPlayerId());
         king.setAlive(turnKing.isAlive());
         king.setHp(turnKing.getHp());
         king.setTarget(turnKing.getTarget());
     }
+
+
 
     public ClientTurnMessage() {
 

@@ -1,13 +1,14 @@
 package Client.dto;
 
 import Client.Model.Cell;
+import Client.Model.Mapp;
 
 public class ClientCell {
     private int row;
     private int col;
 
     public Cell castToCell() {
-        return new Cell(row, col);
+        return Mapp.getMapp().getCells()[row][col];
     }
 
     public int getRow() {

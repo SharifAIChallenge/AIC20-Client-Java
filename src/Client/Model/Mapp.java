@@ -3,13 +3,20 @@ package Client.Model;
 import java.util.List;
 
 public class Mapp {
+    private static Mapp mapp;
     private int cols, rows;
     private Cell[][] cells;
     private List<Path> paths;
     private List<Unit> units;
     private List<King> kings;
 
-    public Mapp(int rows, int cols) {
+    public static Mapp createMapp(int rows, int cols) {
+        if (mapp != null) return mapp;
+        mapp = new Mapp(rows, cols);
+        return mapp;
+    }
+
+    private Mapp(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         this.cells = new Cell[rows][cols];
@@ -64,5 +71,13 @@ public class Mapp {
 
     public void setCells(Cell[][] cells) {
         this.cells = cells;
+    }
+
+    public static Mapp getMapp() {
+        return mapp;
+    }
+
+    public static void setMapp(Mapp mapp) {
+        Mapp.mapp = mapp;
     }
 }
