@@ -2,6 +2,7 @@ package Client.dto.init;
 
 import Client.Model.Cell;
 import Client.Model.Mapp;
+import Client.Model.Path;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,10 +1,21 @@
 package Client.dto.turn;
 
+import Client.Model.King;
+
 public class TurnKing {
     private int playerId;
     private boolean isAlive;
     private int hp;
     private int target;
+
+    public King castToKing(){
+        King king = new King();
+        king.setPlayerId(playerId);
+        king.setAlive(isAlive);
+        king.setHp(hp);
+        king.setTarget(target);
+        return king;
+    }
 
     public int getPlayerId() {
         return playerId;

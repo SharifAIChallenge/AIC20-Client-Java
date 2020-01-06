@@ -1,7 +1,11 @@
 package Client.dto.turn;
 
 
+import Client.Model.TurnMessage;
+import Client.dto.init.ClientBaseUnit;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientTurnMessage {
     private int currTurn;
@@ -25,6 +29,15 @@ public class ClientTurnMessage {
     private int availableDamageUpgrades;
 
     private int remainingAP;
+
+    public TurnMessage castToTurnMessage(){
+        TurnMessage turnMessage = new TurnMessage();
+        turnMessage.setKings(
+                kings.stream().map(TurnKing::castToKing).collect(Collectors.toList())
+        );
+
+        return null;
+    }
 
     public ClientTurnMessage() {
 
