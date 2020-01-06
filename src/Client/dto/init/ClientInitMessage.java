@@ -1,5 +1,7 @@
 package Client.dto.init;
 
+import Client.Model.InitMessage;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

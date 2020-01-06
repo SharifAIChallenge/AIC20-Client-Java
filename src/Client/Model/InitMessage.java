@@ -1,8 +1,6 @@
-package Client.dto.init;
+package Client.Model;
 
-import Client.Model.BaseUnit;
-import Client.Model.Mapp;
-import Client.Model.Spell;
+import Client.dto.init.GameConstants;
 
 import java.util.List;
 
