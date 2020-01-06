@@ -88,8 +88,6 @@ public class ClientTurnMessage {
         king.setTarget(turnKing.getTarget());
     }
 
-
-
     public ClientTurnMessage() {
 
     }
