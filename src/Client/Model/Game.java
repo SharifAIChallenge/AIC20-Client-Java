@@ -332,7 +332,7 @@ public class Game implements World {
     @Override
     public List<Unit> getAreaSpellTargets(Cell center, int spellId) {
         //spellId hamun type ?
-        Spell spell = getSpellById(spellId);
+        Spell spell = initMessage.getSpellById(spellId);
         return getAreaSpellTargets(center, spell);
     }
 
@@ -454,12 +454,12 @@ public class Game implements World {
 
     @Override
     public Spell getReceivedSpell() {
-        return getSpellById(clientTurnMessage.getReceivedSpell());
+        return initMessage.getSpellById(clientTurnMessage.getReceivedSpell());
     }
 
     @Override
     public Spell getFriendReceivedSpell() {
-        return getSpellById(clientTurnMessage.getFriendReceivedSpell());
+        return initMessage.getSpellById(clientTurnMessage.getFriendReceivedSpell());
     }
 
     @Override
@@ -506,7 +506,7 @@ public class Game implements World {
             if (unit.getPlayerId() != playerId)
                 continue;
             for (int spellId : unit.getAffectedSpells()) {
-                Spell spell = getSpellById(spellId);    //todo use a map for getting spell from spellId
+                Spell spell = initMessage.getSpellById(spellId);    //todo use a map for getting spell from spellId
                 if (spell == null)
                     continue;
                 if(spell.getType() == spellType){
@@ -593,13 +593,6 @@ public class Game implements World {
         this.clientInitMessage = clientInitMessage;
     }
 
-    private Spell getSpellById(int spellId) {
-        for (Spell spell : initMessage.getSpells())
-            if (spell.getTypeId() == spellId)
-                return spell;
-
-        return null;
-    }
 
     public void handleTurnMessage(Message msg) {
         this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);

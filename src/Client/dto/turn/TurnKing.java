@@ -8,9 +8,16 @@ public class TurnKing {
     private int hp;
     private int target;
 
-    public King castToKing(){
+    public King castToKing() {
         King king = new King();
         return king;
+    }
+
+    public void updateKing(King king) {
+        king.setPlayerId(playerId);
+        king.setAlive(isAlive);
+        king.setHp(hp);
+        king.setTarget(target);
     }
 
     public int getPlayerId() {
@@ -44,5 +51,4 @@ public class TurnKing {
     public void setTarget(int target) {
         this.target = target;
     }
-
-    }
+}
