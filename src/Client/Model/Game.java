@@ -490,27 +490,29 @@ public class Game implements World {
 
     @Override
     public List<Unit> getPlayerDuplicateUnits(int playerId) {
-        return getUnitsWithSpellOfPlayer("Duplicate", playerId);
+        return getUnitsWithSpellOfPlayer(SpellType.DUPLICATE, playerId);
     }
 
-    private String getSpellType(Spell spell){   //todo why this method exists? -> spell.getType()
+/*    private String getSpellType(Spell spell){   //todo why this method exists? -> spell.getType()
         for(Spell spell1 : initMessage.getSpells())
             if(spell1.getTypeId() == spell.getTypeId())
                 return spell1.getType();
         return null;
-    }
+    }*/
 
-    private List<Unit> getUnitsWithSpellOfPlayer(String spellType, int playerId){
+    private List<Unit> getUnitsWithSpellOfPlayer(SpellType spellType, int playerId){
         List<Unit> units = new ArrayList<>();
         for (Unit unit : turnMessage.getUnits()) {
-            if (unit.getPlayerId() != playerId) continue;
+            if (unit.getPlayerId() != playerId)
+                continue;
             for (int spellId : unit.getAffectedSpells()) {
-                Spell spell = getSpellById(spellId);
-                if(getSpellType(spell).equals(spellType)){
+                Spell spell = getSpellById(spellId);    //todo use a map for getting spell from spellId
+                if (spell == null)
+                    continue;
+                if(spell.getType() == spellType){
                     units.add(unit);
                     break;
                 }
-
             }
         }
         return units;
@@ -518,7 +520,7 @@ public class Game implements World {
 
     @Override
     public List<Unit> getPlayerHastedUnits(int playerId) {
-        return getUnitsWithSpellOfPlayer("Hasted", playerId);
+        return getUnitsWithSpellOfPlayer(SpellType.HASTE, playerId);
     }
 
     @Override
