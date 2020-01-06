@@ -1,9 +1,12 @@
 package Client.dto.turn;
 
 
+import Client.Model.InitMessage;
+import Client.Model.King;
 import Client.Model.TurnMessage;
 import Client.dto.init.ClientBaseUnit;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +33,25 @@ public class ClientTurnMessage {
 
     private int remainingAP;
 
-    public TurnMessage castToTurnMessage(){
+    public TurnMessage castToTurnMessage(InitMessage initMessage){
         TurnMessage turnMessage = new TurnMessage();
-        turnMessage.setKings(
-                kings.stream().map(TurnKing::castToKing).collect(Collectors.toList())
-        );
+
+        turnMessage.setKings(new ArrayList<>());
+        for(int i = 0; i < kings.size(); i++){
+            King king = initMessage.getMapp().getKings().get(i);
+            TurnKing turnKing = kings.get(i);
+            update(king, turnKing);
+            turnMessage.getKings().add(king);
+        }
 
         return null;
+    }
+
+    private void update(King king, TurnKing turnKing) {
+        king.setPlayerId(turnKing.getPlayerId());
+        king.setAlive(turnKing.isAlive());
+        king.setHp(turnKing.getHp());
+        king.setTarget(turnKing.getTarget());
     }
 
     public ClientTurnMessage() {
