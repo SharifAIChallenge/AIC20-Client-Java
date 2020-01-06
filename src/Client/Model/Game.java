@@ -6,12 +6,9 @@ import Client.dto.turn.*;
 import java.util.*;
 import java.util.function.Consumer;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import common.network.Json;
 import common.network.data.Message;
-
-import javax.swing.*;
 
 public class Game implements World {
     private ClientInitMessage clientInitMessage;
@@ -677,7 +674,7 @@ public class Game implements World {
         spell.setType(clientSpell.getType());
         spell.setTypeId(clientSpell.getTypeId());
         //duration hamun turneffecte?
-        spell.setTurnEffect(clientSpell.getDuration());
+        spell.setDuration(clientSpell.getDuration());
         spell.setRange(clientSpell.getRange());
         spell.setPower(clientSpell.getPower());
         return spell;
@@ -691,7 +688,7 @@ public class Game implements World {
         spell.setPower();
         spell.setTypeId();
         spell.setHaste();
-        spell.setTurnEffect();
+        spell.setDuration();
         spell.setRange();
         return spell;
     }

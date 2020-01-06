@@ -3,12 +3,10 @@ package Client.Model;
 public class Spell {
     private String type;
     private int typeId;
-    private int turnEffect;
-    private boolean isAreaSpell;
-    private boolean isHaste;
+    private int duration;
     private int range;
     private int power;
-    private boolean isDamaging;
+    private TargetType target;
 
     public int getTypeId() {
         return typeId;
@@ -18,12 +16,12 @@ public class Spell {
         this.typeId = typeId;
     }
 
-    public int getTurnEffect() {
-        return turnEffect;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setTurnEffect(int turnEffect) {
-        this.turnEffect = turnEffect;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public boolean isAreaSpell() {
@@ -32,14 +30,6 @@ public class Spell {
 
     public void setAreaSpell(boolean areaSpell) {
         isAreaSpell = areaSpell;
-    }
-
-    public boolean isHaste() {
-        return isHaste;
-    }
-
-    public void setHaste(boolean haste) {
-        isHaste = haste;
     }
 
     public int getRange() {
@@ -58,19 +48,19 @@ public class Spell {
         this.power = power;
     }
 
-    public boolean isDamaging() {
-        return isDamaging;
-    }
-
-    public void setDamaging(boolean damaging) {
-        isDamaging = damaging;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public TargetType getTarget() {
+        return target;
+    }
+
+    public void setTarget(TargetType target) {
+        this.target = target;
     }
 }
