@@ -16,6 +16,7 @@ public class ClientBaseKing {
         king.setHp(hp);
         king.setAlive(true);
         king.setAttack(attack);
+        king.setRange(range);
         king.setPlayerId(playerId);
         return king;
     }

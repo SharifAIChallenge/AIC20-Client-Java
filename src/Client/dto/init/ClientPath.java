@@ -1,6 +1,7 @@
 package Client.dto.init;
 
 
+import Client.Model.Mapp;
 import Client.Model.Path;
 import Client.dto.ClientCell;
 

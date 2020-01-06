@@ -5,6 +5,14 @@ import Client.Model.InitMessage;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// cast client map to map
+// 1. units have not casted.
+
+// cast client cell to cell
+// 1. units have not casted
+
+// is it possible that one field stays null after casting?
+
 public class ClientInitMessage {
     private GameConstants gameConstants;
     private ClientMap map;
@@ -13,7 +21,6 @@ public class ClientInitMessage {
 
     public InitMessage castToInitMessage() {
         InitMessage initMessage = new InitMessage();
-        initMessage.setGameConstants(gameConstants);
         initMessage.setMapp(map.castToMap());
         initMessage.setBaseUnitList(
                 baseUnits.stream().map(ClientBaseUnit::castToBaseUnit).collect(Collectors.toList())
