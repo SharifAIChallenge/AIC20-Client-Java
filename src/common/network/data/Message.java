@@ -38,8 +38,8 @@ public class Message
         this.turn = turn;
     }
 
-    public Message(String name, int turn, Object... args)
+    public Message(String name, int turn, Object... args)   //todo remove this!!
     {
-        this(name, Json.GSON.toJsonTree(args).getAsJsonObject(), turn);
+        this(name, Json.GSON.toJsonTree(args[0]).getAsJsonObject(), turn);
     }
 }
