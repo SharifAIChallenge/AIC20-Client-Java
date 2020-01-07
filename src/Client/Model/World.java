@@ -37,9 +37,9 @@ public interface World {
 
     public int getRemainingAP();
 
-    public List<Unit> getHand();
+    public List<BaseUnit> getHand();
 
-    public List<Unit> getDeck();
+    public List<BaseUnit> getDeck();
 
     public void putUnit(int typeId, int pathId);
     // todo, we have also 3 types else

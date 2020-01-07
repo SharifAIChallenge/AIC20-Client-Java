@@ -182,24 +182,24 @@ public class Game implements World {
     }
 
     @Override
-    public List<Unit> getHand() {
-        List<Unit> hand = new ArrayList<>();
+    public List<BaseUnit> getHand() {
+        List<BaseUnit> hand = new ArrayList<>();
         for (int unitId : clientTurnMessage.getHand())
-            for (Unit unit : turnMessage.getUnits())
-                if (unit.getUnitID() == unitId) {
-                    hand.add(unit);
+            for (BaseUnit baseUnit : initMessage.getBaseUnitList())
+                if (baseUnit.getTypeId() == unitId) {
+                    hand.add(baseUnit);
                     break;
                 }
         return hand;
     }
 
     @Override
-    public List<Unit> getDeck() {
-        List<Unit> deck = new ArrayList<>();
+    public List<BaseUnit> getDeck() {
+        List<BaseUnit> deck = new ArrayList<>();
         for (int unitId : clientTurnMessage.getDeck())
-            for (Unit unit : turnMessage.getUnits())
-                if (unit.getUnitID() == unitId) {
-                    deck.add(unit);
+            for (BaseUnit baseUnit : initMessage.getBaseUnitList())
+                if (baseUnit.getTypeId() == unitId) {
+                    deck.add(baseUnit);
                     break;
                 }
         return deck;
