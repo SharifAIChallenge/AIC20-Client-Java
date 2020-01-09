@@ -89,30 +89,29 @@ public class Game implements World {
 
     @Override
     public List<Path> getPathsFromPlayer(int playerId) {
-        //todo
-        King playerKing = getPlayerKing(playerId);
-        King friendKing = getPlayerKing(getFriendIdOfPlayer(playerId));
+        Cell playerKingCell = getPlayerKing(playerId).getCenter();
+        Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(playerId)).getCenter();
 
         List<Path> paths = new ArrayList<>();
         for (Path path : initMessage.getMapp().getPaths())
-            if (path.getCells().indexOf(playerKing) == 0 || path.getCells().lastIndexOf(playerKing) == path.getCells().size() - 1)
-                if (!path.getCells().contains(friendKing))
+            if (path.getCells().indexOf(playerKingCell) == 0 || path.getCells().lastIndexOf(playerKingCell) == path.getCells().size() - 1)
+                if (!path.getCells().contains(friendKingCell))
                     paths.add(path);
         return paths;
     }
 
     @Override
     public Path getPathToFriend(int playerId) {
-        King playerKing = getPlayerKing(playerId);
-        King friendKing = getPlayerKing(getFriendIdOfPlayer(playerId));
+        Cell playerKingCell = getPlayerKing(playerId).getCenter();
+        Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(playerId)).getCenter();
 
         for (Path path : initMessage.getMapp().getPaths()) {
             List<Cell> pathCells = path.getCells();
-            if (pathCells.indexOf(playerKing) == 0 || pathCells.lastIndexOf(playerKing) == pathCells.size() - 1)
-                if (pathCells.indexOf(friendKing) == 0 || pathCells.lastIndexOf(friendKing) == pathCells.size() - 1)
+            if (pathCells.indexOf(playerKingCell) == 0 || pathCells.lastIndexOf(playerKingCell) == pathCells.size() - 1)
+                if (pathCells.indexOf(friendKingCell) == 0 || pathCells.lastIndexOf(friendKingCell) == pathCells.size() - 1)
                     return path;
         }
-        return null;
+        return null; // impossible
     }
 
 
