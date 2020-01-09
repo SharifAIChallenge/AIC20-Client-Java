@@ -11,6 +11,11 @@ public class ClientCell {
         return Mapp.getMapp().getCells()[row][col];
     }
 
+    public ClientCell(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
     public int getRow() {
         return row;
     }

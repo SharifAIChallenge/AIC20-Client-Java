@@ -1,5 +1,6 @@
 package Client.Model;
 
+import Client.dto.ClientCell;
 import Client.dto.init.*;
 import Client.dto.turn.*;
 
@@ -312,7 +313,7 @@ public class Game implements World {
     public void castAreaSpell(int row, int col, int spellId) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
-        Cell cell = getCellByCoordination(row, col);
+        ClientCell cell = new ClientCell(row, col);
         jsonObject.add("cell", Json.GSON.toJsonTree(cell));
         Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
         sender.accept(message);
