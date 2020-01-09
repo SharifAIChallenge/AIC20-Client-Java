@@ -1,5 +1,7 @@
 package Client.Model;
 
+import Client.dto.ClientCell;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +37,12 @@ public class Cell {
 
     public void setRow(int row) {
         this.row = row;
+    }
+
+    public ClientCell castToClientCell() {
+        ClientCell clientCell = new ClientCell();
+        clientCell.setCol(col);
+        clientCell.setRow(row);
+        return clientCell;
     }
 }
