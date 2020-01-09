@@ -183,7 +183,8 @@ public class Game implements World {
         int length1 = 100 * 1000, length2 = 100 * 1000;
         if(path1 != null) length1 = path1.getCells().indexOf(cell);
         if(path2 != null) length2 = path3.getCells().size() + path2.getCells().indexOf(cell);
-        if(length1 < length2) return path1;
+        System.out.println(length1 + " " + length2);
+        if(length1 <= length2 && length1 < 100 * 1000) return path1;
         if(length1 > length2) return path2;
         return null;
     }
@@ -267,9 +268,9 @@ public class Game implements World {
 
     @Override
     public int getRemainingTime() {
-
-        //TODO mamadoo mizane
-        return 0;
+        long result = (clientTurnMessage.getTurnTime() + clientInitMessage.getGameConstants().getTurnTimeout() -
+                System.currentTimeMillis());
+        return (int)result;
     }
 
     @Override
@@ -297,7 +298,7 @@ public class Game implements World {
         Cell cell = null;
         if(path != null && index < path.getCells().size())
             cell = path.getCells().get(index);
-        jsonObject.add("cell", Json.GSON.toJsonTree(cell));
+        jsonObject.add("cell", Json.GSON.toJsonTree(cell.castToClientCell()));
         Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
         sender.accept(message);
     }
@@ -313,7 +314,7 @@ public class Game implements World {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
         Cell cell = getCellByCoordination(row, col);
-        jsonObject.add("cell", Json.GSON.toJsonTree(cell));
+        jsonObject.add("cell", Json.GSON.toJsonTree(cell.castToClientCell()));
         Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
         sender.accept(message);
     }
@@ -392,19 +393,21 @@ public class Game implements World {
     }
 
     private Cell getCellByCoordination(int row, int col) {
-        // todo if row and col be invalid
+        // todo what does this do if row and col be invalid
         return initMessage.getMapp().getCells()[row][col];
     }
 
     @Override
     public int getRemainingTurnsToUpgrade() {
         //+=1 esho havasemun bashe
-        return clientTurnMessage.getCurrTurn() % clientInitMessage.getGameConstants().getTurnsToUpgrade();
+        return clientInitMessage.getGameConstants().getTurnsToUpgrade() -
+                clientTurnMessage.getCurrTurn() % clientInitMessage.getGameConstants().getTurnsToUpgrade();
     }
 
     @Override
     public int getRemainingTurnsToGetSpell() {
-        return clientTurnMessage.getCurrTurn() % clientInitMessage.getGameConstants().getTurnsToSpell();
+        return clientInitMessage.getGameConstants().getTurnsToSpell() -
+                clientTurnMessage.getCurrTurn() % clientInitMessage.getGameConstants().getTurnsToSpell();
     }
 
     @Override
@@ -637,7 +640,9 @@ public class Game implements World {
     public void handleTurnMessage(Message msg) {
         System.out.println(Json.GSON.toJson(msg));
         this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
+        this.clientTurnMessage.setTurnTime(System.currentTimeMillis());
         turnMessage = clientTurnMessage.castToTurnMessage(initMessage);
+
 //        castToTurnMessage(this.getClientTurnMessage());
     }
 

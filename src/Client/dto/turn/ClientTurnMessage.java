@@ -25,6 +25,8 @@ public class ClientTurnMessage {
     private List<Integer> mySpells;
     private List<Integer> friendSpells;
 
+    private long turnTime;
+
     //deck o hand class nistan?
 
     private boolean gotRangeUpgrade;
@@ -37,6 +39,9 @@ public class ClientTurnMessage {
     public TurnMessage castToTurnMessage(InitMessage initMessage){
         TurnMessage turnMessage = new TurnMessage();
 
+
+        //todo
+        //exception : kings is null
         // if kings' orders doesn't change
         turnMessage.setKings(new ArrayList<>());
         for(int i = 0; i < kings.size(); i++){
@@ -211,5 +216,13 @@ public class ClientTurnMessage {
 
     public void setRemainingAP(int remainingAP) {
         this.remainingAP = remainingAP;
+    }
+
+    public long getTurnTime() {
+        return turnTime;
+    }
+
+    public void setTurnTime(long turnTime) {
+        this.turnTime = turnTime;
     }
 }
