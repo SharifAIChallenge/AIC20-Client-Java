@@ -306,6 +306,21 @@ public class Game implements World {
         castAreaSpell(row, col, spellId);
     }
 
+    @Override
+    public void castAreaSpell(Cell center, Spell spell) {
+        int spellId = spell.getTypeId();
+        int row = center.getRow();
+        int col = center.getCol();
+        castAreaSpell(row, col, spellId);
+    }
+
+    @Override
+    public void castAreaSpell(Cell center, int spellId) {
+        int row = center.getRow();
+        int col = center.getCol();
+        castAreaSpell(row, col, spellId);
+    }
+
     private boolean inRange(Cell cell, Cell center, int range) {
         if (Math.abs(cell.getCol() - center.getCol()) > range)
             return false;
