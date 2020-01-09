@@ -1,11 +1,10 @@
 package Client;
 
-import Client.Model.Game;
-import Client.Model.Path;
-import Client.Model.World;
+import Client.Model.*;
 
 import java.sql.SQLOutput;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class AI
@@ -19,11 +18,21 @@ public class AI
 
 
     public void turn(Game world) {
-        System.out.println("turn started");
-        System.out.println(world.getDeck().size());
+        System.out.println("turn started: " + world.getCurrentTurn());
         Path path = world.getInitMessage().getPathById(0);
 
-        world.putUnit(world.getDeck().get(0), path);
+//        if (world.getMyId() == 0)
+            world.putUnit(world.getHand().get(0), 1);
+
+        List<Unit> myUnits = world.getPlayerUnits(world.getMyId());
+
+        for (Spell spell : world.getSpellsList()) {
+            if (spell.getType() == SpellType.HASTE) {
+                if (myUnits.size() == 0)
+                    continue;
+                world.castAreaSpell(myUnits.get(0).getCell().getRow(), myUnits.get(0).getCell().getCol(), spell);
+            }
+        }
     }
 
 }

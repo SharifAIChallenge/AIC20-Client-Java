@@ -559,7 +559,7 @@ public class Game implements World {
 
     @Override
     public Unit getUnitTarget(Unit unit) {
-        return getUnitById(unit.getTarget());
+        return getUnitById(unit.getTargetId());
     }
 
     @Override
@@ -598,9 +598,9 @@ public class Game implements World {
 
     @Override
     public int getKingUnitIsAttackingTo(Unit unit) {
-        if (unit.getTarget() == -1) return -1;
-        if (unit.getTarget() >= 4) return -1;
-        return unit.getTarget();
+        if (unit.getTargetId() == -1) return -1;
+        if (unit.getTargetId() >= 4) return -1;
+        return unit.getTargetId();
     }
 
     @Override
@@ -620,8 +620,10 @@ public class Game implements World {
 
 
     public void handleTurnMessage(Message msg) {
+        System.out.println(Json.GSON.toJson(msg));
         this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
-        castToTurnMessage(this.getClientTurnMessage());
+        turnMessage = clientTurnMessage.castToTurnMessage(initMessage);
+//        castToTurnMessage(this.getClientTurnMessage());
     }
 
     public void handleInitMessage(Message msg) {

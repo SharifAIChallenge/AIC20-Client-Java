@@ -5,7 +5,6 @@ import Client.Model.*;
 import Client.dto.ClientCell;
 
 import java.util.List;
-import java.util.Map;
 
 public class TurnUnit {
     private int unitId;
@@ -51,7 +50,7 @@ public class TurnUnit {
 
         unit.setAffectedSpells(affectedSpells);
         unit.setPathId(pathId);
-        unit.setTarget(target);
+        unit.setTargetId(target);
         unit.setWasRangeUpgraded(wasRangeUpgraded);
         unit.setWasDamageUpgraded(wasDamageUpgraded);
         unit.setWasPlayedThisTurn(wasPlayedThisTurn);
