@@ -23,7 +23,7 @@ public class TurnCastSpell {
         castSpell.setPathId(pathId);
         castSpell.setCell(cell.castToCell());
         castSpell.setAffectedUnits(affectedUnits);
-        return null;
+        return castSpell;
     }
 
     public int getTypeId() {
