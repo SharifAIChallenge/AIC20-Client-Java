@@ -15,6 +15,16 @@ public class AI
         System.out.println("pre process started");
         world.chooseDeck(Arrays.asList(3, -324, 4, 0, 1, 400, 2, 3, 4, 5,6 ,7, 8,9));
 
+        int row = world.getMapRowNum();
+        int col = world.getMapColNum();
+
+        System.out.println(world.getMaxAP());
+
+
+        //        System.out.println(world.getRemainingAP());
+//        System.out.println(world.getHand());
+//        System.out.println(world.getDeck());
+
         System.exit(0);
 
     }
