@@ -14,6 +14,9 @@ public class AI
     {
         System.out.println("pre process started");
         world.chooseDeck(Arrays.asList(3, -324, 4, 0, 1, 400, 2, 3, 4, 5,6 ,7, 8,9));
+
+        System.exit(0);
+
     }
 
 
@@ -21,8 +24,7 @@ public class AI
         System.out.println("turn started: " + world.getCurrentTurn());
         Path path = world.getInitMessage().getPathById(0);
 
-//        if (world.getMyId() == 0)
-            world.putUnit(world.getHand().get(0), 1);
+        world.putUnit(world.getHand().get(0), 1);
 
         List<Unit> myUnits = world.getPlayerUnits(world.getMyId());
 
