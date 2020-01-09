@@ -1,5 +1,6 @@
 package Client.Model;
 
+import Client.dto.ClientCell;
 import Client.dto.init.*;
 import Client.dto.turn.*;
 
@@ -183,7 +184,6 @@ public class Game implements World {
         int length1 = 100 * 1000, length2 = 100 * 1000;
         if(path1 != null) length1 = path1.getCells().indexOf(cell);
         if(path2 != null) length2 = path3.getCells().size() + path2.getCells().indexOf(cell);
-        System.out.println(length1 + " " + length2);
         if(length1 <= length2 && length1 < 100 * 1000) return path1;
         if(length1 > length2) return path2;
         return null;
