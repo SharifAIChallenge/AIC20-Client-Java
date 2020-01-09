@@ -3,7 +3,7 @@ package Client.Model;
 import java.util.List;
 
 public class Unit {
-    private int unitId, hp, playerId, typeId, pathId, damageLevel, rangeLevel, range, attack, target;
+    private int unitId, hp, playerId, typeId, pathId, damageLevel, rangeLevel, range, attack, targetId;
     private boolean isClone, isHasted, wasDamageUpgraded, wasRangeUpgraded, wasPlayedThisTurn;
     private List<Integer> affectedSpells;
     private Cell cell;
@@ -159,12 +159,12 @@ public class Unit {
         this.wasPlayedThisTurn = wasPlayedThisTurn;
     }
 
-    public int getTarget() {
-        return target;
+    public int getTargetId() {
+        return targetId;
     }
 
-    public void setTarget(int target) {
-        this.target = target;
+    public void setTargetId(int targetId) {
+        this.targetId = targetId;
     }
 
     public List<Integer> getAffectedSpells() {

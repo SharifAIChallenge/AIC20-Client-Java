@@ -1,5 +1,6 @@
 package Client.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mapp {
@@ -7,7 +8,7 @@ public class Mapp {
     private int cols, rows;
     private Cell[][] cells;
     private List<Path> paths;
-    private List<Unit> units;
+    private List<Unit> units = new ArrayList<>();
     private List<King> kings;
 
     public static Mapp createMapp(int rows, int cols) {
