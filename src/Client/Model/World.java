@@ -31,6 +31,8 @@ public interface World {
 
     public List<Unit> getCellUnits(Cell cell);
 
+    public List<Unit> getCellUnits(int row, int col);
+
     public Path getShortestPathToCell(int fromPlayerId, Cell cell);
 
     public int getMaxAP();

@@ -15,7 +15,7 @@ public class Unit {
     public Unit() {
     }
 
-    public int getUnitID() {
+    public int getUnitId() {
         return unitId;
     }
 
@@ -117,10 +117,6 @@ public class Unit {
 
     public void setPlayerId(int playerId) {
         this.playerId = playerId;
-    }
-
-    public int getUnitId() {
-        return unitId;
     }
 
     public void setUnitId(int unitId) {

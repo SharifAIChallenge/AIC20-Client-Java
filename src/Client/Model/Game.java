@@ -80,8 +80,8 @@ public class Game implements World {
     }
 
     private int getFriendIdOfPlayer(int playerId) {
-        if (playerId == getFriendId()) return getFriendId();
-        if (playerId == getMyId()) return getMyId();
+        if (playerId == getFriendId()) return getMyId();
+        if (playerId == getMyId()) return getFriendId();
         if (playerId == getFirstEnemyId()) return getSecondEnemyId();
         if (playerId == getSecondEnemyId()) return getFirstEnemyId();
         return -1;
@@ -137,6 +137,7 @@ public class Game implements World {
     @Override
     public List<Unit> getPlayerUnits(int playerId) {
         List<Unit> units = new ArrayList<>();
+        if(turnMessage.getUnits() == null) return units;
         for (Unit unit : turnMessage.getUnits())
             if (unit.getPlayerId() == playerId)
                 units.add(unit);
@@ -151,8 +152,12 @@ public class Game implements World {
     }
 
     @Override
-    public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
-        //todo tartibe khune haye masira che sheklie
+    public List<Unit> getCellUnits(int row, int col) {
+        Cell cell = getCellByCoordination(row, col);
+        return getCellUnits(cell);
+    }
+
+    public Path getShortestPathToCellFromPlayer(int fromPlayerId, Cell cell){
         int minDis = 100 * 1000;
         Cell playerCell = getPlayerPosition(fromPlayerId);
         Path bestPath = null;
@@ -168,6 +173,19 @@ public class Game implements World {
             }
         }
         return bestPath;
+    }
+
+    @Override
+    public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
+        Path path1 = getShortestPathToCellFromPlayer(fromPlayerId, cell);
+        Path path2 = getShortestPathToCellFromPlayer(getFriendIdOfPlayer(fromPlayerId), cell);
+        Path path3 = getPathToFriend(fromPlayerId);
+        int length1 = 100 * 1000, length2 = 100 * 1000;
+        if(path1 != null) length1 = path1.getCells().indexOf(cell);
+        if(path2 != null) length2 = path3.getCells().size() + path2.getCells().indexOf(cell);
+        if(length1 < length2) return path1;
+        if(length1 > length2) return path2;
+        return null;
     }
 
     @Override
@@ -374,11 +392,8 @@ public class Game implements World {
     }
 
     private Cell getCellByCoordination(int row, int col) {
-        for (Path path : initMessage.getMapp().getPaths())
-            for (Cell cell : path.getCells())
-                if (cell.getRow() == row && cell.getCol() == col)
-                    return cell;
-        return null;
+        // todo if row and col be invalid
+        return initMessage.getMapp().getCells()[row][col];
     }
 
     @Override
@@ -426,7 +441,7 @@ public class Game implements World {
 
     private Unit getUnitById(int unitId){
         for(Unit unit : turnMessage.getUnits())
-            if(unit.getUnitID() == unitId)
+            if(unit.getUnitId() == unitId)
                 return unit;
         return null;
     }
@@ -489,7 +504,7 @@ public class Game implements World {
 
     @Override
     public void upgradeUnitRange(Unit unit) {
-        upgradeUnitRange(unit.getUnitID());
+        upgradeUnitRange(unit.getUnitId());
     }
 
     @Override
@@ -502,7 +517,7 @@ public class Game implements World {
 
     @Override
     public void upgradeUnitDamage(Unit unit) {
-        upgradeUnitDamage(unit.getUnitID());
+        upgradeUnitDamage(unit.getUnitId());
     }
 
     @Override
