@@ -45,7 +45,8 @@ public class TurnUnit {
 
         unit.setPath(InitMessage.getInitMessage().getPathById(pathId));
 
-        unit.setTargetCell(Mapp.getMapp().getCells()[targetCell.getRow()][targetCell.getCol()]);
+        if(targetCell != null)
+            unit.setTargetCell(Mapp.getMapp().getCells()[targetCell.getRow()][targetCell.getCol()]);
         unit.setCell(Mapp.getMapp().getCells()[cell.getRow()][cell.getCol()]);
 
         unit.setAffectedSpells(affectedSpells);
