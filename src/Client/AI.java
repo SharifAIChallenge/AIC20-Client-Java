@@ -9,40 +9,39 @@ import java.util.Random;
 
 public class AI
 {
+    private boolean first = true;
 
     public void pick(World world)
     {
         System.out.println("pre process started");
         world.chooseDeck(Arrays.asList(3, -324, 4, 0, 1, 400, 2, 3, 4, 5,6 ,7, 8,9));
 
-        int row = world.getMapRowNum();
-        int col = world.getMapColNum();
-
-        System.out.println(world.getMaxAP());
-
-
-        //        System.out.println(world.getRemainingAP());
-//        System.out.println(world.getHand());
-//        System.out.println(world.getDeck());
-
-        System.exit(0);
-
     }
 
 
     public void turn(Game world) {
         System.out.println("turn started: " + world.getCurrentTurn());
-        Path path = world.getInitMessage().getPathById(0);
 
-        world.putUnit(world.getHand().get(0), 1);
+        //todo multiple putUnit
 
         List<Unit> myUnits = world.getPlayerUnits(world.getMyId());
 
         for (Spell spell : world.getSpellsList()) {
             if (spell.getType() == SpellType.HASTE) {
-                if (myUnits.size() == 0)
-                    continue;
-                world.castAreaSpell(myUnits.get(0).getCell().getRow(), myUnits.get(0).getCell().getCol(), spell);
+                if (first) {
+                    System.out.println("here");
+                    world.putUnit(world.getHand().get(0), 1);
+                    first = false;
+                }
+                else {
+                    System.out.println(myUnits.size());
+                    if (myUnits.size() == 0)
+                        continue;
+                    world.castAreaSpell(myUnits.get(0).getCell().getRow(), myUnits.get(0).getCell().getCol(), spell);
+                    first = true;
+                }
+
+                break;
             }
         }
     }

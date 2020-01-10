@@ -40,9 +40,6 @@ public class Cell {
     }
 
     public ClientCell castToClientCell() {
-        ClientCell clientCell = new ClientCell();
-        clientCell.setCol(col);
-        clientCell.setRow(row);
-        return clientCell;
+        return new ClientCell(row, col);
     }
 }
