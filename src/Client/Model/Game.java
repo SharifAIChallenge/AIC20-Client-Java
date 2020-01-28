@@ -42,7 +42,6 @@ public class Game implements World {
 
     @Override
     public void chooseDeck(List<Integer> typeIds) {
-        //tOdO
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("units", Json.GSON.toJsonTree(typeIds));
         Message message = new Message("pick", jsonObject, this.getCurrentTurn());
@@ -103,6 +102,7 @@ public class Game implements World {
 
     @Override
     public Path getPathToFriend(int playerId) {
+        if(getPlayerKing(playerId) == null) return null;
         Cell playerKingCell = getPlayerKing(playerId).getCenter();
         Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(playerId)).getCenter();
 
@@ -201,26 +201,12 @@ public class Game implements World {
 
     @Override
     public List<BaseUnit> getHand() {
-        List<BaseUnit> hand = new ArrayList<>();
-        for (int unitId : clientTurnMessage.getHand())
-            for (BaseUnit baseUnit : initMessage.getBaseUnitList())
-                if (baseUnit.getTypeId() == unitId) {
-                    hand.add(baseUnit);
-                    break;
-                }
-        return hand;
+        return turnMessage.getHand();
     }
 
     @Override
     public List<BaseUnit> getDeck() {
-        List<BaseUnit> deck = new ArrayList<>();
-        for (int unitId : clientTurnMessage.getDeck())
-            for (BaseUnit baseUnit : initMessage.getBaseUnitList())
-                if (baseUnit.getTypeId() == unitId) {
-                    deck.add(baseUnit);
-                    break;
-                }
-        return deck;
+        return turnMessage.getDeck();
     }
 
     @Override

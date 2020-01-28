@@ -1,12 +1,15 @@
 package Client.Model;
 
+import java.awt.image.AreaAveragingScaleFilter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TurnMessage {
     private List<King> kings;
     private List<Unit> units;
     private List<CastSpell> castSpells;
-
+    private List<BaseUnit>  hand = new ArrayList<>();
+    private List<BaseUnit> deck = new ArrayList<>();
 
     public List<King> getKings() {
         return kings;
@@ -30,5 +33,21 @@ public class TurnMessage {
 
     public void setCastSpells(List<CastSpell> castSpells) {
         this.castSpells = castSpells;
+    }
+
+    public List<BaseUnit> getHand() {
+        return hand;
+    }
+
+    public void setHand(List<BaseUnit> hand) {
+        this.hand = hand;
+    }
+
+    public List<BaseUnit> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(List<BaseUnit> deck) {
+        this.deck = deck;
     }
 }
