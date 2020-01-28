@@ -39,7 +39,6 @@ public class ClientTurnMessage {
     public TurnMessage castToTurnMessage(InitMessage initMessage){
         TurnMessage turnMessage = new TurnMessage();
 
-
         //todo
         //exception : kings is null
         // if kings' orders doesn't change
@@ -60,10 +59,24 @@ public class ClientTurnMessage {
             castSpell.setSpell(initMessage.getSpellById(turnCastSpell.getTypeId()));
         }
 
-
         turnMessage.setUnits(
                 units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
         );
+
+        for (int unitId : this.getDeck())
+            for (BaseUnit baseUnit : initMessage.getBaseUnitList())
+                if (baseUnit.getTypeId() == unitId) {
+                    turnMessage.getDeck().add(baseUnit);
+                    break;
+                }
+
+        for (int unitId : this.getHand())
+            for (BaseUnit baseUnit : initMessage.getBaseUnitList())
+                if (baseUnit.getTypeId() == unitId) {
+                    turnMessage.getHand().add(baseUnit);
+                    break;
+                }
+
         updateCellsUnits(turnMessage);
         updateMapUnits(turnMessage);
         return turnMessage;
