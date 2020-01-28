@@ -19,7 +19,8 @@ public class AI
 
     public void turn(Game world) {
         System.out.println("turn started: " + world.getCurrentTurn());
-
+        List<Path> myPaths = world.getPathsFromPlayer(world.getMyId());
+        world.putUnit(0, myPaths.get(0));
         //todo multiple putUnit
 
 
