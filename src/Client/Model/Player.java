@@ -10,6 +10,14 @@ public class Player {
     private List<Unit> hand;
     private List<Unit> deck;
     private List<Unit> playerUnits = new ArrayList<>();
+    private Path[][] shortestPathsToCells;
+    private CastAreaSpell castAreaSpell;
+    private CastUnitSpell castUnitSpell;
+    private boolean isCalcCastAreaSpell = false;
+    private boolean isCalcCastUnitSpell = false;
+    private List<Unit> turnPlayedUnits = new ArrayList<>();
+    private List<Path> pathsFromPlayer = new ArrayList<>();
+    private Path pathToFriend;
 
     public Player(int playerID){
         this.playerID = playerID;
@@ -70,5 +78,69 @@ public class Player {
 
     public void setPlayerUnits(List<Unit> playerUnits) {
         this.playerUnits = playerUnits;
+    }
+
+    public Path[][] getShortestPathsToCells() {
+        return shortestPathsToCells;
+    }
+
+    public void setShortestPathsToCells(Path[][] shortestPathsToCells) {
+        this.shortestPathsToCells = shortestPathsToCells;
+    }
+
+    public CastAreaSpell getCastAreaSpell() {
+        return castAreaSpell;
+    }
+
+    public void setCastAreaSpell(CastAreaSpell castAreaSpell) {
+        this.castAreaSpell = castAreaSpell;
+    }
+
+    public CastUnitSpell getCastUnitSpell() {
+        return castUnitSpell;
+    }
+
+    public void setCastUnitSpell(CastUnitSpell castUnitSpell) {
+        this.castUnitSpell = castUnitSpell;
+    }
+
+    public boolean isCalcCastAreaSpell() {
+        return isCalcCastAreaSpell;
+    }
+
+    public void setCalcCastAreaSpell(boolean calcCastAreaSpell) {
+        isCalcCastAreaSpell = calcCastAreaSpell;
+    }
+
+    public boolean isCalcCastUnitSpell() {
+        return isCalcCastUnitSpell;
+    }
+
+    public void setCalcCastUnitSpell(boolean calcCastUnitSpell) {
+        isCalcCastUnitSpell = calcCastUnitSpell;
+    }
+
+    public List<Unit> getTurnPlayedUnits() {
+        return turnPlayedUnits;
+    }
+
+    public void setTurnPlayedUnits(List<Unit> turnPlayedUnits) {
+        this.turnPlayedUnits = turnPlayedUnits;
+    }
+
+    public List<Path> getPathsFromPlayer() {
+        return pathsFromPlayer;
+    }
+
+    public void setPathsFromPlayer(List<Path> pathsFromPlayer) {
+        this.pathsFromPlayer = pathsFromPlayer;
+    }
+
+    public Path getPathToFriend() {
+        return pathToFriend;
+    }
+
+    public void setPathToFriend(Path pathToFriend) {
+        this.pathToFriend = pathToFriend;
     }
 }

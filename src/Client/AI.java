@@ -2,10 +2,8 @@ package Client;
 
 import Client.Model.*;
 
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class AI
 {
@@ -24,26 +22,7 @@ public class AI
 
         //todo multiple putUnit
 
-        List<Unit> myUnits = world.getPlayerUnits(world.getMyId());
 
-        for (Spell spell : world.getSpellsList()) {
-            if (spell.getType() == SpellType.HASTE) {
-                if (first) {
-                    System.out.println("here");
-                    world.putUnit(world.getHand().get(0), 1);
-                    first = false;
-                }
-                else {
-                    System.out.println(myUnits.size());
-                    if (myUnits.size() == 0)
-                        continue;
-                    world.castAreaSpell(myUnits.get(0).getCell().getRow(), myUnits.get(0).getCell().getCol(), spell);
-                    first = true;
-                }
-
-                break;
-            }
-        }
     }
 
 }

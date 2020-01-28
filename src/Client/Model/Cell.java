@@ -9,6 +9,7 @@ public class Cell {
     private int row;
     private int col;
     private List<Unit> unitList = new ArrayList<>();
+    private Path shortestPathToCell;
 
     public Cell(int row, int col) {
         this.row = row;
@@ -41,5 +42,13 @@ public class Cell {
 
     public ClientCell castToClientCell() {
         return new ClientCell(row, col);
+    }
+
+    public Path getShortestPathToCell() {
+        return shortestPathToCell;
+    }
+
+    public void setShortestPathToCell(Path shortestPathToCell) {
+        this.shortestPathToCell = shortestPathToCell;
     }
 }
