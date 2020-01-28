@@ -1,5 +1,6 @@
 package Client.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -8,6 +9,11 @@ public class Player {
     private List<Spell> spells;
     private List<Unit> hand;
     private List<Unit> deck;
+    private List<Unit> playerUnits = new ArrayList<>();
+
+    public Player(int playerID){
+        this.playerID = playerID;
+    }
 
     public int getPlayerID() {
         return playerID;
@@ -56,5 +62,13 @@ public class Player {
 
     public void setDeck(List<Unit> deck) {
         this.deck = deck;
+    }
+
+    public List<Unit> getPlayerUnits() {
+        return playerUnits;
+    }
+
+    public void setPlayerUnits(List<Unit> playerUnits) {
+        this.playerUnits = playerUnits;
     }
 }

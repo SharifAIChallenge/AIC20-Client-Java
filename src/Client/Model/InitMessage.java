@@ -11,6 +11,7 @@ public class InitMessage {
     private List<BaseUnit> baseUnitList;
     private List<Spell> spells;
 
+
     public static InitMessage getInitMessage() {
         return initMessage;
     }

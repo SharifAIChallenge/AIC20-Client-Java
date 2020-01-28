@@ -1,6 +1,5 @@
 package Client.Model;
 
-import Client.dto.ClientCell;
 import Client.dto.init.*;
 import Client.dto.turn.*;
 
@@ -17,6 +16,11 @@ public class Game implements World {
     private InitMessage initMessage;
     private TurnMessage turnMessage = new TurnMessage();
     private Consumer<Message> sender;
+    private List<Path> pathsFromPlayer = null;
+    private Path pathToFriend = null;
+    private HashMap<Cell, List<Path>> pathsCrossingCells = new HashMap<>();
+
+    private List<Player> players;
 
     public Game(Consumer<Message> sender){
         this.sender = sender;
@@ -38,6 +42,14 @@ public class Game implements World {
 
     public ClientTurnMessage getClientTurnMessage() {
         return clientTurnMessage;
+    }
+
+    private void setPathsFromPlayer(List<Path> pathsFromPlayer){
+        this.pathsFromPlayer = pathsFromPlayer;
+    }
+
+    private List<Path> getPathsFromPlayer(){
+        return pathsFromPlayer;
     }
 
     @Override
@@ -93,32 +105,41 @@ public class Game implements World {
         return -1;
     }
 
+
+
     @Override
     public List<Path> getPathsFromPlayer(int playerId) {
-        Cell playerKingCell = getPlayerKing(playerId).getCenter();
-        Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(playerId)).getCenter();
+        if(pathsFromPlayer == null){
+            Cell playerKingCell = getPlayerKing(playerId).getCenter();
+            Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(playerId)).getCenter();
 
-        List<Path> paths = new ArrayList<>();
-        for (Path path : initMessage.getMapp().getPaths())
-            if (path.getCells().indexOf(playerKingCell) == 0 || path.getCells().lastIndexOf(playerKingCell) == path.getCells().size() - 1)
-                if (!path.getCells().contains(friendKingCell))
-                    paths.add(path);
-        return paths;
+            List<Path> paths = new ArrayList<>();
+            for (Path path : initMessage.getMapp().getPaths())
+                if (path.getCells().indexOf(playerKingCell) == 0 || path.getCells().lastIndexOf(playerKingCell) == path.getCells().size() - 1)
+                    if (!path.getCells().contains(friendKingCell))
+                        paths.add(path);
+
+            setPathsFromPlayer(paths);
+        }
+        return new ArrayList<>(pathsFromPlayer);
     }
 
     @Override
     public Path getPathToFriend(int playerId) {
-        if(getPlayerKing(playerId) == null) return null;
-        Cell playerKingCell = getPlayerKing(playerId).getCenter();
-        Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(playerId)).getCenter();
+        if(pathToFriend == null){
+            if(getPlayerKing(playerId) == null) return null;
+            Cell playerKingCell = getPlayerKing(playerId).getCenter();
+            Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(playerId)).getCenter();
 
-        for (Path path : initMessage.getMapp().getPaths()) {
-            List<Cell> pathCells = path.getCells();
-            if (pathCells.indexOf(playerKingCell) == 0 || pathCells.lastIndexOf(playerKingCell) == pathCells.size() - 1)
-                if (pathCells.indexOf(friendKingCell) == 0 || pathCells.lastIndexOf(friendKingCell) == pathCells.size() - 1)
-                    return path;
+            for (Path path : initMessage.getMapp().getPaths()) {
+                List<Cell> pathCells = path.getCells();
+                if (pathCells.indexOf(playerKingCell) == 0 || pathCells.lastIndexOf(playerKingCell) == pathCells.size() - 1)
+                    if (pathCells.indexOf(friendKingCell) == 0 || pathCells.lastIndexOf(friendKingCell) == pathCells.size() - 1)
+                        setPathToFriend(path);
+            }
         }
-        return null; // impossible
+
+        return pathToFriend; // impossible
     }
 
 
@@ -134,11 +155,14 @@ public class Game implements World {
 
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
-        List<Path> paths = new ArrayList<>();
-        for (Path path : initMessage.getMapp().getPaths())
-            if (path.getCells().contains(cell))
-                paths.add(path);
-        return paths;
+        if(pathsCrossingCells.get(cell) == null){
+            List<Path> paths = new ArrayList<>();
+            for (Path path : initMessage.getMapp().getPaths())
+                if (path.getCells().contains(cell))
+                    paths.add(path);
+            pathsCrossingCells.put(cell, paths);
+        }
+        return new ArrayList<>(pathsCrossingCells.get(cell));
     }
 
     @Override
@@ -628,6 +652,16 @@ public class Game implements World {
         this.clientInitMessage = clientInitMessage;
     }
 
+    private Player getPlayerById(int playerId){
+        for (Player player : players)
+            if(player.getPlayerID() == playerId)
+                return player;
+        return null;
+    }
+
+    private void setPLayersUnits(){
+
+    }
 
     public void handleTurnMessage(Message msg) {
         System.out.println(Json.GSON.toJson(msg));
@@ -635,20 +669,33 @@ public class Game implements World {
         this.clientTurnMessage.setTurnTime(System.currentTimeMillis());
         turnMessage = clientTurnMessage.castToTurnMessage(initMessage);
 
+        setPLayersUnits();
 //        castToTurnMessage(this.getClientTurnMessage());
+    }
+
+    private void createPLayers(){
+        Player myPLayer = new Player(getMyId());
+        Player friendPlayer = new Player(getFriendId());
+        Player firstEnemyPlayer = new Player(getFirstEnemyId());
+        Player secondEnemyPlayer = new Player(getSecondEnemyId());
+        players.add(myPLayer);
+        players.add(friendPlayer);
+        players.add(firstEnemyPlayer);
+        players.add(secondEnemyPlayer);
     }
 
     public void handleInitMessage(Message msg) {
         this.clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
         this.initMessage = clientInitMessage.castToInitMessage();
+        createPLayers();
     }
 
-
+    /*
     public void castToTurnMessage(ClientTurnMessage clientTurnMessage){
         turnMessage.setCastSpells(castToCastSpells(clientTurnMessage.getCastSpells()));
         turnMessage.setKings(castToKings(clientTurnMessage.getKings()));
         turnMessage.setUnits(castToUnits(clientTurnMessage.getUnits()));
-    }
+    }*/
 
     private List<CastSpell> castToCastSpells(List<TurnCastSpell> turnCastSpells){
         return null;
@@ -680,6 +727,14 @@ public class Game implements World {
         unit.setRange(turnUnit.getRange());
 
         return unit;
+    }
+
+    public Path getPathToFriend() {
+        return pathToFriend;
+    }
+
+    public void setPathToFriend(Path pathToFriend) {
+        this.pathToFriend = pathToFriend;
     }
 
     /*private Spell castToCastSpell(TurnCastSpell turnCastSpell){
