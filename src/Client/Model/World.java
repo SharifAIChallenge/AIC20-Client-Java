@@ -1,5 +1,7 @@
 package Client.Model;
 
+import Client.dto.init.GameConstants;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,6 +41,8 @@ public interface World {
     public int getRemainingAP();
 
     public List<BaseUnit> getHand();
+
+    public GameConstants getGameConstants();
 
     public List<BaseUnit> getDeck();
 

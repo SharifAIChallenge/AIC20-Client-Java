@@ -20,7 +20,7 @@ public class ClientInitMessage {
     private List<ClientSpell> spells;
 
     public InitMessage castToInitMessage() {
-        InitMessage initMessage = InitMessage.createInitMessage();
+        InitMessage initMessage = InitMessage.getInitMessage();
         initMessage.setMapp(map.castToMap());
         initMessage.setBaseUnitList(
                 baseUnits.stream().map(ClientBaseUnit::castToBaseUnit).collect(Collectors.toList())

@@ -6,15 +6,10 @@ import java.net.PortUnreachableException;
 import java.util.List;
 
 public class InitMessage {
-    private static InitMessage initMessage;
+    private static InitMessage initMessage = new InitMessage();
     private Mapp mapp;
     private List<BaseUnit> baseUnitList;
     private List<Spell> spells;
-
-    public static InitMessage createInitMessage(){
-        if(initMessage == null) initMessage = new InitMessage();
-        return initMessage;
-    }
 
     public static InitMessage getInitMessage() {
         return initMessage;

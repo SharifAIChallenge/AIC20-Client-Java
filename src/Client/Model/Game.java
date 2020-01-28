@@ -41,6 +41,12 @@ public class Game implements World {
     }
 
     @Override
+    public GameConstants getGameConstants(){
+        if(clientInitMessage == null)return null;
+        return clientInitMessage.getGameConstants();
+    }
+
+    @Override
     public void chooseDeck(List<Integer> typeIds) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("units", Json.GSON.toJsonTree(typeIds));
