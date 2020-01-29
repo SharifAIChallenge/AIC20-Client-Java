@@ -168,32 +168,31 @@ public class Game implements World {
         return new ArrayList<>(getCellUnits(cell));
     }
 
-    public Path getShortestPathToCellFromPlayer(int fromPlayerId, Cell cell) {
-        //todo shortest path ro kolan doros konim, ino kollan kharrab kardam
-        return getShortestPathToCell(fromPlayerId, cell);
-    }
-
-    @Override
-    public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
-        //todo gand zadam
-        if (cell == null) return null;
+    private Path getShortestPathToCellFromPlayer(int fromPlayerId, Cell cell) {
         Player player = getPlayerById(fromPlayerId);
-        if (player == null) return null;
+        if(player == null || cell == null)return null;
         return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
     }
 
     private Path calcShortestPathToCell(int fromPlayerId, Cell cell) {
-        //todo ino gand zadam tush bayad doros she
-        if (cell == null) return null;
+        Player player = getPlayerById(fromPlayerId);
+        if (player == null || cell == null) return null;
         Path path1 = getShortestPathToCellFromPlayer(fromPlayerId, cell);
         Path path2 = getShortestPathToCellFromPlayer(getFriendIdOfPlayer(fromPlayerId), cell);
         Path path3 = getPathToFriend(fromPlayerId);
         int length1 = 100 * 1000, length2 = 100 * 1000;
-        if (path1 != null) length1 = path1.getCells().indexOf(cell);
-        if (path2 != null) length2 = path3.getCells().size() + path2.getCells().indexOf(cell);
-        if (length1 <= length2 && length1 < 100 * 1000) return path1;
-        if (length1 > length2) return path2;
+        if(path1 != null)length1 = path1.getCells().indexOf(cell);
+        if(path2 != null)length2 = path3.getCells().size() + path2.getCells().indexOf(cell);
+        if(length1 <= length2 && length1 < 100 * 1000)return path1;
+        if (length1 > length2)return path2;
         return null;
+    }
+
+    @Override
+    public Path getShortestPathToCell(int fromPlayerId, Cell cell){
+        Player player = getPlayerById(fromPlayerId);
+        if(player == null || cell == null)return null;
+        return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
     }
 
     @Override
@@ -695,9 +694,37 @@ public class Game implements World {
         players.add(secondEnemyPlayer);
     }
 
+    private Path calcShortestPathToCellFromPlayer(int playerId, Cell cell){
+        int minDis = 100 * 1000;
+        Cell playerCell = getPlayerPosition(playerId);
+        if(cell == null)return null;
+        Path bestPath = null;
+        for(Path path : initMessage.getMapp().getPaths()){
+            if(path.getCells().indexOf(playerCell) != 0)Collections.reverse(path.getCells());
+            if(path.getCells().indexOf(playerCell) == 0){
+                int index = path.getCells().indexOf(cell);
+                if(index < minDis){
+                    minDis = index;
+                    bestPath = path;
+                }
+            }
+        }
+        return bestPath;
+    }
+
     private void setShortestPathsOfPlayer(Player player) {
         //todo ino doros konimmmm
+        Path[][] shortestPathsFromPlayer = new Path[initMessage.getMapp().getRows()][initMessage.getMapp().getCols()];
+        for (int i = 0; i < initMessage.getMapp().getRows(); i++) {
+            for (int j = 0; j < initMessage.getMapp().getCols(); j++) {
+                Cell cell = initMessage.getMapp().getCells()[i][j];
+                shortestPathsFromPlayer[i][j] = calcShortestPathToCellFromPlayer(player.getPlayerID(), cell);
+            }
+        }
+        player.setShortestPathsToCells(shortestPathsFromPlayer);
+
         Path[][] shortestPaths = new Path[initMessage.getMapp().getRows()][initMessage.getMapp().getCols()];
+
         for (int i = 0; i < initMessage.getMapp().getRows(); i++) {
             for (int j = 0; j < initMessage.getMapp().getCols(); j++) {
                 Cell cell = initMessage.getMapp().getCells()[i][j];
@@ -760,9 +787,9 @@ public class Game implements World {
         this.clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
         this.initMessage = clientInitMessage.castToInitMessage();
         createPLayers();
-        setShortestPathsOfPlayers();
         setSpellsById();
-        calcPathsFromPlayers();
         calcPathsToFriends();
+        calcPathsFromPlayers();
+        setShortestPathsOfPlayers();
     }
 }
