@@ -8,6 +8,7 @@ import Client.Model.TurnMessage;
 import Client.Model.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class ClientTurnMessage {
 
     private int remainingAP;
 
-    public TurnMessage castToTurnMessage(InitMessage initMessage){
+    public TurnMessage castToTurnMessage(InitMessage initMessage, HashMap<Integer, Spell> spellsByTypeId){
         TurnMessage turnMessage = new TurnMessage();
 
         //todo
@@ -55,7 +56,7 @@ public class ClientTurnMessage {
         }
 
         turnMessage.setCastSpells(
-                castSpells.stream().map(TurnCastSpell::castToCastSpell).collect(Collectors.toList())
+                castSpells.stream().map(turnCastSpell -> turnCastSpell.castToCastSpell(spellsByTypeId)).collect(Collectors.toList())
         );
         for(int i = 0; i < castSpells.size(); i++){
             TurnCastSpell turnCastSpell = castSpells.get(i);

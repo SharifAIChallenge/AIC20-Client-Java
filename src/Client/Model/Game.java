@@ -24,6 +24,7 @@ public class Game implements World {
     private HashMap<Integer, Unit> unitsById = new HashMap<>();
     private HashMap<Integer, Spell> spellsByTypeId = new HashMap<>();
     private HashMap<Integer, BaseUnit> baseUnitsById = new HashMap<>();
+    private HashMap<Integer, Path> pathsById = new HashMap<>();
 
     public Game(Consumer<Message> sender) {
         this.sender = sender;
@@ -616,11 +617,27 @@ public class Game implements World {
         }
     }
 
+    private void updateCastSpells(){
+        for(CastSpell castSpell : turnMessage.getCastSpells()){
+            for(TurnCastSpell turnCastSpell : clientTurnMessage.getCastSpells()){
+                if(turnCastSpell.getId() == castSpell.getId())
+                    if(castSpell instanceof CastUnitSpell){
+                        ((CastUnitSpell)castSpell).setPath(pathsById.get(turnCastSpell.getPathId()));
+                        ((CastUnitSpell)castSpell).setUnit(unitsById.get(turnCastSpell.getUnitId()));
+                    }
+                    List<Unit> affectedUnits = new ArrayList<>();
+                    for(int affectedUnitId : turnCastSpell.getAffectedUnits())
+                        affectedUnits.add(unitsById.get(affectedUnitId));
+                    castSpell.setAffectedUnits(affectedUnits);
+            }
+        }
+    }
+
     public void handleTurnMessage(Message msg) {
         System.out.println(Json.GSON.toJson(msg));
         this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
         this.clientTurnMessage.setTurnTime(System.currentTimeMillis());
-        turnMessage = clientTurnMessage.castToTurnMessage(initMessage);
+        turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
 
         setPLayersUnits();
         emptyPlayersCastSpells();
@@ -637,6 +654,8 @@ public class Game implements World {
 
         calcUnitsTargets();
         calcDiedUnits();
+
+        updateCastSpells();
     }
 
     private void createPLayers() {
@@ -747,6 +766,12 @@ public class Game implements World {
                 baseUnitsById.put(baseUnit.getTypeId(), baseUnit);
     }
 
+    private void calcPathsById(){
+        for(Path path : initMessage.getMapp().getPaths())
+            if(pathsById.get(path.getId()) == null)
+                pathsById.put(path.getId(), path);
+    }
+
     public void handleInitMessage(Message msg) {
         this.clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
         this.initMessage = clientInitMessage.castToInitMessage();
@@ -756,6 +781,7 @@ public class Game implements World {
         calcPathsFromPlayers();
         setShortestPathsOfPlayers();
         calcBaseUnitsById();
+        calcPathsById();
     }
 
     @Override
@@ -792,5 +818,9 @@ public class Game implements World {
 
     public void setBaseUnitsById(HashMap<Integer, BaseUnit> baseUnitsById) {
         this.baseUnitsById = baseUnitsById;
+    }
+
+    public HashMap<Integer, Path> getPathsById() {
+        return pathsById;
     }
 }

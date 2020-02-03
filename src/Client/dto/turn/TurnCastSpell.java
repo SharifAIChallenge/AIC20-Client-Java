@@ -1,8 +1,9 @@
 package Client.dto.turn;
 
-import Client.Model.CastSpell;
+import Client.Model.*;
 import Client.dto.ClientCell;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class TurnCastSpell {
@@ -16,14 +17,20 @@ public class TurnCastSpell {
     private boolean wasCastThisTurn;
     private List<Integer> affectedUnits;
 
-    public CastSpell castToCastSpell(){
-        CastSpell castSpell = new CastSpell();
-        castSpell.setCasterId(casterId);
-        castSpell.setUnitId(unitId);
-        castSpell.setPathId(pathId);
-        castSpell.setCell(cell.castToCell());
-        castSpell.setAffectedUnits(affectedUnits);
-        return castSpell;
+    public CastSpell castToCastSpell(HashMap<Integer, Spell> spellsByTypeId){
+        if(spellsByTypeId.get(this.getTypeId()).getType() == SpellType.TELE){
+            CastUnitSpell castUnitSpell = new CastUnitSpell();
+            castUnitSpell.setCasterId(casterId);
+            castUnitSpell.setCell(cell.castToCell());
+
+            return castUnitSpell;
+        }
+        else{
+            CastAreaSpell castAreaSpell = new CastAreaSpell();
+            castAreaSpell.setCasterId(casterId);
+            castAreaSpell.setCell(cell.castToCell());
+            return castAreaSpell;
+        }
     }
 
     public int getTypeId() {

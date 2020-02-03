@@ -1,22 +1,22 @@
 package Client.Model;
 
 public class CastUnitSpell extends CastSpell{
-    private int UnitId;
-    private Cell targetCell;
+    private Unit unit;
+    private Path path;
 
-    public Cell getTargetCell() {
-        return targetCell;
+    public Path getPath() {
+        return path;
     }
 
-    public void setTargetCell(Cell targetCell) {
-        this.targetCell = targetCell;
+    public void setPath(Path path) {
+        this.path = path;
     }
 
-    public int getUnitId() {
-        return UnitId;
+    public Unit getUnit() {
+        return unit;
     }
 
-    public void setUnitId(int unitId) {
-        UnitId = unitId;
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

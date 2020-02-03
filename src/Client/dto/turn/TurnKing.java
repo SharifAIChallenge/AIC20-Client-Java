@@ -17,7 +17,6 @@ public class TurnKing {
         king.setPlayerId(playerId);
         king.setAlive(isAlive);
         king.setHp(hp);
-        king.setTarget(target);
     }
 
     public int getPlayerId() {
