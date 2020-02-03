@@ -9,7 +9,7 @@ public class CastSpell {
     private Cell cell;
     private List<Unit> affectedUnits;
 
-    public List<Unit> getAffectedUnits() {
+    public List<Unit>getAffectedUnits() {
         return affectedUnits;
     }
 

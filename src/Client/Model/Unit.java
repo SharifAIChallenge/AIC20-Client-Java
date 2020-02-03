@@ -9,7 +9,6 @@ public class Unit {
     private Path path;
     private Unit target;
     private Cell targetCell;
-    private List<CastSpell> castSpellsOnUnit;
     private King targetIfKing;
     private int playerId;
     private int damageLevel;
@@ -132,14 +131,6 @@ public class Unit {
 
     public void setTarget(Unit target) {
         this.target = target;
-    }
-
-    public List<CastSpell> getCastSpellsOnUnit() {
-        return castSpellsOnUnit;
-    }
-
-    public void setCastSpellsOnUnit(List<CastSpell> castSpellsOnUnit) {
-        this.castSpellsOnUnit = castSpellsOnUnit;
     }
 
     public King getTargetIfKing() {

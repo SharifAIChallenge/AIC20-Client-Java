@@ -9,6 +9,13 @@ public class Cell {
     private int row;
     private int col;
     private List<Unit> units = new ArrayList<>(); //private access ? what should we do
+    //todo equal bara cell
+    /*@Override
+    public boolean equals(Cell cell){
+        if(cell.getCol() == col && cell.getRow() == row)
+            return true;
+        return false;
+    }*/
 
     public Cell(int row, int col) {
         this.row = row;
