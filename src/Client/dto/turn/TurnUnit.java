@@ -7,6 +7,8 @@ import Client.dto.ClientCell;
 import java.util.List;
 
 public class TurnUnit {
+    private boolean wasDamageUpgraded;
+    private boolean wasRangeUpgraded;
     private int unitId;
     private int playerId;
     private int typeId;
@@ -15,9 +17,8 @@ public class TurnUnit {
     private int hp;
     private int damageLevel;
     private int rangeLevel;
-    private boolean isDamaged;
     private boolean isHasted;
-    private boolean isClone;
+    private boolean isDuplicate;
     private int range;
     private int attack;
     private boolean wasPlayedThisTurn;
@@ -28,6 +29,7 @@ public class TurnUnit {
 
     public Unit castToUnit(){
         Unit unit = new Unit();
+        unit.setUnitId(unitId);
         unit.setRange(range);
         unit.setPlayerId(playerId);
         unit.setHp(hp);
@@ -35,7 +37,8 @@ public class TurnUnit {
         unit.setDamageLevel(damageLevel);
         unit.setRangeLevel(rangeLevel);
         unit.setAttack(attack);
-
+        unit.setDuplicate(isDuplicate);
+        unit.setHasted(isHasted);
         for(BaseUnit gameBaseUnit: InitMessage.getInitMessage().getBaseUnitList())
             if(gameBaseUnit.getTypeId() == typeId)
                 unit.setBaseUnit(gameBaseUnit);
@@ -113,12 +116,12 @@ public class TurnUnit {
         isHasted = hasted;
     }
 
-    public boolean isClone() {
-        return isClone;
+    public boolean isDuplicate() {
+        return isDuplicate;
     }
 
-    public void setClone(boolean clone) {
-        isClone = clone;
+    public void setDuplicate(boolean duplicate) {
+        isDuplicate = duplicate;
     }
 
     public int getRange() {
@@ -135,14 +138,6 @@ public class TurnUnit {
 
     public void setAttack(int attack) {
         this.attack = attack;
-    }
-
-    public boolean isDamaged() {
-        return isDamaged;
-    }
-
-    public void setDamaged(boolean damaged) {
-        isDamaged = damaged;
     }
 
     public boolean isWasPlayedThisTurn() {
@@ -183,5 +178,21 @@ public class TurnUnit {
 
     public void setTargetCell(ClientCell targetCell) {
         this.targetCell = targetCell;
+    }
+
+    public boolean isWasDamageUpgraded() {
+        return wasDamageUpgraded;
+    }
+
+    public void setWasDamageUpgraded(boolean wasDamageUpgraded) {
+        this.wasDamageUpgraded = wasDamageUpgraded;
+    }
+
+    public boolean isWasRangeUpgraded() {
+        return wasRangeUpgraded;
+    }
+
+    public void setWasRangeUpgraded(boolean wasRangeUpgraded) {
+        this.wasRangeUpgraded = wasRangeUpgraded;
     }
 }

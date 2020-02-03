@@ -6,6 +6,9 @@ public class Spell {
     private int duration;
     private int priority;
     private SpellTarget target;
+    private int range;
+    private int power;
+    private boolean isDamaging;
 
     public int getTypeId() {
         return typeId;
@@ -45,5 +48,29 @@ public class Spell {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public boolean isDamaging() {
+        return isDamaging;
+    }
+
+    public void setDamaging(boolean damaging) {
+        isDamaging = damaging;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
     }
 }

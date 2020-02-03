@@ -18,13 +18,12 @@ public class Player {
     private List<Unit> hastedUnits;
     private List<Unit> playedUnits = new ArrayList<>();
     private List<Unit> diedUnits;
+
     private Unit rangeUpgradedUnit;
     private Unit damageUpgradedUnit;
 
     ////////
     private Path[][] shortestPathsToCells;
-    private boolean isCalcCastAreaSpell = false;
-    private boolean isCalcCastUnitSpell = false;
 ////////
 
     public Player(int playerID) {
@@ -160,21 +159,6 @@ public class Player {
     }
 
     /////////////
-    boolean isCalcCastAreaSpell() {
-        return isCalcCastAreaSpell;
-    }
-
-    void setCalcCastAreaSpell(boolean calcCastAreaSpell) {
-        isCalcCastAreaSpell = calcCastAreaSpell;
-    }
-
-    boolean isCalcCastUnitSpell() {
-        return isCalcCastUnitSpell;
-    }
-
-    void setCalcCastUnitSpell(boolean calcCastUnitSpell) {
-        isCalcCastUnitSpell = calcCastUnitSpell;
-    }
 
     Path[][] getShortestPathsToCells() {
         return shortestPathsToCells;

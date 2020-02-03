@@ -22,6 +22,7 @@ public class TurnCastSpell {
             CastUnitSpell castUnitSpell = new CastUnitSpell();
             castUnitSpell.setCasterId(casterId);
             castUnitSpell.setCell(cell.castToCell());
+            castUnitSpell.setId(id);
 
             return castUnitSpell;
         }
@@ -29,6 +30,7 @@ public class TurnCastSpell {
             CastAreaSpell castAreaSpell = new CastAreaSpell();
             castAreaSpell.setCasterId(casterId);
             castAreaSpell.setCell(cell.castToCell());
+            castAreaSpell.setId(id);
             return castAreaSpell;
         }
     }
