@@ -18,8 +18,6 @@ public class ClientSpell {
         spell.setType(SpellType.valueOf(type));
         spell.setTypeId(typeId);
         spell.setDuration(duration);
-        spell.setRange(range);
-        spell.setPower(power);
         spell.setPriority(priority);
         spell.setTarget(SpellTarget.valueOf(target));
         return spell;

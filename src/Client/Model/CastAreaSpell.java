@@ -2,7 +2,6 @@ package Client.Model;
 
 public class CastAreaSpell extends CastSpell
 {
-    private Cell center;
     private int remainingTurns;
 
     public int getRemainingTurns() {
@@ -13,12 +12,5 @@ public class CastAreaSpell extends CastSpell
         this.remainingTurns = remainingTurns;
     }
 
-    public Cell getCenter() {
-        return center;
-    }
-
-    public void setCenter(Cell center) {
-        this.center = center;
-    }
 }
 
