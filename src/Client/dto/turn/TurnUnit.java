@@ -15,8 +15,6 @@ public class TurnUnit {
     private int hp;
     private int damageLevel;
     private int rangeLevel;
-    private boolean wasDamageUpgraded;
-    private boolean wasRangeUpgraded;
     private boolean isDamaged;
     private boolean isHasted;
     private boolean isClone;
@@ -52,7 +50,7 @@ public class TurnUnit {
         unit.setAffectedSpells(affectedSpells);
         unit.setPathId(pathId);
         unit.setTargetId(target);
-        unit.setWasRangeUpgraded(wasRangeUpgraded);
+        unit.setWasRangeUpgraded(wasRangeUpgraded); //todo compile errors
         unit.setWasDamageUpgraded(wasDamageUpgraded);
         unit.setWasPlayedThisTurn(wasPlayedThisTurn);
         unit.setUnitId(unitId);

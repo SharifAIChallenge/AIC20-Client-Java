@@ -10,6 +10,8 @@ public class GameConstants {
     private int turnsToSpell;
     private int damageUpgradeAddition;
     private int rangeUpgradeAddition;
+    private int deckSize;   //todo getter
+    private int handSize;
 
     public int getMaxAP() {
         return maxAP;
