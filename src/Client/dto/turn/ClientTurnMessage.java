@@ -25,6 +25,8 @@ public class ClientTurnMessage {
     private List<Integer> mySpells;
     private List<Integer> friendSpells;
 
+    private List<TurnUnit> diedUnits;
+
     private long turnTime;
 
     //deck o hand class nistan?
@@ -238,5 +240,29 @@ public class ClientTurnMessage {
 
     public void setTurnTime(long turnTime) {
         this.turnTime = turnTime;
+    }
+
+    public int getRangeUpgradedUnit() {
+        return rangeUpgradedUnit;
+    }
+
+    public void setRangeUpgradedUnit(int rangeUpgradedUnit) {
+        this.rangeUpgradedUnit = rangeUpgradedUnit;
+    }
+
+    public int getDamageUpgradedUnit() {
+        return damageUpgradedUnit;
+    }
+
+    public void setDamageUpgradedUnit(int damageUpgradedUnit) {
+        this.damageUpgradedUnit = damageUpgradedUnit;
+    }
+
+    public List<TurnUnit> getDiedUnits() {
+        return diedUnits;
+    }
+
+    public void setDiedUnits(List<TurnUnit> diedUnits) {
+        this.diedUnits = diedUnits;
     }
 }
