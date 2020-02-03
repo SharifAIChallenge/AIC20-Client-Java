@@ -4,15 +4,16 @@ import java.util.List;
 
 public class CastSpell {
     private Spell spell;
-    private int casterId, unitId, pathId;
+    private int id;
+    private int casterId;
     private Cell cell;
-    private List<Integer> affectedUnits;
+    private List<Unit> affectedUnits;
 
-    public List<Integer> getAffectedUnits() {
+    public List<Unit> getAffectedUnits() {
         return affectedUnits;
     }
 
-    public void setAffectedUnits(List<Integer> affectedUnits) {
+    public void setAffectedUnits(List<Unit> affectedUnits) {
         this.affectedUnits = affectedUnits;
     }
 
@@ -32,27 +33,19 @@ public class CastSpell {
         this.casterId = casterId;
     }
 
-    public int getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(int unitId) {
-        this.unitId = unitId;
-    }
-
-    public int getPathId() {
-        return pathId;
-    }
-
-    public void setPathId(int pathId) {
-        this.pathId = pathId;
-    }
-
     public Spell getSpell() {
         return spell;
     }
 
     public void setSpell(Spell spell) {
         this.spell = spell;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

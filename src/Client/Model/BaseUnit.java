@@ -2,7 +2,7 @@ package Client.Model;
 
 public class BaseUnit {
     private int typeId;
-    private int maxHP;
+    private int maxHp;
     private int baseAttack;
     private int baseRange;
     private UnitTarget targetType;
@@ -18,12 +18,12 @@ public class BaseUnit {
         this.typeId = typeId;
     }
 
-    public int getMaxHP() {
-        return maxHP;
+    public int getMaxHp() {
+        return maxHp;
     }
 
-    public void setMaxHP(int maxHP) {
-        this.maxHP = maxHP;
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
     }
 
     public int getBaseAttack() {
