@@ -8,19 +8,19 @@ import java.util.List;
 public class Cell {
     private int row;
     private int col;
-    private List<Unit> unitList = new ArrayList<>();
+    private List<Unit> units = new ArrayList<>(); //private access ? what should we do
 
     public Cell(int row, int col) {
         this.row = row;
         this.col = col;
     }
 
-    public List<Unit> getUnitList() {
-        return unitList;
+    public List<Unit> getUnits() {
+        return units;
     }
 
-    public void setUnitList(List<Unit> unitList) {
-        this.unitList = unitList;
+    public void setUnits(List<Unit> units) {
+        this.units = units;
     }
 
     public int getCol() {

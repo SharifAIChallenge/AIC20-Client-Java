@@ -3,13 +3,23 @@ package Client.Model;
 import java.util.List;
 
 public class Unit {
-    private int unitId, hp, playerId, typeId, pathId, damageLevel, rangeLevel, range, attack, targetId;
-    private boolean isClone, isHasted, wasDamageUpgraded, wasRangeUpgraded, wasPlayedThisTurn;
-    private List<Integer> affectedSpells;
-    private Cell cell;
     private BaseUnit baseUnit;
+    private Cell cell;
+    private int unitId;
     private Path path;
+    private Unit target;
     private Cell targetCell;
+    private List<CastSpell> castSpellsOnUnit;
+    private King targetIfKing;
+    private int playerId;
+    private int damageLevel;
+    private int rangeLevel;
+    private int range;
+    private int attack;
+    private boolean isDuplicate;
+    private boolean isHasted;
+    private List<CastSpell> affectedSpells;
+    int hp;
 
 
     public Unit() {
@@ -63,37 +73,6 @@ public class Unit {
         this.path = path;
     }
 
-    public int getPathId() {
-        return pathId;
-    }
-
-    public void setPathId(int pathId) {
-        this.pathId = pathId;
-    }
-
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
-    public boolean isWasRangeUpgraded() {
-        return wasRangeUpgraded;
-    }
-
-    public void setWasRangeUpgraded(boolean wasRangeUpgraded) {
-        this.wasRangeUpgraded = wasRangeUpgraded;
-    }
-
-    public boolean isWasDamageUpgraded() {
-        return wasDamageUpgraded;
-    }
-
-    public void setWasDamageUpgraded(boolean wasDamageUpgraded) {
-        this.wasDamageUpgraded = wasDamageUpgraded;
-    }
 
     public int getRangeLevel() {
         return rangeLevel;
@@ -123,14 +102,6 @@ public class Unit {
         this.unitId = unitId;
     }
 
-    public boolean isClone() {
-        return isClone;
-    }
-
-    public void setClone(boolean clone) {
-        isClone = clone;
-    }
-
     public int getAttack() {
         return attack;
     }
@@ -147,30 +118,6 @@ public class Unit {
         this.range = range;
     }
 
-    public boolean isWasPlayedThisTurn() {
-        return wasPlayedThisTurn;
-    }
-
-    public void setWasPlayedThisTurn(boolean wasPlayedThisTurn) {
-        this.wasPlayedThisTurn = wasPlayedThisTurn;
-    }
-
-    public int getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(int targetId) {
-        this.targetId = targetId;
-    }
-
-    public List<Integer> getAffectedSpells() {
-        return affectedSpells;
-    }
-
-    public void setAffectedSpells(List<Integer> affectedSpells) {
-        this.affectedSpells = affectedSpells;
-    }
-
     public Cell getTargetCell() {
         return targetCell;
     }
@@ -178,4 +125,45 @@ public class Unit {
     public void setTargetCell(Cell targetCell) {
         this.targetCell = targetCell;
     }
+
+    public Unit getTarget() {
+        return target;
+    }
+
+    public void setTarget(Unit target) {
+        this.target = target;
+    }
+
+    public List<CastSpell> getCastSpellsOnUnit() {
+        return castSpellsOnUnit;
+    }
+
+    public void setCastSpellsOnUnit(List<CastSpell> castSpellsOnUnit) {
+        this.castSpellsOnUnit = castSpellsOnUnit;
+    }
+
+    public King getTargetIfKing() {
+        return targetIfKing;
+    }
+
+    public void setTargetIfKing(King targetIfKing) {
+        this.targetIfKing = targetIfKing;
+    }
+
+    public boolean isDuplicate() {
+        return isDuplicate;
+    }
+
+    public void setDuplicate(boolean duplicate) {
+        isDuplicate = duplicate;
+    }
+
+    public List<CastSpell> getAffectedSpells() {
+        return affectedSpells;
+    }
+
+    public void setAffectedSpells(List<CastSpell> affectedSpells) {
+        this.affectedSpells = affectedSpells;
+    }
+
 }

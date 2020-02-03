@@ -5,9 +5,10 @@ public class King {
     private int hp;
     private int attack;
     private int range;
-    private int playerId;
-    private int target;
     private boolean isAlive;
+    private int playerId;
+    private Unit target;
+    private Cell targetCell;
 
     public int getPlayerId() {
         return playerId;
@@ -57,11 +58,19 @@ public class King {
         isAlive = alive;
     }
 
-    public int getTarget() {
+    public Unit getTarget() {
         return target;
     }
 
-    public void setTarget(int target) {
+    public void setTarget(Unit target) {
         this.target = target;
+    }
+
+    public Cell getTargetCell() {
+        return targetCell;
+    }
+
+    public void setTargetCell(Cell targetCell) {
+        this.targetCell = targetCell;
     }
 }

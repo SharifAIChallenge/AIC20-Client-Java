@@ -91,13 +91,13 @@ public class ClientTurnMessage {
     }
 
     private void updateCellsUnits(TurnMessage turnMessage){
-        for(int i = 0; i < Mapp.getMapp().getRows(); i ++){
-            for(int j = 0; j < Mapp.getMapp().getCols(); j ++){
-                Mapp.getMapp().getCells()[i][j].getUnitList().clear();
+        for(int i = 0; i < Mapp.getMapp().getRowNum(); i ++){
+            for(int j = 0; j < Mapp.getMapp().getColNum(); j ++){
+                Mapp.getMapp().getCells()[i][j].getUnits().clear();
             }
         }
         for(Unit unit : turnMessage.getUnits()){
-            unit.getCell().getUnitList().add(unit);
+            unit.getCell().getUnits().add(unit);
         }
     }
 
@@ -105,7 +105,6 @@ public class ClientTurnMessage {
         king.setPlayerId(turnKing.getPlayerId());
         king.setAlive(turnKing.isAlive());
         king.setHp(turnKing.getHp());
-        king.setTarget(turnKing.getTarget());
     }
 
     public ClientTurnMessage() {

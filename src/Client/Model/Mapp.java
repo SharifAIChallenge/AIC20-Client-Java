@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mapp {
-    private static Mapp mapp;
-    private int cols, rows;
-    private Cell[][] cells;
+    private static Mapp mapp; //is it ok?
+    private int colNum, rowNum;
     private List<Path> paths;
     private List<Unit> units = new ArrayList<>();
     private List<King> kings;
+    private Cell[][] cells;
 
     public static Mapp createMapp(int rows, int cols) {
         if (mapp != null) return mapp;
@@ -18,28 +18,28 @@ public class Mapp {
     }
 
     private Mapp(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
+        this.rowNum = rows;
+        this.colNum = cols;
         this.cells = new Cell[rows][cols];
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 this.cells[i][j] = new Cell(i, j);
     }
 
-    public int getCols() {
-        return cols;
+    public int getColNum() {
+        return colNum;
     }
 
-    public void setCols(int cols) {
-        this.cols = cols;
+    public void setColNum(int colNum) {
+        this.colNum = colNum;
     }
 
-    public int getRows() {
-        return rows;
+    public int getRowNum() {
+        return rowNum;
     }
 
-    public void setRows(int rows) {
-        this.rows = rows;
+    public void setRowNum(int rowNum) {
+        this.rowNum = rowNum;
     }
 
     public List<Path> getPaths() {

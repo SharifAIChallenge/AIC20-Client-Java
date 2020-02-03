@@ -192,4 +192,5 @@ public class Player {
     public int getHp(){
         return king.getHp();
     }
+
 }

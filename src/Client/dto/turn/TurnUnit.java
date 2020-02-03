@@ -32,7 +32,6 @@ public class TurnUnit {
         unit.setPlayerId(playerId);
         unit.setHp(hp);
         unit.setHasted(isHasted);
-        unit.setClone(isClone);
         unit.setDamageLevel(damageLevel);
         unit.setRangeLevel(rangeLevel);
         unit.setAttack(attack);
@@ -46,15 +45,7 @@ public class TurnUnit {
         if(targetCell != null)
             unit.setTargetCell(Mapp.getMapp().getCells()[targetCell.getRow()][targetCell.getCol()]);
         unit.setCell(Mapp.getMapp().getCells()[cell.getRow()][cell.getCol()]);
-
-        unit.setAffectedSpells(affectedSpells);
-        unit.setPathId(pathId);
-        unit.setTargetId(target);
-        unit.setWasRangeUpgraded(wasRangeUpgraded); //todo compile errors
-        unit.setWasDamageUpgraded(wasDamageUpgraded);
-        unit.setWasPlayedThisTurn(wasPlayedThisTurn);
         unit.setUnitId(unitId);
-        unit.setTypeId(typeId);
         return unit;
     }
 
@@ -112,22 +103,6 @@ public class TurnUnit {
 
     public void setRangeLevel(int rangeLevel) {
         this.rangeLevel = rangeLevel;
-    }
-
-    public boolean isWasDamageUpgraded() {
-        return wasDamageUpgraded;
-    }
-
-    public void setWasDamageUpgraded(boolean wasDamageUpgraded) {
-        this.wasDamageUpgraded = wasDamageUpgraded;
-    }
-
-    public boolean isWasRangeUpgraded() {
-        return wasRangeUpgraded;
-    }
-
-    public void setWasRangeUpgraded(boolean wasRangeUpgraded) {
-        this.wasRangeUpgraded = wasRangeUpgraded;
     }
 
     public boolean isHasted() {

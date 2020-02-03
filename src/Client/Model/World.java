@@ -6,7 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface World {
-    public void chooseDeck(List<Integer> typeIds);
+    public Player getMe();
+
+    public Player getFriend();
+
+    public Player getFirstEnemy();
+
+    public Player getSecondEnemy();
+
+
+    public void chooseDeckById(List<Integer> typeIds);
 
     public int getMyId();
 
@@ -16,19 +25,19 @@ public interface World {
 
     public int getSecondEnemyId();
 
-    public Cell getPlayerPosition(int playerId);
+    public List<BaseUnit> getAllBaseUnits();
 
-    public List<Path> getPathsFromPlayer(int playerID);
+    public List<Spell> getAllSpells();
 
-    public Path getPathToFriend(int playerId);
+    public King getKingById(int playerId);
 
-    public int getMapRowNum();
+    public Spell getSpellById(int spellId);
 
-    public int getMapColNum();
+    public BaseUnit getBaseUnitById(int typeId);
 
     public List<Path> getPathsCrossingCell(Cell cell);
 
-    public List<Unit> getPlayerUnits(int playerId);
+    public List<Path> getPathsCrossingCell(int row, int col);
 
     public List<Unit> getCellUnits(Cell cell);
 
@@ -36,30 +45,16 @@ public interface World {
 
     public Path getShortestPathToCell(int fromPlayerId, Cell cell);
 
-    public int getMaxAP();
-
-    public int getRemainingAP();
-
-    public List<BaseUnit> getHand();
+    public Path getShortestPathToCell(int fromPlayerId, int row, int col);
 
     public GameConstants getGameConstants();
-
-    public List<BaseUnit> getDeck();
 
     public void putUnit(int typeId, int pathId);
     // todo, we have also 3 types else
 
     public int getCurrentTurn();
 
-    public int getMaxTurns();
-
-    public int getPickTimeout();
-
-    public int getTurnTimeout();
-
     public int getRemainingTime();
-
-    public int getPlayerHP(int playerId);
 
     public void castUnitSpell(int unitId, int pathId, int index, int spellId);
 
@@ -86,14 +81,6 @@ public interface World {
 
     public int getRemainingTurnsToGetSpell();
 
-    public CastAreaSpell getCastAreaSpell(int playerId);
-
-    public CastUnitSpell getCastUnitSpell(int playerId);
-
-    public List<CastSpell> getCastSpellOnUnit(Unit unit);
-
-    public List<CastSpell> getCastSpellOnUnit(int unitId);
-
     public int getDamageUpgradeNumber();
 
     public int getRangeUpgradeNumber();
@@ -114,27 +101,6 @@ public interface World {
 
     public void upgradeUnitDamage(int unitId);
 
-    public List<Unit> getPlayerDuplicateUnits(int playerId);
-
-    public List<Unit> getPlayerHastedUnits(int playerId);
-
-    public List<Unit> getPlayerPlayedUnits(int playerId);
-
-    public Unit getUnitTarget(Unit unit);
-
-    Unit getUnitTarget(int unitId);
-
-    public Cell getUnitTargetCell(Unit unit);
-
-    public Cell getUnitTargetCell(int unitId);
-
-    public Unit getKingTarget(int playerId);
-
-    public Cell getKingTargetCell(int playerId);
-
-    public int getKingUnitIsAttackingTo(Unit unit);
-
-    public int getKingUnitIsAttackingTo(int unitId);
-
+    public void chooseDeck(List<BaseUnit> baseUnits);
 
 }

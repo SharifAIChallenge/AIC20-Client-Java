@@ -16,7 +16,7 @@ public class ClientBaseUnit {
     public BaseUnit castToBaseUnit() {
         BaseUnit baseUnit = new BaseUnit();
         baseUnit.setTypeId(typeId);
-        baseUnit.setMaxHP(maxHP);
+        baseUnit.setMaxHp(maxHP);
         baseUnit.setBaseAttack(baseAttack);
         baseUnit.setBaseRange(baseRange);
         baseUnit.setTargetType(UnitTarget.valueOf(target));
