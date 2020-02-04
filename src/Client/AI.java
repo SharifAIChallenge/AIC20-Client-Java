@@ -19,6 +19,5 @@ public class AI
         System.out.println("turn started: " + world.getCurrentTurn());
         List<Path> myPaths = world.getMe().getPathsFromPlayer();
         world.putUnit(0, myPaths.get(0));
-        //todo multiple putUnit
     }
 }
