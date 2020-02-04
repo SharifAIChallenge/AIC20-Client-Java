@@ -582,7 +582,7 @@ public class Game implements World {
 
     private void calcUnitsTargets() {
         for (TurnUnit turnUnit : clientTurnMessage.getUnits()) {
-            Unit unit = unitsById.get(turnUnit);
+            Unit unit = unitsById.get(turnUnit.getUnitId());
             boolean find = false;
             for (King king : turnMessage.getKings()) {
                 if (king.getPlayerId() == turnUnit.getTarget()) {
@@ -591,7 +591,14 @@ public class Game implements World {
                 }
             }
 
-            if (!find) unit.setTarget(unitsById.get(turnUnit.getTarget()));
+            if (!find && turnUnit.getTarget() != -1)
+                unit.setTarget(unitsById.get(turnUnit.getTarget()));
+            else {
+                unit.setTarget(null);
+                unit.setTargetCell(null);
+                continue;
+            }
+
             ClientCell clientCell = turnUnit.getTargetCell();
             Cell targetCell = getCellByCoordination(clientCell.getRow(), clientCell.getCol());
             unit.setTargetCell(targetCell);
