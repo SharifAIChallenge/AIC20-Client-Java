@@ -13,17 +13,12 @@ public class AI
     {
         System.out.println("pre process started");
         world.chooseDeckById(Arrays.asList(3, -324, 4, 0, 1, 400, 2, 3, 4, 5,6 ,7, 8,9));
-
     }
-
 
     public void turn(Game world) {
         System.out.println("turn started: " + world.getCurrentTurn());
         List<Path> myPaths = world.getMe().getPathsFromPlayer();
         world.putUnit(0, myPaths.get(0));
         //todo multiple putUnit
-
-
     }
-
 }
