@@ -156,5 +156,4 @@ public class Unit {
     public void setAffectedSpells(List<CastSpell> affectedSpells) {
         this.affectedSpells = affectedSpells;
     }
-
 }

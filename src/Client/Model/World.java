@@ -14,7 +14,6 @@ public interface World {
 
     public Player getSecondEnemy();
 
-
     public void chooseDeckById(List<Integer> typeIds);
 
     public int getMyId();

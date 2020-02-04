@@ -34,6 +34,7 @@ public class Game implements World {
         this.clientInitMessage = game.getClientInitMessage();
         this.initMessage = game.getInitMessage();
         this.sender = game.getSender();
+        this.players =  game.getPlayers();
     }
 
     private Consumer<Message> getSender() {
@@ -176,7 +177,7 @@ public class Game implements World {
     private Path getShortestPathToCellFromPlayer(int fromPlayerId, Cell cell) {
         Player player = getPlayerById(fromPlayerId);
         if (player == null || cell == null) return null;
-        return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
+        return player.getShortestPathsToCellsCrossMyself()[cell.getRow()][cell.getCol()];
     }
 
     private Path calcShortestPathToCell(int fromPlayerId, Cell cell) {
@@ -197,7 +198,7 @@ public class Game implements World {
     public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
         Player player = getPlayerById(fromPlayerId);
         if (player == null || cell == null) return null;
-        return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
+        return player.getShortestPathsToCellsCrossMyself()[cell.getRow()][cell.getCol()];
     }
 
     @Override
@@ -700,7 +701,7 @@ public class Game implements World {
         Player secondEnemyPlayer = new Player(getSecondEnemyId());
         myPlayer.setDeck(turnMessage.getDeck());
         myPlayer.setHand(turnMessage.getHand());
-        myPlayer.setAp(clientTurnMessage.getRemainingAP());
+//        myPlayer.setAp(clientTurnMessage.getRemainingAP());
         players.add(myPlayer);
         players.add(friendPlayer);
         players.add(firstEnemyPlayer);
@@ -731,8 +732,7 @@ public class Game implements World {
         return bestPath;
     }
 
-    private void setShortestPathsOfPlayer(Player player) {
-        //todo ino doros konimmmm
+    private void setShortestPathsOfPlayerCrossMyself(Player player) {
         Path[][] shortestPathsFromPlayer = new Path[initMessage.getMapp().getRowNum()][initMessage.getMapp().getColNum()];
         for (int i = 0; i < initMessage.getMapp().getRowNum(); i++) {
             for (int j = 0; j < initMessage.getMapp().getColNum(); j++) {
@@ -740,10 +740,11 @@ public class Game implements World {
                 shortestPathsFromPlayer[i][j] = calcShortestPathToCellFromPlayer(player.getPlayerId(), cell);
             }
         }
-        player.setShortestPathsToCells(shortestPathsFromPlayer);
+        player.setShortestPathsToCellsCrossMyself(shortestPathsFromPlayer);
+     }
 
+    private void setShortestPathsOfPlayer(Player player) {
         Path[][] shortestPaths = new Path[initMessage.getMapp().getRowNum()][initMessage.getMapp().getColNum()];
-
         for (int i = 0; i < initMessage.getMapp().getRowNum(); i++) {
             for (int j = 0; j < initMessage.getMapp().getColNum(); j++) {
                 Cell cell = initMessage.getMapp().getCells()[i][j];
@@ -756,9 +757,14 @@ public class Game implements World {
     //todo shortestpaths
     private void setShortestPathsOfPlayers() {
         for (Player player : players) {
+            setShortestPathsOfPlayerCrossMyself(player);
+        }
+        for (Player player : players) {
             setShortestPathsOfPlayer(player);
         }
     }
+
+
 
     private void setSpellsById() {
         for (Spell spell : initMessage.getSpells()) {
@@ -864,5 +870,13 @@ public class Game implements World {
 
     public HashMap<Integer, Path> getPathsById() {
         return pathsById;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 }
