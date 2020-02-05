@@ -16,14 +16,6 @@ public interface World {
 
     public void chooseDeckById(List<Integer> typeIds);
 
-    public int getMyId();
-
-    public int getFriendId();
-
-    public int getFirstEnemyId();
-
-    public int getSecondEnemyId();
-
     public List<BaseUnit> getAllBaseUnits();
 
     public List<Spell> getAllSpells();
@@ -71,7 +63,6 @@ public interface World {
     public void castAreaSpell(Cell center, Spell spell);
 
     public void castAreaSpell(Cell center, int spellId);
-    // todo we have also 2 types else
 
     public List<Unit> getAreaSpellTargets(int row, int col, Spell spell);
 

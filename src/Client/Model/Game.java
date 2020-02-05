@@ -91,22 +91,19 @@ public class Game implements World {
         return players.get(3);
     }
 
-
-    @Override
-    public int getMyId() {
+    private int getMyId() {
         return clientInitMessage.getMap().getKings().get(0).getPlayerId();
     }
 
-    @Override
-    public int getFriendId() {
+    private int getFriendId() {
         return clientInitMessage.getMap().getKings().get(1).getPlayerId();
     }
 
-    public int getFirstEnemyId() {
+    private int getFirstEnemyId() {
         return clientInitMessage.getMap().getKings().get(2).getPlayerId();
     }
 
-    public int getSecondEnemyId() {
+    private int getSecondEnemyId() {
         return clientInitMessage.getMap().getKings().get(3).getPlayerId();
     }
 
