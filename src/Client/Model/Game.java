@@ -673,9 +673,8 @@ public class Game implements World {
         }
     }
 
-    public void handleTurnMessage(Message msg) {
-        System.out.println(Json.GSON.toJson(msg));
-        this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
+    public void handleTurnMessage(ClientTurnMessage msg) {
+        this.clientTurnMessage = msg;
         this.clientTurnMessage.setTurnTime(System.currentTimeMillis());
         turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
 
@@ -827,8 +826,8 @@ public class Game implements World {
                 pathsById.put(path.getId(), path);
     }
 
-    public void handleInitMessage(Message msg) {
-        this.clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
+    public void handleInitMessage(ClientInitMessage msg) {
+        this.clientInitMessage = msg;
         this.initMessage = clientInitMessage.castToInitMessage();
         createPLayers();
         setSpellsById();

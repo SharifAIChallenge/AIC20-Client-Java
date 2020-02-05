@@ -49,7 +49,12 @@ public interface World {
     public GameConstants getGameConstants();
 
     public void putUnit(int typeId, int pathId);
-    // todo, we have also 3 types else
+
+    public void putUnit(BaseUnit baseUnit, int pathId);
+
+    public void putUnit(int typeId, Path path);
+
+    public void putUnit(BaseUnit baseUnit, Path path);
 
     public int getCurrentTurn();
 
