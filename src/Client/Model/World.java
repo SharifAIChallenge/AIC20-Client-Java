@@ -16,6 +16,10 @@ public interface World {
 
     public void chooseDeckById(List<Integer> typeIds);
 
+    public void chooseDeck(List<BaseUnit> baseUnits);
+
+    public Mapp getMapp();
+
     public List<BaseUnit> getAllBaseUnits();
 
     public List<Spell> getAllSpells();
@@ -95,7 +99,4 @@ public interface World {
     public void upgradeUnitDamage(Unit unit);
 
     public void upgradeUnitDamage(int unitId);
-
-    public void chooseDeck(List<BaseUnit> baseUnits);
-
 }

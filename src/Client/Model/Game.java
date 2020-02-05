@@ -107,10 +107,10 @@ public class Game implements World {
         return clientInitMessage.getMap().getKings().get(3).getPlayerId();
     }
 
+    @Override
     public Mapp getMapp() {
         return Mapp.getMapp();
     }
-
 
     private King getPlayerKing(int playerId) {
         for (King king : initMessage.getMapp().getKings())
