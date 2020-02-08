@@ -1,6 +1,7 @@
 package Client.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,6 +29,8 @@ public class Player {
     private Unit rangeUpgradedUnit;
     private Unit damageUpgradedUnit;
 
+    private List<Spell> spells = new ArrayList<>();
+    private HashMap<Spell, Integer> myTurnSpells = new HashMap<>();
     ////////
     private Path[][] shortestPathsToCellsCrossMyself;
     private Path[][] shortestPathsToCells;
@@ -193,4 +196,29 @@ public class Player {
         return king.getHp();
     }
 
+    public List<Spell> getSpells() {
+        return spells;
+    }
+
+    public void setSpells(List<Spell> spells){
+        this.spells = spells;
+    }
+
+    public void calcMyTurnSpells() {
+        myTurnSpells = new HashMap<>();
+        for (Spell spell : spells) {
+            int currentCounter = 0;
+            if (myTurnSpells.containsKey(spell)) {
+                currentCounter = myTurnSpells.get(spell);
+                myTurnSpells.remove(spell);
+            }
+            currentCounter++;
+            myTurnSpells.put(spell, currentCounter + 1);
+        }
+    }
+
+    public int getSpellCount(Spell spell){
+        if(myTurnSpells.get(spell) == null)return 0;
+        return myTurnSpells.get(spell);
+    }
 }
