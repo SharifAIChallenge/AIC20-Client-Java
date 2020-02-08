@@ -91,43 +91,13 @@ public class Game implements World {
         return players.get(3);
     }
 
-    private int getMyId() {
-        return clientInitMessage.getMap().getKings().get(0).getPlayerId();
-    }
-
-    private int getFriendId() {
-        return clientInitMessage.getMap().getKings().get(1).getPlayerId();
-    }
-
-    private int getFirstEnemyId() {
-        return clientInitMessage.getMap().getKings().get(2).getPlayerId();
-    }
-
-    private int getSecondEnemyId() {
-        return clientInitMessage.getMap().getKings().get(3).getPlayerId();
-    }
-
     @Override
     public Mapp getMapp() {
         return Mapp.getMapp();
     }
 
-    private King getPlayerKing(int playerId) {
-        for (King king : initMessage.getMapp().getKings())
-            if (king.getPlayerId() == playerId) {
-                return king;
-            }
-        return null;
-    }
 
-    private int getFriendIdOfPlayer(int playerId) {
-        if (playerId == getFriendId()) return getMyId();
-        if (playerId == getMyId()) return getFriendId();
-        if (playerId == getFirstEnemyId()) return getSecondEnemyId();
-        if (playerId == getSecondEnemyId()) return getFirstEnemyId();
-        return -1;
-    }
-
+    //be in dast nazanan
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
         if (cell == null) return new ArrayList<>();
@@ -147,6 +117,42 @@ public class Game implements World {
         if (cell == null) return new ArrayList<>();
         return getPathsCrossingCell(cell);
     }
+
+    private int getMyId() {
+        return clientInitMessage.getMap().getKings().get(0).getPlayerId();
+    }
+
+    private int getFriendId() {
+        return clientInitMessage.getMap().getKings().get(1).getPlayerId();
+    }
+
+    private int getFirstEnemyId() {
+        return clientInitMessage.getMap().getKings().get(2).getPlayerId();
+    }
+
+    private int getSecondEnemyId() {
+        return clientInitMessage.getMap().getKings().get(3).getPlayerId();
+    }
+
+
+
+    private King getPlayerKing(int playerId) {
+        for (King king : initMessage.getMapp().getKings())
+            if (king.getPlayerId() == playerId) {
+                return king;
+            }
+        return null;
+    }
+
+    private int getFriendIdOfPlayer(int playerId) {
+        if (playerId == getFriendId()) return getMyId();
+        if (playerId == getMyId()) return getFriendId();
+        if (playerId == getFirstEnemyId()) return getSecondEnemyId();
+        if (playerId == getSecondEnemyId()) return getFirstEnemyId();
+        return -1;
+    }
+
+
 
     private List<Unit> calcPlayerUnits(int playerId) {
         List<Unit> units = new ArrayList<>();
