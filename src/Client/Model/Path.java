@@ -12,6 +12,14 @@ public class Path {
     private int id;
     private List<Cell> cells;
 
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || !(object instanceof Path)) return false;
+        Path path = (Path) object;
+        if (path.getId() == this.id) return true;
+        return false;
+    }
+
     public int getId() {
         return id;
     }
