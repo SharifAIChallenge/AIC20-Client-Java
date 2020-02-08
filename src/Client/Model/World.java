@@ -39,35 +39,10 @@ public interface World {
 
     /**
      * choose your deck by ids of Base Units in the pick turn
-     *
      * @param typeIds ids of BaseUnits that put into your deck
      */
 
     public void chooseDeckById(List<Integer> typeIds);
-
-    /**
-     * returns your id
-     * @return
-     */
-    public int getMyId();
-
-    /**
-     * returns your friend's id
-     * @return
-     */
-    public int getFriendId();
-
-    /**
-     * returns first enemy's id
-     * @return
-     */
-    public int getFirstEnemyId();
-
-    /**
-     * returns second enemy's id
-     * @return
-     */
-    public int getSecondEnemyId();
 
     /**
      * returns all of base units that exists in the game
@@ -107,6 +82,7 @@ public interface World {
 
     /**
      * returns paths that cross the given cell
+     * returns null if cell doesn't exist
      * @param cell given cell
      * @return
      */
@@ -115,7 +91,7 @@ public interface World {
 
     /**
      * @param row row of cell
-     * @param col col of cell
+     * @param col column of cell
      * @return
      */
 
@@ -123,6 +99,7 @@ public interface World {
 
     /**
      * returns units that placed in given cell
+     * returns null array list if cell doesn't exist
      * @param cell given cell
      * @return
      */
@@ -130,8 +107,9 @@ public interface World {
     public List<Unit> getCellUnits(Cell cell);
 
     /**
+     * returns
      * @param row row of cell
-     * @param col col of cell
+     * @param col column of cell
      * @return
      */
 
@@ -139,6 +117,7 @@ public interface World {
 
     /**
      * returns shortest path to the given cell from the given player's king
+     * returns null if cell or player doesn't exist
      * @param fromPlayerId id of player
      * @param cell given cell
      * @return
@@ -149,7 +128,7 @@ public interface World {
     /**
      * @param fromPlayerId player id
      * @param row row of given cell
-     * @param col col of given cell
+     * @param col column of given cell
      * @return
      */
     public Path getShortestPathToCell(int fromPlayerId, int row, int col);
@@ -176,7 +155,7 @@ public interface World {
     public int getCurrentTurn();
 
     /**
-     * returns remaining time to end of turn
+     * returns remaining time to end of current turn
      * @return
      */
     public int getRemainingTime();
@@ -194,9 +173,9 @@ public interface World {
 
     /**
      * cast area spell
-     * @param row
-     * @param col
-     * @param spellId
+     * @param row row of cell that cast spell on it
+     * @param col column of cell that cast spell on it
+     * @param spellId id of spell that cast
      */
     public void castAreaSpell(int row, int col, int spellId);
 
@@ -205,8 +184,21 @@ public interface World {
     public void castAreaSpell(Cell center, Spell spell);
 
     public void castAreaSpell(Cell center, int spellId);
-    // todo we have also 2 types else
 
+    /**
+     * returns map of the game
+     * @return
+     */
+
+    public Mapp getMapp();
+
+    /**
+     * returns targets of given area spell if cast spell in given cell
+     * @param row row of cell
+     * @param col column of cell
+     * @param spell given area spell
+     * @return
+     */
     public List<Unit> getAreaSpellTargets(int row, int col, Spell spell);
 
     public List<Unit> getAreaSpellTargets(int row, int col, int spellId);
@@ -215,17 +207,36 @@ public interface World {
 
     public List<Unit> getAreaSpellTargets(Cell center, int SpellId);
 
+    /**
+     * returns number of remaining turns to get token for upgrade
+     * @return
+     */
     public int getRemainingTurnsToUpgrade();
 
+    /**
+     * returns number of remaining turns to get spell
+     * @return
+     */
     public int getRemainingTurnsToGetSpell();
 
+    /**
+     * returns number of damage upgrade tokens
+     * @return
+     */
     public int getDamageUpgradeNumber();
 
+    /**
+     * returns number of range upgrade tokens
+     * @return
+     */
     public int getRangeUpgradeNumber();
 
+    /**
+     * returns your spells in a list
+     * @return
+     */
     public List<Spell> getSpellsList();
 
-    public HashMap<Spell, Integer> getSpells();
 
     public Spell getReceivedSpell();
 
