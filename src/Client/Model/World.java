@@ -161,22 +161,43 @@ public interface World {
     public GameConstants getGameConstants();
 
     /**
-     * returns
+     * put unit with type id
      * @param typeId id of unit that want to put
-     * @param pathId id of path that put unit
+     * @param pathId id of path that put unit on that
      */
 
     public void putUnit(int typeId, int pathId);
     // todo, we have also 3 types else
 
+    /**
+     * returns current turn number
+     * @return
+     */
     public int getCurrentTurn();
 
+    /**
+     * returns remaining time to end of turn
+     * @return
+     */
     public int getRemainingTime();
 
+    /**
+     * cast unit spell
+     * @param unitId id of unit that want to cast unit spell on that
+     * @param pathId id of path that cast unit spell on that
+     * @param cell id of cell that cast unit spell on that
+     * @param spellId id of unit spell that want to cast
+     */
     public void castUnitSpell(int unitId, int pathId, Cell cell, int spellId);
 
     public void castUnitSpell(int unitId, int pathId, Cell cell, Spell spell);
 
+    /**
+     * cast area spell
+     * @param row
+     * @param col
+     * @param spellId
+     */
     public void castAreaSpell(int row, int col, int spellId);
 
     public void castAreaSpell(int row, int col, Spell spell);
