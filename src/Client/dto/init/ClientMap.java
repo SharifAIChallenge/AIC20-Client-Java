@@ -7,6 +7,10 @@ import Client.Model.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class has information of the map. Data is received from the server in the initial message.
+ */
+
 public class ClientMap {
     private int rows;
     private int cols;

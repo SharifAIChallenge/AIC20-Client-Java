@@ -1,5 +1,11 @@
 package Client.Model;
 
+/**
+ * This class has properties of spell that is not used yet.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class Spell {
     private SpellType type;
     private int typeId;

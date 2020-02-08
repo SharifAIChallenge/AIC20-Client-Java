@@ -1,5 +1,11 @@
 package Client.Model;
 
+/**
+ * This class has properties of the player's king.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class King {
     private Cell center;
     private int hp;

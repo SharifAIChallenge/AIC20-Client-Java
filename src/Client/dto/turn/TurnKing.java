@@ -2,6 +2,12 @@ package Client.dto.turn;
 
 import Client.Model.King;
 
+/**
+ * This class has information of the king. The data is sent by the server each turn.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class TurnKing {
     private int playerId;
     private boolean isAlive;
