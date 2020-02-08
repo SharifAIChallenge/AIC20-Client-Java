@@ -725,6 +725,7 @@ public class Game implements World {
         int minDis = 100 * 1000;
         Player player = getPlayerById(playerId);
         if (player == null) return null;
+        System.out.println(player.getKing());
         Cell playerCell = player.getKing().getCenter();
         if (cell == null) return null;
         Path bestPath = null;
@@ -842,6 +843,7 @@ public class Game implements World {
     }
 
     public void handleInitMessage(ClientInitMessage msg) {
+        this.clientInitMessage = msg;
         createPLayers();
         updateMessage(msg);
         setShortestPathsOfPlayers();
