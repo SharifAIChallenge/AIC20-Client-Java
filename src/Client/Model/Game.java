@@ -54,7 +54,7 @@ public class Game implements World {
         return clientInitMessage.getGameConstants();
     }
 
-        @Override
+    @Override
     public void chooseDeckById(List<Integer> typeIds) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("units", Json.GSON.toJsonTree(typeIds));
@@ -90,29 +90,26 @@ public class Game implements World {
         return players.get(3);
     }
 
-
-    @Override
-    public int getMyId() {
+    private int getMyId() {
         return clientInitMessage.getMap().getKings().get(0).getPlayerId();
     }
 
-    @Override
-    public int getFriendId() {
+    private int getFriendId() {
         return clientInitMessage.getMap().getKings().get(1).getPlayerId();
     }
 
-    public int getFirstEnemyId() {
+    private int getFirstEnemyId() {
         return clientInitMessage.getMap().getKings().get(2).getPlayerId();
     }
 
-    public int getSecondEnemyId() {
+    private int getSecondEnemyId() {
         return clientInitMessage.getMap().getKings().get(3).getPlayerId();
     }
 
+    @Override
     public Mapp getMapp() {
         return Mapp.getMapp();
     }
-
 
     private King getPlayerKing(int playerId) {
         for (King king : initMessage.getMapp().getKings())
@@ -176,7 +173,7 @@ public class Game implements World {
     private Path getShortestPathToCellFromPlayer(int fromPlayerId, Cell cell) {
         Player player = getPlayerById(fromPlayerId);
         if (player == null || cell == null) return null;
-        return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
+        return player.getShortestPathsToCellsCrossMyself()[cell.getRow()][cell.getCol()];
     }
 
     private Path calcShortestPathToCell(int fromPlayerId, Cell cell) {
@@ -197,7 +194,7 @@ public class Game implements World {
     public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
         Player player = getPlayerById(fromPlayerId);
         if (player == null || cell == null) return null;
-        return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
+        return player.getShortestPathsToCellsCrossMyself()[cell.getRow()][cell.getCol()];
     }
 
     @Override
@@ -579,7 +576,7 @@ public class Game implements World {
 
     private void calcUnitsTargets() {
         for (TurnUnit turnUnit : clientTurnMessage.getUnits()) {
-            Unit unit = unitsById.get(turnUnit);
+            Unit unit = unitsById.get(turnUnit.getUnitId());
             boolean find = false;
             for (King king : turnMessage.getKings()) {
                 if (king.getPlayerId() == turnUnit.getTarget()) {
@@ -588,7 +585,14 @@ public class Game implements World {
                 }
             }
 
-            if (!find) unit.setTarget(unitsById.get(turnUnit.getTarget()));
+            if (!find && turnUnit.getTarget() != -1)
+                unit.setTarget(unitsById.get(turnUnit.getTarget()));
+            else {
+                unit.setTarget(null);
+                unit.setTargetCell(null);
+                continue;
+            }
+
             ClientCell clientCell = turnUnit.getTargetCell();
             Cell targetCell = getCellByCoordination(clientCell.getRow(), clientCell.getCol());
             unit.setTargetCell(targetCell);
@@ -672,9 +676,8 @@ public class Game implements World {
         players.get(0).setAp(clientTurnMessage.getRemainingAP());
     }
 
-    public void handleTurnMessage(Message msg) {
-        System.out.println(Json.GSON.toJson(msg));
-        this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
+    public void handleTurnMessage(ClientTurnMessage msg) {
+        this.clientTurnMessage = msg;
         this.clientTurnMessage.setTurnTime(System.currentTimeMillis());
         turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
 
@@ -711,7 +714,6 @@ public class Game implements World {
         Player secondEnemyPlayer = new Player(getSecondEnemyId());
         myPlayer.setDeck(turnMessage.getDeck());
         myPlayer.setHand(turnMessage.getHand());
-        myPlayer.setAp(clientTurnMessage.getRemainingAP());
         players.add(myPlayer);
         players.add(friendPlayer);
         players.add(firstEnemyPlayer);
@@ -742,8 +744,7 @@ public class Game implements World {
         return bestPath;
     }
 
-    private void setShortestPathsOfPlayer(Player player) {
-        //todo ino doros konimmmm
+    private void setShortestPathsOfPlayerCrossMyself(Player player) {
         Path[][] shortestPathsFromPlayer = new Path[initMessage.getMapp().getRowNum()][initMessage.getMapp().getColNum()];
         for (int i = 0; i < initMessage.getMapp().getRowNum(); i++) {
             for (int j = 0; j < initMessage.getMapp().getColNum(); j++) {
@@ -751,10 +752,11 @@ public class Game implements World {
                 shortestPathsFromPlayer[i][j] = calcShortestPathToCellFromPlayer(player.getPlayerId(), cell);
             }
         }
-        player.setShortestPathsToCells(shortestPathsFromPlayer);
+        player.setShortestPathsToCellsCrossMyself(shortestPathsFromPlayer);
+     }
 
+    private void setShortestPathsOfPlayer(Player player) {
         Path[][] shortestPaths = new Path[initMessage.getMapp().getRowNum()][initMessage.getMapp().getColNum()];
-
         for (int i = 0; i < initMessage.getMapp().getRowNum(); i++) {
             for (int j = 0; j < initMessage.getMapp().getColNum(); j++) {
                 Cell cell = initMessage.getMapp().getCells()[i][j];
@@ -766,6 +768,9 @@ public class Game implements World {
 
     //todo shortestpaths
     private void setShortestPathsOfPlayers() {
+        for (Player player : players) {
+            setShortestPathsOfPlayerCrossMyself(player);
+        }
         for (Player player : players) {
             setShortestPathsOfPlayer(player);
         }
@@ -825,8 +830,8 @@ public class Game implements World {
                 pathsById.put(path.getId(), path);
     }
 
-    public void handleInitMessage(Message msg) {
-        this.clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
+    public void handleInitMessage(ClientInitMessage msg) {
+        this.clientInitMessage = msg;
         this.initMessage = clientInitMessage.castToInitMessage();
         createPLayers();
         setSpellsById();
@@ -835,7 +840,6 @@ public class Game implements World {
         setShortestPathsOfPlayers();
         calcBaseUnitsById();
         calcPathsById();
-
     }
 
     @Override
@@ -876,5 +880,13 @@ public class Game implements World {
 
     public HashMap<Integer, Path> getPathsById() {
         return pathsById;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 }

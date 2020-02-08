@@ -1,10 +1,16 @@
 package Client;
 
 import Client.Model.Game;
+import Client.dto.end.ClientEndMessage;
+import Client.dto.init.ClientInitMessage;
+import Client.dto.turn.ClientTurnMessage;
 import com.google.gson.JsonObject;
+import common.network.Json;
 import common.network.data.Message;
 import common.util.Log;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -41,7 +47,7 @@ public class Controller
     // Terminator. Controller waits for this object to be notified. Then it will be terminated.
     private final Object terminator;
 
-    Consumer<Message> sender;
+    private Consumer<Message> sender;
 
     /**
      * Constructor
@@ -126,15 +132,17 @@ public class Controller
     private void handleInitMessage(Message msg)
     {
         game = new Game(game);
-        game.handleInitMessage(msg);
+        ClientInitMessage clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
+        game.handleInitMessage(clientInitMessage);
         Message endMsg = new Message("endTurn", new JsonObject(), 0);
-        preProcess(game, endMsg);
+        pick(game, endMsg);
     }
 
     private void handleTurnMessage(Message msg)
     {
         Game newGame = new Game(game);
-        newGame.handleTurnMessage(msg);
+        ClientTurnMessage clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
+        newGame.handleTurnMessage(clientTurnMessage);
 
         Message endMsg = new Message("endTurn", new JsonObject(), newGame.getCurrentTurn());
         turn(newGame, endMsg);
@@ -147,13 +155,20 @@ public class Controller
      */
     private void handleShutdownMessage(Message msg)
     {
+        Game newGame = new Game(game);
+        ClientEndMessage clientEndMessage = Json.GSON.fromJson(msg.info, ClientEndMessage.class);
+        newGame.handleTurnMessage(clientEndMessage.getTurnMessage());
+        Map<Integer, Integer> scores = new HashMap<>();
+        clientEndMessage.getScores().forEach(
+                playerScore -> scores.put(playerScore.getPlayerId(), playerScore.getScore())
+        );
+        end(newGame, scores);
         network.terminate();
         System.exit(0);
     }
 
-    private void preProcess(Game game, Message endMsg)
+    private void pick(Game game, Message endMsg)
     {
-        //pick
         new Thread(() -> {
             ai.pick(game);
             sendEndMsg(endMsg);
@@ -167,6 +182,11 @@ public class Controller
             ai.turn(game);
             sendEndMsg(msg);
         }).start();
+    }
+
+    private void end(Game game, Map<Integer, Integer> scores)
+    {
+        ai.end(game, scores);
     }
 
     private void sendEndMsg(Message message)
