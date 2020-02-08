@@ -668,6 +668,10 @@ public class Game implements World {
         players.get(0).setHand(turnMessage.getHand());
     }
 
+    private void updateAp(){
+        players.get(0).setAp(clientTurnMessage.getRemainingAP());
+    }
+
     public void handleTurnMessage(Message msg) {
         System.out.println(Json.GSON.toJson(msg));
         this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
@@ -695,7 +699,7 @@ public class Game implements World {
         calcRangeUpgradedUnits();
 
         updateDeck();
-
+        updateAp();
 
     }
 
