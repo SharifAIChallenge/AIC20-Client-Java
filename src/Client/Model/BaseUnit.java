@@ -1,5 +1,11 @@
 package Client.Model;
 
+/**
+ * This class has properties of the base unit.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class BaseUnit {
     private int typeId;
     private int maxHp;

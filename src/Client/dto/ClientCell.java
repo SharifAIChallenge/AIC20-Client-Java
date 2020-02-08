@@ -3,6 +3,12 @@ package Client.dto;
 import Client.Model.Cell;
 import Client.Model.Mapp;
 
+/**
+ * This class has properties of the cell which is sent by the server.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class ClientCell {
     private int row;
     private int col;

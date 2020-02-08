@@ -6,6 +6,12 @@ import Client.dto.ClientCell;
 
 import java.util.List;
 
+/**
+ * This class has properties of unit which is used. The data is sent by server each turn.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class TurnUnit {
     private boolean wasDamageUpgraded;
     private boolean wasRangeUpgraded;

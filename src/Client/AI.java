@@ -6,6 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * You must put your code in this class {@link AI}.
+ * This class has {@link #pick}, to choose units before the start of the game;
+ * {@link #turn}, to do orders while game is running;
+ * {@link #end}, to process after the end of the game;
+ */
+
 public class AI
 {
     private boolean first = true;
