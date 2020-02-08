@@ -2,6 +2,7 @@ package Client.dto.turn;
 
 import Client.Model.*;
 import Client.dto.ClientCell;
+import common.network.Json;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,6 @@ public class TurnCastSpell {
             castUnitSpell.setCasterId(casterId);
             castUnitSpell.setCell(cell.castToCell());
             castUnitSpell.setId(id);
-
             return castUnitSpell;
         }
         else{

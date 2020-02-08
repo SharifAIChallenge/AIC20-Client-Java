@@ -30,10 +30,13 @@ public class Game implements World {
         this.sender = sender;
     }
 
+    //todo
+    //there is a problem. some of properties have to pass to the next game, but they don't.
     public Game(Game game) {
         this.clientInitMessage = game.getClientInitMessage();
         this.initMessage = game.getInitMessage();
         this.sender = game.getSender();
+        this.spellsByTypeId = game.spellsByTypeId;
         players = game.getPlayers();
     }
 
@@ -733,7 +736,6 @@ public class Game implements World {
         int minDis = 100 * 1000;
         Player player = getPlayerById(playerId);
         if (player == null) return null;
-        System.out.println(player.getKing());
         Cell playerCell = player.getKing().getCenter();
         if (cell == null) return null;
         Path bestPath = null;
@@ -783,8 +785,7 @@ public class Game implements World {
 
     private void setSpellsById() {
         for (Spell spell : initMessage.getSpells()) {
-            if (spellsByTypeId.get(spell.getTypeId()) == null)
-                spellsByTypeId.put(spell.getTypeId(), spell);
+            spellsByTypeId.putIfAbsent(spell.getTypeId(), spell);
         }
     }
 
