@@ -23,6 +23,7 @@ public class Player {
     private Unit damageUpgradedUnit;
 
     ////////
+    private Path[][] shortestPathsToCellsCrossMyself;
     private Path[][] shortestPathsToCells;
 ////////
 
@@ -160,6 +161,14 @@ public class Player {
 
     /////////////
 
+    Path[][] getShortestPathsToCellsCrossMyself() {
+        return shortestPathsToCellsCrossMyself;
+    }
+
+    void setShortestPathsToCellsCrossMyself(Path[][] shortestPathsToCellsCrossMyself) {
+        this.shortestPathsToCellsCrossMyself = shortestPathsToCellsCrossMyself;
+    }
+
     Path[][] getShortestPathsToCells() {
         return shortestPathsToCells;
     }
@@ -167,6 +176,7 @@ public class Player {
     void setShortestPathsToCells(Path[][] shortestPathsToCells) {
         this.shortestPathsToCells = shortestPathsToCells;
     }
+
     ///////////////////////
 
     public boolean isAlive() {

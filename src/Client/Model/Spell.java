@@ -10,6 +10,14 @@ public class Spell {
     private int power;
     private boolean isDamaging;
 
+    public boolean isAreaSpell() {
+        return type != SpellType.TELE;
+    }
+
+    public boolean isUnitSpell() {
+        return type == SpellType.TELE;
+    }
+
     public int getTypeId() {
         return typeId;
     }
