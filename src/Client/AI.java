@@ -26,7 +26,6 @@ public class AI
     public void turn(World world) {
         System.out.println("turn started: " + world.getCurrentTurn());
         List<Path> myPaths = world.getMe().getPathsFromPlayer();
-        world.putUnit(0, myPaths.get(0));
     }
 
     public void end(World world, Map<Integer, Integer> scores) {
