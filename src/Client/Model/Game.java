@@ -20,7 +20,7 @@ public class Game implements World {
     private HashMap<Cell, List<Path>> pathsCrossingCells = new HashMap<>();
     private HashMap<Spell, Integer> myTurnSpells = new HashMap<>();
 
-    private List<Player> players = new ArrayList<>();
+    private List<Player> players;
     private HashMap<Integer, Unit> unitsById = new HashMap<>();
     private HashMap<Integer, Spell> spellsByTypeId = new HashMap<>();
     private HashMap<Integer, BaseUnit> baseUnitsById = new HashMap<>();
@@ -246,26 +246,24 @@ public class Game implements World {
     }
 
     @Override
-    public void castUnitSpell(int unitId, int pathId, int index, int spellId) {
+    public void castUnitSpell(int unitId, int pathId, Cell cell, int spellId) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
         jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
         jsonObject.add("pathId", Json.GSON.toJsonTree(pathId));
         Path path = InitMessage.getInitMessage().getPathById(pathId);
         if (path == null) return;
-        if (index >= path.getCells().size()) return;
-
-        Cell cell = path.getCells().get(index);
+        if (cell == null)return;
         jsonObject.add("cell", Json.GSON.toJsonTree(cell.castToClientCell()));
         Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
         sender.accept(message);
     }
 
     @Override
-    public void castUnitSpell(int unitId, int pathId, int index, Spell spell) {
+    public void castUnitSpell(int unitId, int pathId, Cell cell, Spell spell) {
         if (spell == null) return;
         int spellId = spell.getTypeId();
-        castUnitSpell(unitId, pathId, index, spellId);
+        castUnitSpell(unitId, pathId, cell, spellId);
     }
 
     @Override
@@ -702,6 +700,7 @@ public class Game implements World {
     }
 
     private void createPLayers() {
+        players = new ArrayList<>();
         Player myPlayer = new Player(getMyId());
         Player friendPlayer = new Player(getFriendId());
         Player firstEnemyPlayer = new Player(getFirstEnemyId());
