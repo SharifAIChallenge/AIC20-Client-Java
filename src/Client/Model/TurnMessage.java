@@ -4,6 +4,12 @@ import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class has information of each turn of the game.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class TurnMessage {
     private List<King> kings;
     private List<Unit> units;

@@ -5,6 +5,12 @@ import Client.dto.init.GameConstants;
 import java.net.PortUnreachableException;
 import java.util.List;
 
+/**
+ * This class has initial information of the game.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class InitMessage {
     private static InitMessage initMessage = new InitMessage();
     private Mapp mapp;

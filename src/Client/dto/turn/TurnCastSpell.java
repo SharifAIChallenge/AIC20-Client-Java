@@ -6,6 +6,12 @@ import Client.dto.ClientCell;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class has information of the cast spell. The data is sent by the server each turn.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class TurnCastSpell {
     private int typeId;
     private int id;

@@ -12,6 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class has data of the game which is sent by the server each turn.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class ClientTurnMessage {
     private int currTurn;
     private List<Integer> deck;

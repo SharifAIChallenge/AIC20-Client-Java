@@ -5,6 +5,12 @@ import Client.dto.ClientCell;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class has properties of the cell in the map.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class Cell {
     private int row;
     private int col;

@@ -13,6 +13,12 @@ import java.util.stream.Collectors;
 
 // is it possible that one field stays null after casting?
 
+/**
+ * This class has initial information of the game that is sent by the server before the start of the game.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class ClientInitMessage {
     private GameConstants gameConstants;
     private ClientMap map;
