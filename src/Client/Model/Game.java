@@ -34,6 +34,7 @@ public class Game implements World {
         this.clientInitMessage = game.getClientInitMessage();
         this.initMessage = game.getInitMessage();
         this.sender = game.getSender();
+        players = game.getPlayers();
     }
 
     private Consumer<Message> getSender() {
@@ -388,11 +389,6 @@ public class Game implements World {
     }
 
     @Override
-    public HashMap<Spell, Integer> getSpells() {
-        return new HashMap<>(myTurnSpells);
-    }
-
-    @Override
     public Spell getReceivedSpell() {
         return spellsByTypeId.get(clientTurnMessage.getReceivedSpell());
     }
@@ -680,7 +676,7 @@ public class Game implements World {
         this.clientTurnMessage = msg;
         this.clientTurnMessage.setTurnTime(System.currentTimeMillis());
         turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
-
+        updateMessage(clientInitMessage);
         setPLayersUnits();
         calcUnitsById();
         calcMyTurnSpells();
@@ -718,6 +714,9 @@ public class Game implements World {
         players.add(friendPlayer);
         players.add(firstEnemyPlayer);
         players.add(secondEnemyPlayer);
+    }
+
+    private void updateKings(){
         for (Player player : players){
             player.setKing(getPlayerKing(player.getPlayerId()));
         }
@@ -830,16 +829,24 @@ public class Game implements World {
                 pathsById.put(path.getId(), path);
     }
 
-    public void handleInitMessage(ClientInitMessage msg) {
+    private void updateMessage(ClientInitMessage msg){
         this.clientInitMessage = msg;
         this.initMessage = clientInitMessage.castToInitMessage();
-        createPLayers();
         setSpellsById();
-        calcPathsToFriends();
-        calcPathsFromPlayers();
-        setShortestPathsOfPlayers();
         calcBaseUnitsById();
         calcPathsById();
+
+        createPLayers();
+
+        calcPathsToFriends();
+        calcPathsFromPlayers();
+        updateKings();
+    }
+
+    public void handleInitMessage(ClientInitMessage msg) {
+        updateMessage(msg);
+        createPLayers();
+        setShortestPathsOfPlayers();
     }
 
     @Override
