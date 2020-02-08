@@ -4,6 +4,12 @@ import Client.Model.Spell;
 import Client.Model.SpellTarget;
 import Client.Model.SpellType;
 
+/**
+ * This class has initial information of the spell. Data is received from the server in the initial message.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class ClientSpell {
     private String type;
     private int typeId;

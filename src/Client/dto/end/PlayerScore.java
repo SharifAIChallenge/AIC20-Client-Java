@@ -1,5 +1,9 @@
 package Client.dto.end;
 
+/**
+ * This class has the result of the game.
+ */
+
 public class PlayerScore {
     private int playerId;
     private int score;
