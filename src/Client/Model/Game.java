@@ -844,8 +844,8 @@ public class Game implements World {
     }
 
     public void handleInitMessage(ClientInitMessage msg) {
-        updateMessage(msg);
         createPLayers();
+        updateMessage(msg);
         setShortestPathsOfPlayers();
     }
 
