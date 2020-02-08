@@ -18,7 +18,7 @@ public class Game implements World {
     private TurnMessage turnMessage = new TurnMessage();
     private Consumer<Message> sender;
     private HashMap<Cell, List<Path>> pathsCrossingCells = new HashMap<>();
-    private HashMap<Spell, Integer> myTurnSpells = new HashMap<>();
+
 
     private List<Player> players;
     private HashMap<Integer, Unit> unitsById = new HashMap<>();
@@ -478,17 +478,8 @@ public class Game implements World {
     }
 
     private void calcMyTurnSpells() {
-        List<Spell> spells = getSpellsByIds(clientTurnMessage.getMySpells());
-        myTurnSpells = new HashMap<Spell, Integer>();
-        for (Spell spell : spells) {
-            int currentCounter = 0;
-            if (myTurnSpells.containsKey(spell)) {
-                currentCounter = myTurnSpells.get(spell);
-                myTurnSpells.remove(spell);
-            }
-            currentCounter++;
-            myTurnSpells.put(spell, currentCounter + 1);
-        }
+        players.get(0).setSpells(getSpellsByIds(clientTurnMessage.getMySpells()));
+        players.get(0).calcMyTurnSpells();
     }
 
     private void calcPlayerplayedUnits(Player player) {
@@ -699,6 +690,7 @@ public class Game implements World {
 
         updateDeck();
         updateAp();
+
 
     }
 
