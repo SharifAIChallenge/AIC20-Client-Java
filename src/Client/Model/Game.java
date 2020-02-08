@@ -54,7 +54,7 @@ public class Game implements World {
         return clientInitMessage.getGameConstants();
     }
 
-    @Override
+        @Override
     public void chooseDeckById(List<Integer> typeIds) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("units", Json.GSON.toJsonTree(typeIds));
@@ -665,6 +665,11 @@ public class Game implements World {
         }
     }
 
+    private void updateDeck(){
+        players.get(0).setDeck(turnMessage.getDeck());
+        players.get(0).setHand(turnMessage.getHand());
+    }
+
     public void handleTurnMessage(Message msg) {
         System.out.println(Json.GSON.toJson(msg));
         this.clientTurnMessage = Json.GSON.fromJson(msg.getInfo(), ClientTurnMessage.class);
@@ -690,6 +695,9 @@ public class Game implements World {
         updateCastSpells();
         calcDamageUpgradedUnits();
         calcRangeUpgradedUnits();
+
+        updateDeck();
+
 
     }
 
@@ -824,6 +832,7 @@ public class Game implements World {
         setShortestPathsOfPlayers();
         calcBaseUnitsById();
         calcPathsById();
+
     }
 
     @Override
