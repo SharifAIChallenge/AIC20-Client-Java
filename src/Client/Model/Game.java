@@ -480,7 +480,7 @@ public class Game implements World {
     }
 
     //////////////////////////////////////////////////// ino badan behtar konim
-    private List<Unit> getUnitsWithSpellOfPlayer(SpellType spellType, int playerId) {
+/*    private List<Unit> getUnitsWithSpellOfPlayer(SpellType spellType, int playerId) {
         //todo kamel optimize nashode
         List<Unit> units = new ArrayList<>();
         Player player = getPlayerById(playerId);
@@ -494,16 +494,12 @@ public class Game implements World {
             }
         }
         return units;
-    }
+    }*/
 
     //////////////////////////////////////////////////////////
 
     public ClientInitMessage getClientInitMessage() {
         return clientInitMessage;
-    }
-
-    public void setClientInitMessage(ClientInitMessage clientInitMessage) {
-        this.clientInitMessage = clientInitMessage;
     }
 
     private void setPLayersUnits() {
@@ -515,7 +511,7 @@ public class Game implements World {
     private void calcUnitsById() {
         unitsById = new HashMap<>();
         for (Unit unit : turnMessage.getUnits()) {
-            if (unitsById.get(unit.getUnitId()) == null)
+            if (!unitsById.containsKey(unit.getUnitId()))
                 unitsById.put(unit.getUnitId(), unit);
         }
     }
@@ -530,7 +526,6 @@ public class Game implements World {
         for (TurnUnit turnUnit : clientTurnMessage.getUnits())
             if (turnUnit.getPlayerId() == player.getPlayerId() && turnUnit.isWasPlayedThisTurn())
                 playedUnits.add(unitsById.get(turnUnit.getUnitId()));
-
         player.setPlayedUnits(playedUnits);
     }
 
@@ -566,7 +561,8 @@ public class Game implements World {
             player.setDuplicateUnits(duplicateUnits);
         }
     }
-
+/////////////////////////////////////////////////////
+    //todo ta inja check shod
     void calcPlayersHastedUnits() {
         for (Player player : players) {
             List<Unit> hastedUnits = new ArrayList<>();
