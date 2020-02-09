@@ -12,11 +12,11 @@ import java.util.List;
 
 public class Player {
     private int playerId;
+    Path[][] shortestPathsToCellsCrossMyself;
     private List<BaseUnit> deck;
     private List<BaseUnit> hand;
-    private int ap;
-    private King king;
     private List<Path> pathsFromPlayer = new ArrayList<>();
+    Path[][] shortestPathsToCells;
     private Path pathToFriend;
     private List<Unit> units = new ArrayList<>();
     private CastAreaSpell castAreaSpell;
@@ -31,10 +31,9 @@ public class Player {
 
     private List<Spell> spells = new ArrayList<>();
     private HashMap<Spell, Integer> myTurnSpells = new HashMap<>();
-    ////////
-    private Path[][] shortestPathsToCellsCrossMyself;
-    private Path[][] shortestPathsToCells;
-////////
+    private int ap;
+    private King king;
+
 
     public Player(int playerID) {
         this.playerId = playerID;
@@ -168,8 +167,6 @@ public class Player {
         this.damageUpgradedUnit = damageUpgradedUnit;
     }
 
-    /////////////
-
     Path[][] getShortestPathsToCellsCrossMyself() {
         return shortestPathsToCellsCrossMyself;
     }
@@ -185,8 +182,6 @@ public class Player {
     void setShortestPathsToCells(Path[][] shortestPathsToCells) {
         this.shortestPathsToCells = shortestPathsToCells;
     }
-
-    ///////////////////////
 
     public boolean isAlive() {
         return king.isAlive();

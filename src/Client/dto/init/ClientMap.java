@@ -1,9 +1,6 @@
 package Client.dto.init;
 
-import Client.Model.Cell;
 import Client.Model.Mapp;
-import Client.Model.Path;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,12 +15,12 @@ public class ClientMap {
     private List<ClientBaseKing> kings;
 
     public Mapp castToMap() {
-        Mapp mapp = Mapp.createMapp(rows, cols);
+        Mapp mapp = Mapp.createMapp(this.rows, this.cols);
         mapp.setPaths(
-                paths.stream().map(ClientPath::castToPath).collect(Collectors.toList())
+                this.paths.stream().map(ClientPath::castToPath).collect(Collectors.toList())
         );
         mapp.setKings(
-                kings.stream().map(ClientBaseKing::castToKing).collect(Collectors.toList())
+                this.kings.stream().map(ClientBaseKing::castToKing).collect(Collectors.toList())
         );
 
         return mapp;

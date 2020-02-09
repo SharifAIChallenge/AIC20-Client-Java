@@ -1,6 +1,5 @@
 package Client.Model;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.List;
 

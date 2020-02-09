@@ -18,8 +18,6 @@ public class Game implements World {
     private TurnMessage turnMessage = new TurnMessage();
     private Consumer<Message> sender;
     private HashMap<Cell, List<Path>> pathsCrossingCells = new HashMap<>();
-
-
     private List<Player> players;
     private HashMap<Integer, Unit> unitsById = new HashMap<>();
     private HashMap<Integer, Spell> spellsByTypeId = new HashMap<>();
@@ -464,7 +462,7 @@ public class Game implements World {
         this.clientInitMessage = clientInitMessage;
     }
 
-    private Player getPlayerById(int playerId) {
+    public Player getPlayerById(int playerId) {
         for (Player player : players)
             if (player.getPlayerId() == playerId)
                 return player;

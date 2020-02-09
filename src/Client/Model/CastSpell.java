@@ -9,10 +9,10 @@ import java.util.List;
  */
 
 public class CastSpell {
-    private Spell spell;
     private int id;
     private int casterId;
     private Cell cell;
+    private Spell spell;
     private List<Unit> affectedUnits;
 
     public List<Unit>getAffectedUnits() {

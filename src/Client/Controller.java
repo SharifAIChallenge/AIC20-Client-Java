@@ -22,7 +22,6 @@ import java.util.function.Consumer;
  */
 public class Controller
 {
-
     // Logging tag
     private static final String TAG = "Controller";
 

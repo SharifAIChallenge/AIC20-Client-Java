@@ -7,14 +7,14 @@ package Client.Model;
  */
 
 public class King {
-    private Cell center;
     private int hp;
     private int attack;
     private int range;
-    private boolean isAlive;
     private int playerId;
+    private boolean isAlive;
     private Unit target;
     private Cell targetCell;
+    private Cell center;
 
     public int getPlayerId() {
         return playerId;

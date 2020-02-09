@@ -1,9 +1,7 @@
 package Client.dto.end;
 
-import Client.dto.turn.ClientTurnMessage;
-
+import  Client.dto.turn.ClientTurnMessage;
 import java.util.List;
-
 
 /**
  * This class has properties of the end message.

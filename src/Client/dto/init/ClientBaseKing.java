@@ -1,6 +1,6 @@
 package Client.dto.init;
 
-import Client.Model.King;
+import  Client.Model.King;
 import Client.dto.ClientCell;
 
 /**

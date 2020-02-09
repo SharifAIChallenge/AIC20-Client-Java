@@ -10,14 +10,9 @@ import Client.Model.King;
 
 public class TurnKing {
     private int playerId;
-    private boolean isAlive;
     private int hp;
     private int target;
-
-    public King castToKing() {
-        King king = new King();
-        return king;
-    }
+    private boolean isAlive;
 
     public void updateKing(King king) {
         king.setPlayerId(playerId);

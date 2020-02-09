@@ -7,14 +7,14 @@ package Client.Model;
  */
 
 public class Spell {
-    private SpellType type;
     private int typeId;
     private int duration;
     private int priority;
-    private SpellTarget target;
     private int range;
     private int power;
     private boolean isDamaging;
+    private SpellType type;
+    private SpellTarget target;
 
     public boolean isAreaSpell() {
         return type != SpellType.TELE;

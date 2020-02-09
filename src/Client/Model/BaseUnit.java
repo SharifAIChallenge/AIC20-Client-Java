@@ -7,14 +7,14 @@ package Client.Model;
  */
 
 public class BaseUnit {
+    private int ap;
     private int typeId;
     private int maxHp;
-    private int baseAttack;
     private int baseRange;
+    private int baseAttack;
     private UnitTarget targetType;
     private boolean isFlying;
     private boolean isMultiple;
-    private int ap;
 
     public int getTypeId() {
         return typeId;
