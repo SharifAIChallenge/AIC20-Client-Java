@@ -836,9 +836,9 @@ public class Game implements World {
         setSpellsById();
         calcBaseUnitsById();
         calcPathsById();
+        updateKings();
         calcPathsToFriends();
         calcPathsFromPlayers();
-        updateKings();
     }
 
     public void handleInitMessage(ClientInitMessage msg) {
@@ -855,27 +855,22 @@ public class Game implements World {
         updateMessage(clientInitMessage);
         setPLayersUnits();
         calcUnitsById();
+        calcBaseUnits();
+        updateCastSpells();
+        updateDeck();
+        updateAp();
         calcMyTurnSpells();
         calcPlayersPlayedUnits();
         calcCastAreaSpells();
         calcCastUnitSpells();
-
         calcPlayersDuplicateUnits();
         calcPlayersHastedUnits();
         calcAffectedSpells();
         calcKingsTargets();
-
         calcUnitsTargets();
         calcDiedUnits();
-        calcBaseUnits();
-
-        updateCastSpells();
         calcDamageUpgradedUnits();
         calcRangeUpgradedUnits();
-
-        updateDeck();
-        updateAp();
         setCellsUnits();
-
     }
 }
