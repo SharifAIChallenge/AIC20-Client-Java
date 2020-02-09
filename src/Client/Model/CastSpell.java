@@ -14,6 +14,7 @@ public class CastSpell {
     private Cell cell;
     private Spell spell;
     private List<Unit> affectedUnits;
+    private boolean wasCastThisTurn;
 
     public List<Unit>getAffectedUnits() {
         return affectedUnits;
@@ -53,5 +54,13 @@ public class CastSpell {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    boolean isWasCastThisTurn() {
+        return wasCastThisTurn;
+    }
+
+    public void setWasCastThisTurn(boolean wasCastThisTurn) {
+        this.wasCastThisTurn = wasCastThisTurn;
     }
 }
