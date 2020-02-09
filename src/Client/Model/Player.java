@@ -199,7 +199,7 @@ public class Player {
         this.spells = spells;
     }
 
-    public void calcMyTurnSpells() {
+    void calcMyTurnSpells() {
         myTurnSpells = new HashMap<>();
         for (Spell spell : spells) {
             int currentCounter = 0;
@@ -213,7 +213,7 @@ public class Player {
     }
 
     public int getSpellCount(Spell spell){
-        if(myTurnSpells.get(spell) == null)return 0;
+        if(!myTurnSpells.containsKey(spell))return 0;
         return myTurnSpells.get(spell);
     }
 }

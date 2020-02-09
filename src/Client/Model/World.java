@@ -146,7 +146,9 @@ public interface World {
      */
 
     public void putUnit(int typeId, int pathId);
-    // todo, we have also 3 types else
+    public void putUnit(BaseUnit baseUnit, int pathId);
+    public void putUnit(int typeId, Path path);
+    public void putUnit(BaseUnit baseUnit, Path path);
 
     /**
      * returns current turn number
@@ -162,14 +164,14 @@ public interface World {
 
     /**
      * cast unit spell
-     * @param unitId id of unit that want to cast unit spell on that
-     * @param pathId id of path that cast unit spell on that
-     * @param cell id of cell that cast unit spell on that
-     * @param spellId id of unit spell that want to cast
+     * @param unit the unit that want to cast unit spell on it
+     * @param path the path that cast unit spell on it
+     * @param cell cell that cast unit spell on it
+     * @param spell unitSpell that want to cast
      */
-    public void castUnitSpell(int unitId, int pathId, Cell cell, int spellId);
+    public void castUnitSpell(Unit unit, Path path, Cell cell, Spell spell);
 
-    public void castUnitSpell(int unitId, int pathId, Cell cell, Spell spell);
+    public void castUnitSpell(Unit unit, Path path, int row, int col, Spell spell);
 
     /**
      * cast area spell
@@ -232,24 +234,52 @@ public interface World {
     public int getRangeUpgradeNumber();
 
     /**
-     * returns your spells in a list
+     * returns unit by given id
+     * returns null if unitId doesn't exist
+     * @param unitId id of unit
      * @return
      */
-    public List<Spell> getSpellsList();
 
+    public Unit getUnitById(int unitId);
+
+    /**
+     * returns player by given id
+     * @param playerId id of player
+     * @return
+     */
+
+    public Player getPlayerById(int playerId);
+
+    /**
+     * returns the spell you received at the current turn
+     * @return
+     */
 
     public Spell getReceivedSpell();
 
+    /**
+     * returns the spell your friend received at the current turn
+     * @return
+     */
+
     public Spell getFriendReceivedSpell();
+
+    /**
+     * upgrade range of given unit
+     * @param unit unit that you want upgrade its range
+     */
 
     public void upgradeUnitRange(Unit unit);
 
     public void upgradeUnitRange(int unitId);
 
+    /**
+     * upgrade damage of given unit
+     * @param unit unit that you want upgrade its damage
+     */
+
     public void upgradeUnitDamage(Unit unit);
 
     public void upgradeUnitDamage(int unitId);
-
-
 
 }
