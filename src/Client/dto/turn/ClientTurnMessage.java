@@ -1,12 +1,10 @@
 package Client.dto.turn;
 
-
 import Client.Model.CastSpell;
 import Client.Model.InitMessage;
 import Client.Model.King;
 import Client.Model.TurnMessage;
 import Client.Model.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,56 +20,65 @@ public class ClientTurnMessage {
     private int currTurn;
     private List<Integer> deck;
     private List<Integer> hand;
-
     private List<TurnKing> kings;
     private List<TurnUnit> units;
     private List<TurnCastSpell> castSpells;
-
     private int receivedSpell;
     private int friendReceivedSpell;
     private List<Integer> mySpells;
     private List<Integer> friendSpells;
-
     private List<TurnUnit> diedUnits;
-
     private long turnTime;
-
-    //deck o hand class nistan?
-
-    private boolean gotRangeUpgrade;
-    private boolean gotDamageUpgrade;
+    private int remainingAP;
+    private int rangeUpgradedUnit;
+    private int damageUpgradedUnit;
     private int availableRangeUpgrades;
     private int availableDamageUpgrades;
-    private int rangeUpgradedUnit;  //todo
-    private int damageUpgradedUnit;
+    private boolean gotRangeUpgrade;
+    private boolean gotDamageUpgrade;
 
-    private int remainingAP;
+    public ClientTurnMessage() { }
+
+    private void updateMapUnits(TurnMessage turnMessage){
+        Mapp.getMapp().getUnits().clear();
+        for(Unit unit : turnMessage.getUnits())
+            Mapp.getMapp().getUnits().add(unit);
+    }
+
+    private void updateCellsUnits(TurnMessage turnMessage){
+        for(int i = 0; i < Mapp.getMapp().getRowNum(); i ++){
+            for(int j = 0; j < Mapp.getMapp().getColNum(); j ++){
+                Mapp.getMapp().getCells()[i][j].getUnits().clear();
+            }
+        }
+        for(Unit unit : turnMessage.getUnits()){
+            unit.getCell().getUnits().add(unit);
+        }
+    }
 
     public TurnMessage castToTurnMessage(InitMessage initMessage, HashMap<Integer, Spell> spellsByTypeId){
         TurnMessage turnMessage = new TurnMessage();
 
-        //todo
-        //exception : kings is null
-        // if kings' orders doesn't change
         turnMessage.setKings(new ArrayList<>());
-        for(int i = 0; i < kings.size(); i++){
+        for(int i = 0; i < this.kings.size(); i++){
             King king = initMessage.getMapp().getKings().get(i);
-            TurnKing turnKing = kings.get(i);
+            TurnKing turnKing = this.kings.get(i);
             turnKing.updateKing(king);
             turnMessage.getKings().add(king);
         }
 
         turnMessage.setCastSpells(
-                castSpells.stream().map(turnCastSpell -> turnCastSpell.castToCastSpell(spellsByTypeId)).collect(Collectors.toList())
+                this.castSpells.stream().map(turnCastSpell -> turnCastSpell.castToCastSpell(spellsByTypeId)).
+                        collect(Collectors.toList())
         );
-        for(int i = 0; i < castSpells.size(); i++){
-            TurnCastSpell turnCastSpell = castSpells.get(i);
+        for(int i = 0; i < this.castSpells.size(); i++){
+            TurnCastSpell turnCastSpell = this.castSpells.get(i);
             CastSpell castSpell = turnMessage.getCastSpells().get(i);
             castSpell.setSpell(initMessage.getSpellById(turnCastSpell.getTypeId()));
         }
 
         turnMessage.setUnits(
-                units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
+                this.units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
         );
 
         for (int unitId : this.getDeck())
@@ -93,35 +100,7 @@ public class ClientTurnMessage {
         return turnMessage;
     }
 
-    private void updateMapUnits(TurnMessage turnMessage){
-        Mapp.getMapp().getUnits().clear();
-        for(Unit unit : turnMessage.getUnits())
-            Mapp.getMapp().getUnits().add(unit);
-    }
-
-    private void updateCellsUnits(TurnMessage turnMessage){
-        for(int i = 0; i < Mapp.getMapp().getRowNum(); i ++){
-            for(int j = 0; j < Mapp.getMapp().getColNum(); j ++){
-                Mapp.getMapp().getCells()[i][j].getUnits().clear();
-            }
-        }
-        for(Unit unit : turnMessage.getUnits()){
-            unit.getCell().getUnits().add(unit);
-        }
-    }
-
-    private void updateKing(King king, TurnKing turnKing) {
-        king.setPlayerId(turnKing.getPlayerId());
-        king.setAlive(turnKing.isAlive());
-        king.setHp(turnKing.getHp());
-    }
-
-    public ClientTurnMessage() {
-
-    }
-
     public int getCurrTurn() {
-
         return currTurn;
     }
 

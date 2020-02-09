@@ -10,14 +10,14 @@ import Client.Model.UnitTarget;
  */
 
 public class ClientBaseUnit {
-    private int typeId;
+    private int ap;
     private int maxHP;
+    private int typeId;
     private int baseAttack;
     private int baseRange;
     private String target;      //can be enum, values: GROUND, AIR, BOTH
     private boolean isFlying;
     private boolean isMultiple;
-    private int ap;
 
     public BaseUnit castToBaseUnit() {
         BaseUnit baseUnit = new BaseUnit();

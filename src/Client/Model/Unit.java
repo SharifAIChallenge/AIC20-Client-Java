@@ -9,13 +9,8 @@ import java.util.List;
  */
 
 public class Unit {
-    private BaseUnit baseUnit;
-    private Cell cell;
     private int unitId;
-    private Path path;
-    private Unit target;
-    private Cell targetCell;
-    private King targetIfKing;
+    private int hp;
     private int playerId;
     private int damageLevel;
     private int rangeLevel;
@@ -23,8 +18,13 @@ public class Unit {
     private int attack;
     private boolean isDuplicate;
     private boolean isHasted;
+    private Cell cell;
+    private Path path;
+    private Unit target;
+    private Cell targetCell;
+    private King targetIfKing;
+    private BaseUnit baseUnit;
     private List<CastSpell> affectedSpells;
-    int hp;
 
 
     public Unit() {

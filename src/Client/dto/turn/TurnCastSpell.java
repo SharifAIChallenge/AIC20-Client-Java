@@ -2,8 +2,6 @@ package Client.dto.turn;
 
 import Client.Model.*;
 import Client.dto.ClientCell;
-import common.network.Json;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,14 +12,14 @@ import java.util.List;
  */
 
 public class TurnCastSpell {
-    private int typeId;
     private int id;
+    private int unitId;
+    private int pathId;
+    private int typeId;
     private int casterId;
-    private ClientCell cell;
-    private int unitId;         // for unit spell
-    private int pathId;         // for unit spell and caster == player,friend
     private int remainingTurns;
     private boolean wasCastThisTurn;
+    private ClientCell cell;
     private List<Integer> affectedUnits;
 
     public CastSpell castToCastSpell(HashMap<Integer, Spell> spellsByTypeId){

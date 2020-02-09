@@ -1,8 +1,5 @@
 package Client.Model;
 
-import Client.dto.init.GameConstants;
-
-import java.net.PortUnreachableException;
 import java.util.List;
 
 /**
@@ -14,17 +11,14 @@ import java.util.List;
 public class InitMessage {
     private static InitMessage initMessage = new InitMessage();
     private Mapp mapp;
-    private List<BaseUnit> baseUnitList;
     private List<Spell> spells;
-
+    private List<BaseUnit> baseUnitList;
 
     public static InitMessage getInitMessage() {
         return initMessage;
     }
 
-    private InitMessage() {
-
-    }
+    private InitMessage() { }
 
     public Path getPathById(int pathId){
         for(Path path : Mapp.getMapp().getPaths())
@@ -37,7 +31,6 @@ public class InitMessage {
         for (Spell spell : initMessage.getSpells())
             if (spell.getTypeId() == spellId)
                 return spell;
-
         return null;
     }
 

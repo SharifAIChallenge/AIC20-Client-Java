@@ -12,10 +12,10 @@ import java.util.List;
 public class Mapp {
     private static Mapp mapp; //is it ok?
     private int colNum, rowNum;
+    private Cell[][] cells;
     private List<Path> paths;
     private List<Unit> units = new ArrayList<>();
     private List<King> kings;
-    private Cell[][] cells;
 
     public static Mapp createMapp(int rows, int cols) {
         if (mapp != null) return mapp;
