@@ -533,25 +533,27 @@ public class Game implements World {
             calcPlayerplayedUnits(player);
     }
 
-    void calcCastAreaSpells() {
+    private void calcCastAreaSpells() {
         for (Player player : players) {
             for (CastSpell castSpell : turnMessage.getCastSpells()) {
-                if (castSpell instanceof CastAreaSpell && castSpell.getCasterId() == player.getPlayerId())
+                if (castSpell instanceof CastAreaSpell && castSpell.getCasterId() == player.getPlayerId()
+                        && castSpell.isWasCastThisTurn())
                     player.setCastAreaSpell((CastAreaSpell) castSpell);
             }
         }
     }
 
-    void calcCastUnitSpells() {
+    private void calcCastUnitSpells() {
         for (Player player : players) {
             for (CastSpell castSpell : turnMessage.getCastSpells()) {
-                if (castSpell instanceof CastUnitSpell && castSpell.getCasterId() == player.getPlayerId())
+                if (castSpell instanceof CastUnitSpell && castSpell.getCasterId() == player.getPlayerId()
+                        && castSpell.isWasCastThisTurn())
                     player.setCastUnitSpell((CastUnitSpell) castSpell);
             }
         }
     }
 
-    void calcPlayersDuplicateUnits() {
+    private void calcPlayersDuplicateUnits() {
         for (Player player : players) {
             List<Unit> duplicateUnits = new ArrayList<>();
             for (Unit unit : player.getUnits())
@@ -562,7 +564,7 @@ public class Game implements World {
     }
 /////////////////////////////////////////////////////
     //todo ta inja check shod
-    void calcPlayersHastedUnits() {
+    private void calcPlayersHastedUnits() {
         for (Player player : players) {
             List<Unit> hastedUnits = new ArrayList<>();
             for (Unit unit : player.getUnits())

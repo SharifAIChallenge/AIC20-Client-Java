@@ -28,6 +28,7 @@ public class TurnCastSpell {
             castUnitSpell.setCasterId(casterId);
             castUnitSpell.setCell(cell.castToCell());
             castUnitSpell.setId(id);
+            castUnitSpell.setWasCastThisTurn(wasCastThisTurn);
             return castUnitSpell;
         }
         else{
@@ -35,6 +36,7 @@ public class TurnCastSpell {
             castAreaSpell.setCasterId(casterId);
             castAreaSpell.setCell(cell.castToCell());
             castAreaSpell.setId(id);
+            castAreaSpell.setWasCastThisTurn(wasCastThisTurn);
             return castAreaSpell;
         }
     }
