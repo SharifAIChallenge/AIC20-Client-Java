@@ -1,9 +1,6 @@
 package Client;
 
 import Client.Model.*;
-import common.network.Json;
-
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -22,17 +19,9 @@ public class AI {
 
     public void turn(World world) {
         System.out.println("turn started: " + world.getCurrentTurn());
-        System.out.println(world.);
     }
 
     public void end(World world, Map<Integer, Integer> scores) {
         System.out.println("end started");
     }
 }
-
-//        System.out.println(Json.GSON.toJson(world.getCellUnits(10, 10)));
-//        System.out.println(Json.GSON.toJson(me.getCastAreaSpell()));
-//        System.out.println(Json.GSON.toJson(me.getCastUnitSpell()));
-//        System.out.println(Json.GSON.toJson(me.getDuplicateUnits()));
-//        System.out.println(Json.GSON.toJson(me.getHastedUnits()));
-//        System.out.println(Json.GSON.toJson(me.getPlayedUnits()));
