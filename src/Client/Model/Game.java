@@ -12,6 +12,7 @@ import common.network.Json;
 import common.network.data.Message;
 
 public class Game implements World {
+    private long turnTime;
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
@@ -196,7 +197,7 @@ public class Game implements World {
 
     @Override
     public int getRemainingTime() {
-        long result = (clientTurnMessage.getTurnTime() + clientInitMessage.getGameConstants().getTurnTimeout() -
+        long result = (this.turnTime + clientInitMessage.getGameConstants().getTurnTimeout() -
                 System.currentTimeMillis());
         return (int) result;
     }
@@ -843,6 +844,7 @@ public class Game implements World {
 
     public void handleInitMessage(ClientInitMessage msg) {
         this.clientInitMessage = msg;
+        this.turnTime = System.currentTimeMillis();
         createPLayers();
         updateMessage(msg);
         setShortestPathsOfPlayers();
@@ -850,7 +852,7 @@ public class Game implements World {
 
     public void handleTurnMessage(ClientTurnMessage msg) {
         this.clientTurnMessage = msg;
-        this.clientTurnMessage.setTurnTime(System.currentTimeMillis());
+        this.turnTime = System.currentTimeMillis();
         turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
         updateMessage(clientInitMessage);
         setPLayersUnits();

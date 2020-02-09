@@ -28,7 +28,6 @@ public class ClientTurnMessage {
     private List<Integer> mySpells;
     private List<Integer> friendSpells;
     private List<TurnUnit> diedUnits;
-    private long turnTime;
     private int remainingAP;
     private int rangeUpgradedUnit;
     private int damageUpgradedUnit;
@@ -218,14 +217,6 @@ public class ClientTurnMessage {
 
     public void setRemainingAP(int remainingAP) {
         this.remainingAP = remainingAP;
-    }
-
-    public long getTurnTime() {
-        return turnTime;
-    }
-
-    public void setTurnTime(long turnTime) {
-        this.turnTime = turnTime;
     }
 
     public int getRangeUpgradedUnit() {
