@@ -110,8 +110,6 @@ public class Game implements World {
         return Mapp.getMapp();
     }
 
-
-    //be in dast nazanan
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
         if (cell == null) return new ArrayList<>();
