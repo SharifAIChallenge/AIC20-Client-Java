@@ -14,14 +14,13 @@ import java.util.List;
 public class Cell {
     private int row;
     private int col;
-    private List<Unit> units = new ArrayList<>(); //private access ? what should we do
+    private List<Unit> units = new ArrayList<>();
 
     @Override
     public boolean equals(Object object) {
-        if (object == null || !(object instanceof Cell)) return false;
+        if (!(object instanceof Cell)) return false;
         Cell cell = (Cell) object;
-        if (cell.getRow() == this.row && cell.getCol() == this.col) return true;
-        return false;
+        return cell.getRow() == this.row && cell.getCol() == this.col;
     }
 
     public Cell(int row, int col) {

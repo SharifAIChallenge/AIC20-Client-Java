@@ -29,8 +29,6 @@ public class ClientTurnMessage {
     private List<Integer> friendSpells;
     private List<TurnUnit> diedUnits;
     private int remainingAP;
-    private int rangeUpgradedUnit;
-    private int damageUpgradedUnit;
     private int availableRangeUpgrades;
     private int availableDamageUpgrades;
     private boolean gotRangeUpgrade;
@@ -39,15 +37,15 @@ public class ClientTurnMessage {
     public ClientTurnMessage() { }
 
     private void updateMapUnits(TurnMessage turnMessage){
-        Mapp.getMapp().getUnits().clear();
+        Map.getMap().getUnits().clear();
         for(Unit unit : turnMessage.getUnits())
-            Mapp.getMapp().getUnits().add(unit);
+            Map.getMap().getUnits().add(unit);
     }
 
     private void updateCellsUnits(TurnMessage turnMessage){
-        for(int i = 0; i < Mapp.getMapp().getRowNum(); i ++){
-            for(int j = 0; j < Mapp.getMapp().getColNum(); j ++){
-                Mapp.getMapp().getCells()[i][j].getUnits().clear();
+        for(int i = 0; i < Map.getMap().getRowNum(); i ++){
+            for(int j = 0; j < Map.getMap().getColNum(); j ++){
+                Map.getMap().getCells()[i][j].getUnits().clear();
             }
         }
         for(Unit unit : turnMessage.getUnits()){
@@ -60,7 +58,7 @@ public class ClientTurnMessage {
 
         turnMessage.setKings(new ArrayList<>());
         for(int i = 0; i < this.kings.size(); i++){
-            King king = initMessage.getMapp().getKings().get(i);
+            King king = initMessage.getMap().getKings().get(i);
             TurnKing turnKing = this.kings.get(i);
             turnKing.updateKing(king);
             turnMessage.getKings().add(king);
@@ -216,22 +214,6 @@ public class ClientTurnMessage {
 
     public void setRemainingAP(int remainingAP) {
         this.remainingAP = remainingAP;
-    }
-
-    public int getRangeUpgradedUnit() {
-        return rangeUpgradedUnit;
-    }
-
-    public void setRangeUpgradedUnit(int rangeUpgradedUnit) {
-        this.rangeUpgradedUnit = rangeUpgradedUnit;
-    }
-
-    public int getDamageUpgradedUnit() {
-        return damageUpgradedUnit;
-    }
-
-    public void setDamageUpgradedUnit(int damageUpgradedUnit) {
-        this.damageUpgradedUnit = damageUpgradedUnit;
     }
 
     public List<TurnUnit> getDiedUnits() {
