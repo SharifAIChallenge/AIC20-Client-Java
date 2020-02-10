@@ -1,7 +1,13 @@
 package Client.dto.init;
 
-import Client.Model.King;
+import  Client.Model.King;
 import Client.dto.ClientCell;
+
+/**
+ * This class has properties of the king before the start of the game. Data is sent by the server in the initial message.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
 
 public class ClientBaseKing {
     private int playerId;

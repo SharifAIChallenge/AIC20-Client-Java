@@ -1,14 +1,20 @@
 package Client.Model;
 
+/**
+ * This class has properties of the player's king.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class King {
-    private Cell center;
     private int hp;
     private int attack;
     private int range;
-    private boolean isAlive;
     private int playerId;
+    private boolean isAlive;
     private Unit target;
     private Cell targetCell;
+    private Cell center;
 
     public int getPlayerId() {
         return playerId;

@@ -3,15 +3,21 @@ package Client.dto.init;
 import Client.Model.BaseUnit;
 import Client.Model.UnitTarget;
 
+/**
+ * This class has information of the unit which is not used. Data is sent by the server in the initial message.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class ClientBaseUnit {
-    private int typeId;
+    private int ap;
     private int maxHP;
+    private int typeId;
     private int baseAttack;
     private int baseRange;
     private String target;      //can be enum, values: GROUND, AIR, BOTH
     private boolean isFlying;
     private boolean isMultiple;
-    private int ap;
 
     public BaseUnit castToBaseUnit() {
         BaseUnit baseUnit = new BaseUnit();
