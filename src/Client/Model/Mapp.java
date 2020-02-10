@@ -32,6 +32,12 @@ public class Mapp {
                 this.cells[i][j] = new Cell(i, j);
     }
 
+    public Cell getCell(int row, int col) {
+        if (row >= rowNum || row < 0 || col >= colNum || col < 0)
+            return null;
+        return cells[row][col];
+    }
+
     public int getColNum() {
         return colNum;
     }
