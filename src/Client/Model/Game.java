@@ -3,8 +3,10 @@ package Client.Model;
 import Client.dto.ClientCell;
 import Client.dto.init.*;
 import Client.dto.turn.*;
+
 import java.util.*;
 import java.util.function.Consumer;
+
 import com.google.gson.JsonObject;
 import common.network.Json;
 import common.network.data.Message;
@@ -494,7 +496,12 @@ public class Game implements World {
 
     private void calcMyTurnSpells() {
         players.get(0).setSpells(getSpellsByIds(clientTurnMessage.getMySpells()));
-        players.get(0).calcMyTurnSpells();
+        players.get(0).calcTurnSpells();
+    }
+
+    private void calcMyFriendTurnSpells(){
+        players.get(1).setSpells(getSpellsByIds(clientTurnMessage.getFriendSpells()));
+        players.get(1).calcTurnSpells();
     }
 
     private void calcPlayerplayedUnits(Player player) {
@@ -834,6 +841,7 @@ public class Game implements World {
         updateDeck();
         updateAp();
         calcMyTurnSpells();
+        calcMyFriendTurnSpells();
         calcPlayersPlayedUnits();
         calcCastAreaSpells();
         calcCastUnitSpells();
