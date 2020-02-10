@@ -30,7 +30,7 @@ public class Player {
     private Unit damageUpgradedUnit;
 
     private List<Spell> spells = new ArrayList<>();
-    private HashMap<Spell, Integer> myTurnSpells = new HashMap<>();
+    private HashMap<Spell, Integer> turnSpells = new HashMap<>();
     private int ap;
     private King king;
 
@@ -199,21 +199,21 @@ public class Player {
         this.spells = spells;
     }
 
-    void calcMyTurnSpells() {
-        myTurnSpells = new HashMap<>();
+    void calcTurnSpells() {
+        turnSpells = new HashMap<>();
         for (Spell spell : spells) {
             int currentCounter = 0;
-            if (myTurnSpells.containsKey(spell)) {
-                currentCounter = myTurnSpells.get(spell);
-                myTurnSpells.remove(spell);
+            if (turnSpells.containsKey(spell)) {
+                currentCounter = turnSpells.get(spell);
+                turnSpells.remove(spell);
             }
             currentCounter++;
-            myTurnSpells.put(spell, currentCounter + 1);
+            turnSpells.put(spell, currentCounter + 1);
         }
     }
 
     public int getSpellCount(Spell spell){
-        if(!myTurnSpells.containsKey(spell))return 0;
-        return myTurnSpells.get(spell);
+        if(!turnSpells.containsKey(spell))return 0;
+        return turnSpells.get(spell);
     }
 }
