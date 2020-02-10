@@ -810,7 +810,6 @@ public class Game implements World {
 
     private void updateMessage(ClientInitMessage msg) {
         this.clientInitMessage = msg;
-        this.initMessage = clientInitMessage.castToInitMessage();
         setSpellsById();
         calcBaseUnitsById();
         calcPathsById();
@@ -821,6 +820,7 @@ public class Game implements World {
 
     public void handleInitMessage(ClientInitMessage msg) {
         this.clientInitMessage = msg;
+        this.initMessage = clientInitMessage.castToInitMessage();
         this.turnTime = System.currentTimeMillis();
         createPLayers();
         updateMessage(msg);
