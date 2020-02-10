@@ -1,17 +1,14 @@
 package Client.dto.init;
 
 import Client.Model.InitMessage;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-// cast client map to map
-// 1. units have not casted.
-
-// cast client cell to cell
-// 1. units have not casted
-
-// is it possible that one field stays null after casting?
+/**
+ * This class has initial information of the game that is sent by the server before the start of the game.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
 
 public class ClientInitMessage {
     private GameConstants gameConstants;
@@ -21,12 +18,12 @@ public class ClientInitMessage {
 
     public InitMessage castToInitMessage() {
         InitMessage initMessage = InitMessage.getInitMessage();
-        initMessage.setMapp(map.castToMap());
+        initMessage.setMapp(this.map.castToMap());
         initMessage.setBaseUnitList(
-                baseUnits.stream().map(ClientBaseUnit::castToBaseUnit).collect(Collectors.toList())
+                this.baseUnits.stream().map(ClientBaseUnit::castToBaseUnit).collect(Collectors.toList())
         );
         initMessage.setSpells(
-                spells.stream().map(ClientSpell::castToSpell).collect(Collectors.toList())
+                this.spells.stream().map(ClientSpell::castToSpell).collect(Collectors.toList())
         );
         return initMessage;
     }

@@ -2,19 +2,24 @@ package Client.dto.turn;
 
 import Client.Model.*;
 import Client.dto.ClientCell;
-
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class has information of the cast spell. The data is sent by the server each turn.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class TurnCastSpell {
-    private int typeId;
     private int id;
+    private int unitId;
+    private int pathId;
+    private int typeId;
     private int casterId;
-    private ClientCell cell;
-    private int unitId;         // for unit spell
-    private int pathId;         // for unit spell and caster == player,friend
     private int remainingTurns;
     private boolean wasCastThisTurn;
+    private ClientCell cell;
     private List<Integer> affectedUnits;
 
     public CastSpell castToCastSpell(HashMap<Integer, Spell> spellsByTypeId){
@@ -23,7 +28,7 @@ public class TurnCastSpell {
             castUnitSpell.setCasterId(casterId);
             castUnitSpell.setCell(cell.castToCell());
             castUnitSpell.setId(id);
-
+            castUnitSpell.setWasCastThisTurn(wasCastThisTurn);
             return castUnitSpell;
         }
         else{
@@ -31,6 +36,7 @@ public class TurnCastSpell {
             castAreaSpell.setCasterId(casterId);
             castAreaSpell.setCell(cell.castToCell());
             castAreaSpell.setId(id);
+            castAreaSpell.setWasCastThisTurn(wasCastThisTurn);
             return castAreaSpell;
         }
     }

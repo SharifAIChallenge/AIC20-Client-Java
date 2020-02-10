@@ -12,15 +12,14 @@ import common.network.Json;
 import common.network.data.Message;
 
 public class Game implements World {
+    private long turnTime;
     private ClientInitMessage clientInitMessage;
     private ClientTurnMessage clientTurnMessage;
     private InitMessage initMessage;
     private TurnMessage turnMessage = new TurnMessage();
     private Consumer<Message> sender;
     private HashMap<Cell, List<Path>> pathsCrossingCells = new HashMap<>();
-    private HashMap<Spell, Integer> myTurnSpells = new HashMap<>();
-
-    private List<Player> players = new ArrayList<>();
+    private List<Player> players;
     private HashMap<Integer, Unit> unitsById = new HashMap<>();
     private HashMap<Integer, Spell> spellsByTypeId = new HashMap<>();
     private HashMap<Integer, BaseUnit> baseUnitsById = new HashMap<>();
@@ -34,7 +33,28 @@ public class Game implements World {
         this.clientInitMessage = game.getClientInitMessage();
         this.initMessage = game.getInitMessage();
         this.sender = game.getSender();
-        this.players =  game.getPlayers();
+        this.spellsByTypeId = game.spellsByTypeId;
+        players = game.getPlayers();
+    }
+
+    public HashMap<Integer, BaseUnit> getBaseUnitsById() {
+        return baseUnitsById;
+    }
+
+    public void setBaseUnitsById(HashMap<Integer, BaseUnit> baseUnitsById) {
+        this.baseUnitsById = baseUnitsById;
+    }
+
+    public HashMap<Integer, Path> getPathsById() {
+        return pathsById;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 
     private Consumer<Message> getSender() {
@@ -47,12 +67,6 @@ public class Game implements World {
 
     public ClientTurnMessage getClientTurnMessage() {
         return clientTurnMessage;
-    }
-
-    @Override
-    public GameConstants getGameConstants() {
-        if (clientInitMessage == null) return null;
-        return clientInitMessage.getGameConstants();
     }
 
     @Override
@@ -91,43 +105,13 @@ public class Game implements World {
         return players.get(3);
     }
 
-    private int getMyId() {
-        return clientInitMessage.getMap().getKings().get(0).getPlayerId();
-    }
-
-    private int getFriendId() {
-        return clientInitMessage.getMap().getKings().get(1).getPlayerId();
-    }
-
-    private int getFirstEnemyId() {
-        return clientInitMessage.getMap().getKings().get(2).getPlayerId();
-    }
-
-    private int getSecondEnemyId() {
-        return clientInitMessage.getMap().getKings().get(3).getPlayerId();
-    }
-
     @Override
     public Mapp getMapp() {
         return Mapp.getMapp();
     }
 
-    private King getPlayerKing(int playerId) {
-        for (King king : initMessage.getMapp().getKings())
-            if (king.getPlayerId() == playerId) {
-                return king;
-            }
-        return null;
-    }
 
-    private int getFriendIdOfPlayer(int playerId) {
-        if (playerId == getFriendId()) return getMyId();
-        if (playerId == getMyId()) return getFriendId();
-        if (playerId == getFirstEnemyId()) return getSecondEnemyId();
-        if (playerId == getSecondEnemyId()) return getFirstEnemyId();
-        return -1;
-    }
-
+    //be in dast nazanan
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
         if (cell == null) return new ArrayList<>();
@@ -148,16 +132,6 @@ public class Game implements World {
         return getPathsCrossingCell(cell);
     }
 
-    private List<Unit> calcPlayerUnits(int playerId) {
-        List<Unit> units = new ArrayList<>();
-        if (turnMessage.getUnits() == null) return units;
-        for (Unit unit : turnMessage.getUnits())
-            if (unit.getPlayerId() == playerId)
-                units.add(unit);
-        return units;
-    }
-
-    //path ha ro tavajoh nakardim hatman vase khode player bashe
     @Override
     public List<Unit> getCellUnits(Cell cell) {
         if (cell == null) return new ArrayList<>();
@@ -171,31 +145,11 @@ public class Game implements World {
         return getCellUnits(cell);
     }
 
-    private Path getShortestPathToCellFromPlayer(int fromPlayerId, Cell cell) {
-        Player player = getPlayerById(fromPlayerId);
-        if (player == null || cell == null) return null;
-        return player.getShortestPathsToCellsCrossMyself()[cell.getRow()][cell.getCol()];
-    }
-
-    private Path calcShortestPathToCell(int fromPlayerId, Cell cell) {
-        Player player = getPlayerById(fromPlayerId);
-        if (player == null || cell == null) return null;
-        Path path1 = getShortestPathToCellFromPlayer(fromPlayerId, cell);
-        Path path2 = getShortestPathToCellFromPlayer(getFriendIdOfPlayer(fromPlayerId), cell);
-        Path path3 = player.getPathToFriend();
-        int length1 = 100 * 1000, length2 = 100 * 1000;
-        if (path1 != null) length1 = path1.getCells().indexOf(cell);
-        if (path2 != null) length2 = path3.getCells().size() + path2.getCells().indexOf(cell);
-        if (length1 <= length2 && length1 < 100 * 1000) return path1;
-        if (length1 > length2) return path2;
-        return null;
-    }
-
     @Override
     public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
         Player player = getPlayerById(fromPlayerId);
         if (player == null || cell == null) return null;
-        return player.getShortestPathsToCellsCrossMyself()[cell.getRow()][cell.getCol()];
+        return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
     }
 
     @Override
@@ -210,20 +164,23 @@ public class Game implements World {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("typeId", Json.GSON.toJsonTree(typeId));
         jsonObject.add("pathId", Json.GSON.toJsonTree(pathId));
-        Message message = new Message("putUnit", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("putUnit", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
+    @Override
     public void putUnit(BaseUnit baseUnit, int pathId) {
         if (baseUnit == null) return;
         putUnit(baseUnit.getTypeId(), pathId);
     }
 
+    @Override
     public void putUnit(int typeId, Path path) {
         if (path == null) return;
         putUnit(typeId, path.getId());
     }
 
+    @Override
     public void putUnit(BaseUnit baseUnit, Path path) {
         if (baseUnit == null || path == null) return;
         putUnit(baseUnit.getTypeId(), path.getId());
@@ -238,67 +195,60 @@ public class Game implements World {
 
     @Override
     public int getRemainingTime() {
-        long result = (clientTurnMessage.getTurnTime() + clientInitMessage.getGameConstants().getTurnTimeout() -
+        long result = (this.turnTime + clientInitMessage.getGameConstants().getTurnTimeout() -
                 System.currentTimeMillis());
         return (int) result;
     }
 
     @Override
-    public void castUnitSpell(int unitId, int pathId, int index, int spellId) {
+    public void castUnitSpell(Unit unit, Path path, Cell cell, Spell spell) {
+        if (unit == null || path == null || cell == null || spell == null) return;
+        int unitId = unit.getUnitId(), pathId = path.getId(), spellId = spell.getTypeId();
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
         jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
         jsonObject.add("pathId", Json.GSON.toJsonTree(pathId));
-        Path path = InitMessage.getInitMessage().getPathById(pathId);
-        if (path == null) return;
-        if (index >= path.getCells().size()) return;
-
-        Cell cell = path.getCells().get(index);
         jsonObject.add("cell", Json.GSON.toJsonTree(cell.castToClientCell()));
-        Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("castSpell", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
     @Override
-    public void castUnitSpell(int unitId, int pathId, int index, Spell spell) {
-        if (spell == null) return;
-        int spellId = spell.getTypeId();
-        castUnitSpell(unitId, pathId, index, spellId);
+    public void castUnitSpell(Unit unit, Path path, int row, int col, Spell spell) {
+        Cell cell = getCellByCoordination(row, col);
+        castUnitSpell(unit, path, cell, spell);
+    }
+
+    @Override
+    public void castAreaSpell(Cell center, int spellId) {
+        if (center == null) return;
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
+        if (center == null) return;
+        jsonObject.add("cell", Json.GSON.toJsonTree(center.castToClientCell()));
+        Message message = new Message("castSpell", jsonObject, this.getCurrentTurn());
+        sender.accept(message);
     }
 
     @Override
     public void castAreaSpell(int row, int col, int spellId) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
         Cell cell = getCellByCoordination(row, col);
-        if (cell == null) return;
-        jsonObject.add("cell", Json.GSON.toJsonTree(cell.castToClientCell()));
-        Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
-        sender.accept(message);
+        castAreaSpell(cell, spellId);
     }
 
     @Override
     public void castAreaSpell(int row, int col, Spell spell) {
-        if (spell == null) return;
+        Cell cell = getCellByCoordination(row, col);
+        if (spell == null || cell == null) return;
         int spellId = spell.getTypeId();
-        castAreaSpell(row, col, spellId);
+        castAreaSpell(cell, spellId);
     }
 
     @Override
     public void castAreaSpell(Cell center, Spell spell) {
         if (center == null || spell == null) return;
         int spellId = spell.getTypeId();
-        int row = center.getRow();
-        int col = center.getCol();
-        castAreaSpell(row, col, spellId);
-    }
-
-    @Override
-    public void castAreaSpell(Cell center, int spellId) {
-        if (center == null) return;
-        int row = center.getRow();
-        int col = center.getCol();
-        castAreaSpell(row, col, spellId);
+        castAreaSpell(center, spellId);
     }
 
     @Override
@@ -317,10 +267,8 @@ public class Game implements World {
         return units;
     }
 
-
     @Override
     public List<Unit> getAreaSpellTargets(Cell center, int spellId) {
-        //spellId hamun type ?
         if (center == null) return new ArrayList<>();
         Spell spell = spellsByTypeId.get(spellId);
         if (spell == null) return new ArrayList<>();
@@ -339,20 +287,12 @@ public class Game implements World {
     public List<Unit> getAreaSpellTargets(int row, int col, int spellId) {
         Cell cell = getCellByCoordination(row, col);
         if (cell == null) return new ArrayList<>();
-        return new ArrayList<>(getAreaSpellTargets(cell, spellId));
-    }
-
-    private Cell getCellByCoordination(int row, int col) {
-        // todo what does this do if row and col be invalid
-        if (row >= initMessage.getMapp().getRowNum() || row < 0) return null;
-        if (col >= initMessage.getMapp().getColNum() || col < 0) return null;
-        return initMessage.getMapp().getCells()[row][col];
+        Spell spell = spellsByTypeId.get(spellId);
+        return new ArrayList<>(getAreaSpellTargets(cell, spell));
     }
 
     @Override
     public int getRemainingTurnsToUpgrade() {
-        //+=1 esho havasemun bashe
-
         return clientInitMessage.getGameConstants().getTurnsToUpgrade() -
                 clientTurnMessage.getCurrTurn() % clientInitMessage.getGameConstants().getTurnsToUpgrade();
     }
@@ -364,35 +304,13 @@ public class Game implements World {
     }
 
     @Override
-    public int getDamageUpgradeNumber() {
-        //avaz kardimesh
-        return clientTurnMessage.getAvailableDamageUpgrades();
-    }
-
-    @Override
     public int getRangeUpgradeNumber() {
-        //inam khodemun ezade kardim
         return clientTurnMessage.getAvailableRangeUpgrades();
     }
 
-    private List<Spell> getSpellsByIds(List<Integer> list) {
-        List<Spell> spells = new ArrayList<>();
-        for (int spellId : list) {
-            Spell spell = spellsByTypeId.get(spellId);
-            if (spell != null) spells.add(spell);
-        }
-        return spells;
-    }
-
     @Override
-    public List<Spell> getSpellsList() {
-        //spellId hamun type e ?
-        return getSpellsByIds(clientTurnMessage.getMySpells());
-    }
-
-    @Override
-    public HashMap<Spell, Integer> getSpells() {
-        return new HashMap<>(myTurnSpells);
+    public int getDamageUpgradeNumber() {
+        return clientTurnMessage.getAvailableDamageUpgrades();
     }
 
     @Override
@@ -415,7 +333,7 @@ public class Game implements World {
     public void upgradeUnitRange(int unitId) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
-        Message message = new Message("rangeUpgrade", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("rangeUpgrade", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
@@ -429,44 +347,137 @@ public class Game implements World {
     public void upgradeUnitDamage(int unitId) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
-        Message message = new Message("damageUpgrade", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("damageUpgrade", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
-
-    //////////////////////////////////////////////////// ino badan behtar konim
-    private List<Unit> getUnitsWithSpellOfPlayer(SpellType spellType, int playerId) {
-        //todo kamel optimize nashode
-        List<Unit> units = new ArrayList<>();
-        Player player = getPlayerById(playerId);
-        if (player == null) return new ArrayList<>();
-        for (Unit unit : player.getUnits()) {
-            for (CastSpell castSpell : unit.getAffectedSpells()) {
-                if (castSpell.getSpell().getType() == spellType) {
-                    units.add(unit);
-                    break;
-                }
-            }
-        }
-        return units;
+    @Override
+    public List<BaseUnit> getAllBaseUnits() {
+        return new ArrayList<>(initMessage.getBaseUnitList());
     }
 
-    //////////////////////////////////////////////////////////
-
-
-    public ClientInitMessage getClientInitMessage() {
-        return clientInitMessage;
+    @Override
+    public List<Spell> getAllSpells() {
+        return new ArrayList<>(initMessage.getSpells());
     }
 
-    public void setClientInitMessage(ClientInitMessage clientInitMessage) {
-        this.clientInitMessage = clientInitMessage;
+    @Override
+    public King getKingById(int playerId) {
+        for (Player player : players)
+            if (player.getPlayerId() == playerId)
+                return player.getKing();
+        return null;
     }
 
-    private Player getPlayerById(int playerId) {
+    @Override
+    public Spell getSpellById(int spellId) {
+        return spellsByTypeId.get(spellId);
+    }
+
+    @Override
+    public BaseUnit getBaseUnitById(int typeId) {
+        return baseUnitsById.get(typeId);
+    }
+
+    @Override
+    public Player getPlayerById(int playerId) {
         for (Player player : players)
             if (player.getPlayerId() == playerId)
                 return player;
         return null;
+    }
+
+    @Override
+    public Unit getUnitById(int unitId){
+        return unitsById.get(unitId);
+    }
+
+    @Override
+    public GameConstants getGameConstants() {
+        if (clientInitMessage == null) return null;
+        return clientInitMessage.getGameConstants();
+    }
+
+    private int getMyId() {
+        return clientInitMessage.getMap().getKings().get(0).getPlayerId();
+    }
+
+    private int getFriendId() {
+        return clientInitMessage.getMap().getKings().get(1).getPlayerId();
+    }
+
+    private int getFirstEnemyId() {
+        return clientInitMessage.getMap().getKings().get(2).getPlayerId();
+    }
+
+    private int getSecondEnemyId() {
+        return clientInitMessage.getMap().getKings().get(3).getPlayerId();
+    }
+
+
+    private King getPlayerKing(int playerId) {
+        for (King king : initMessage.getMapp().getKings())
+            if (king.getPlayerId() == playerId) {
+                return king;
+            }
+        return null;
+    }
+
+    private int getFriendIdOfPlayer(int playerId) {
+        if (playerId == getFriendId()) return getMyId();
+        if (playerId == getMyId()) return getFriendId();
+        if (playerId == getFirstEnemyId()) return getSecondEnemyId();
+        if (playerId == getSecondEnemyId()) return getFirstEnemyId();
+        return -1;
+    }
+
+
+    private List<Unit> calcPlayerUnits(int playerId) {
+        List<Unit> units = new ArrayList<>();
+        if (turnMessage.getUnits() == null) return units;
+        for (Unit unit : turnMessage.getUnits())
+            if (unit.getPlayerId() == playerId)
+                units.add(unit);
+        return units;
+    }
+
+    private Path getShortestPathToCellFromPlayer(int fromPlayerId, Cell cell) {
+        Player player = getPlayerById(fromPlayerId);
+        if (player == null || cell == null) return null;
+        return player.getShortestPathsToCellsCrossMyself()[cell.getRow()][cell.getCol()];
+    }
+
+    private Path calcShortestPathToCell(int fromPlayerId, Cell cell) {
+        Player player = getPlayerById(fromPlayerId);
+        if (player == null || cell == null) return null;
+        Path path1 = getShortestPathToCellFromPlayer(fromPlayerId, cell);
+        Path path2 = getShortestPathToCellFromPlayer(getFriendIdOfPlayer(fromPlayerId), cell);
+        Path path3 = player.getPathToFriend();
+        int length1 = 100 * 1000, length2 = 100 * 1000;
+        if (path1 != null) length1 = path1.getCells().indexOf(cell);
+        if (path2 != null) length2 = path3.getCells().size() + path2.getCells().indexOf(cell);
+        if (length1 <= length2 && length1 < 100 * 1000) return path1;
+        if (length1 > length2) return path2;
+        return null;
+    }
+
+    private Cell getCellByCoordination(int row, int col) {
+        if (row >= initMessage.getMapp().getRowNum() || row < 0) return null;
+        if (col >= initMessage.getMapp().getColNum() || col < 0) return null;
+        return initMessage.getMapp().getCells()[row][col];
+    }
+
+    private List<Spell> getSpellsByIds(List<Integer> list) {
+        List<Spell> spells = new ArrayList<>();
+        for (int spellId : list) {
+            Spell spell = spellsByTypeId.get(spellId);
+            if (spell != null) spells.add(spell);
+        }
+        return spells;
+    }
+
+    public ClientInitMessage getClientInitMessage() {
+        return clientInitMessage;
     }
 
     private void setPLayersUnits() {
@@ -476,26 +487,21 @@ public class Game implements World {
     }
 
     private void calcUnitsById() {
-        //todo unitid doroste dige ? ya nadarim dige?
         unitsById = new HashMap<>();
         for (Unit unit : turnMessage.getUnits()) {
-            if (unitsById.get(unit.getUnitId()) == null)
+            if (!unitsById.containsKey(unit.getUnitId()))
                 unitsById.put(unit.getUnitId(), unit);
         }
     }
 
     private void calcMyTurnSpells() {
-        List<Spell> spells = getSpellsByIds(clientTurnMessage.getMySpells());
-        myTurnSpells = new HashMap<Spell, Integer>();
-        for (Spell spell : spells) {
-            int currentCounter = 0;
-            if (myTurnSpells.containsKey(spell)) {
-                currentCounter = myTurnSpells.get(spell);
-                myTurnSpells.remove(spell);
-            }
-            currentCounter++;
-            myTurnSpells.put(spell, currentCounter + 1);
-        }
+        players.get(0).setSpells(getSpellsByIds(clientTurnMessage.getMySpells()));
+        players.get(0).calcTurnSpells();
+    }
+
+    private void calcMyFriendTurnSpells(){
+        players.get(1).setSpells(getSpellsByIds(clientTurnMessage.getFriendSpells()));
+        players.get(1).calcTurnSpells();
     }
 
     private void calcPlayerplayedUnits(Player player) {
@@ -503,7 +509,6 @@ public class Game implements World {
         for (TurnUnit turnUnit : clientTurnMessage.getUnits())
             if (turnUnit.getPlayerId() == player.getPlayerId() && turnUnit.isWasPlayedThisTurn())
                 playedUnits.add(unitsById.get(turnUnit.getUnitId()));
-
         player.setPlayedUnits(playedUnits);
     }
 
@@ -512,25 +517,27 @@ public class Game implements World {
             calcPlayerplayedUnits(player);
     }
 
-    void calcCastAreaSpells() {
+    private void calcCastAreaSpells() {
         for (Player player : players) {
             for (CastSpell castSpell : turnMessage.getCastSpells()) {
-                if (castSpell instanceof CastAreaSpell && castSpell.getCasterId() == player.getPlayerId())
+                if (castSpell instanceof CastAreaSpell && castSpell.getCasterId() == player.getPlayerId()
+                        && castSpell.isWasCastThisTurn())
                     player.setCastAreaSpell((CastAreaSpell) castSpell);
             }
         }
     }
 
-    void calcCastUnitSpells() {
+    private void calcCastUnitSpells() {
         for (Player player : players) {
             for (CastSpell castSpell : turnMessage.getCastSpells()) {
-                if (castSpell instanceof CastUnitSpell && castSpell.getCasterId() == player.getPlayerId())
+                if (castSpell instanceof CastUnitSpell && castSpell.getCasterId() == player.getPlayerId()
+                        && castSpell.isWasCastThisTurn())
                     player.setCastUnitSpell((CastUnitSpell) castSpell);
             }
         }
     }
 
-    void calcPlayersDuplicateUnits() {
+    private void calcPlayersDuplicateUnits() {
         for (Player player : players) {
             List<Unit> duplicateUnits = new ArrayList<>();
             for (Unit unit : player.getUnits())
@@ -540,7 +547,7 @@ public class Game implements World {
         }
     }
 
-    void calcPlayersHastedUnits() {
+    private void calcPlayersHastedUnits() {
         for (Player player : players) {
             List<Unit> hastedUnits = new ArrayList<>();
             for (Unit unit : player.getUnits())
@@ -602,29 +609,28 @@ public class Game implements World {
         }
     }
 
-    private void calcDiedUnits(){
-        for(Player player : players){
+    private void calcDiedUnits() {
+        for (Player player : players) {
             List<Unit> diedUnits = new ArrayList<>();
-            for(TurnUnit diedUnit : clientTurnMessage.getDiedUnits()){
-                if(diedUnit.getPlayerId() == player.getPlayerId()) diedUnits.add(diedUnit.castToUnit());
+            for (TurnUnit diedUnit : clientTurnMessage.getDiedUnits()) {
+                if (diedUnit.getPlayerId() == player.getPlayerId()) diedUnits.add(diedUnit.castToUnit());
             }
             player.setDiedUnits(diedUnits);
         }
     }
 
-    private void updateCastSpells(){
-        for(CastSpell castSpell : turnMessage.getCastSpells()){
-            for(TurnCastSpell turnCastSpell : clientTurnMessage.getCastSpells()){
-                if(turnCastSpell.getId() == castSpell.getId()){
-                    if(castSpell instanceof CastUnitSpell){
-                        ((CastUnitSpell)castSpell).setPath(pathsById.get(turnCastSpell.getPathId()));
-                        ((CastUnitSpell)castSpell).setUnit(unitsById.get(turnCastSpell.getUnitId()));
-                    }
-                    else{
-                        ((CastAreaSpell)castSpell).setRemainingTurns(turnCastSpell.getRemainingTurns());
+    private void updateCastSpells() {
+        for (CastSpell castSpell : turnMessage.getCastSpells()) {
+            for (TurnCastSpell turnCastSpell : clientTurnMessage.getCastSpells()) {
+                if (turnCastSpell.getId() == castSpell.getId()) {
+                    if (castSpell instanceof CastUnitSpell) {
+                        ((CastUnitSpell) castSpell).setPath(pathsById.get(turnCastSpell.getPathId()));
+                        ((CastUnitSpell) castSpell).setUnit(unitsById.get(turnCastSpell.getUnitId()));
+                    } else {
+                        ((CastAreaSpell) castSpell).setRemainingTurns(turnCastSpell.getRemainingTurns());
                     }
                     List<Unit> affectedUnits = new ArrayList<>();
-                    for(int affectedUnitId : turnCastSpell.getAffectedUnits())
+                    for (int affectedUnitId : turnCastSpell.getAffectedUnits())
                         affectedUnits.add(unitsById.get(affectedUnitId));
                     castSpell.setAffectedUnits(affectedUnits);
                     castSpell.setSpell(spellsByTypeId.get(turnCastSpell.getTypeId()));
@@ -633,83 +639,68 @@ public class Game implements World {
         }
     }
 
-    private void calcDamageUpgradedUnits(){
-        for(Player player : players){
-            for(Unit unit : player.getUnits()){
-                for(TurnUnit turnUnit : clientTurnMessage.getUnits()){
-                    if(turnUnit.getUnitId() == unit.getUnitId() && turnUnit.isWasDamageUpgraded())
+    private void calcDamageUpgradedUnits() {
+        for (Player player : players) {
+            for (Unit unit : player.getUnits()) {
+                for (TurnUnit turnUnit : clientTurnMessage.getUnits()) {
+                    if (turnUnit.getUnitId() == unit.getUnitId() && turnUnit.isWasDamageUpgraded())
                         player.setDamageUpgradedUnit(unit);
                 }
             }
         }
     }
 
-    private void calcRangeUpgradedUnits(){
-        for(Player player : players){
-            for(Unit unit : player.getUnits()){
-                for(TurnUnit turnUnit : clientTurnMessage.getUnits()){
-                    if(turnUnit.getUnitId() == unit.getUnitId() && turnUnit.isWasRangeUpgraded())
+    private void calcRangeUpgradedUnits() {
+        for (Player player : players) {
+            for (Unit unit : player.getUnits()) {
+                for (TurnUnit turnUnit : clientTurnMessage.getUnits()) {
+                    if (turnUnit.getUnitId() == unit.getUnitId() && turnUnit.isWasRangeUpgraded())
                         player.setRangeUpgradedUnit(unit);
                 }
             }
         }
     }
 
-    private void calcBaseUnits(){
-        for(Unit unit : turnMessage.getUnits()){
-            for(TurnUnit turnUnit : clientTurnMessage.getUnits()){
-                if(turnUnit.getUnitId() == unit.getUnitId())
+    private void calcBaseUnits() {
+        for (Unit unit : turnMessage.getUnits()) {
+            for (TurnUnit turnUnit : clientTurnMessage.getUnits()) {
+                if (turnUnit.getUnitId() == unit.getUnitId())
                     unit.setBaseUnit(baseUnitsById.get(turnUnit.getTypeId()));
             }
         }
     }
 
-    public void calcCastSpellsOnUnits(){
-        for(Unit unit : turnMessage.getUnits()){
-
-        }
+    private void updateDeck() {
+        players.get(0).setDeck(turnMessage.getDeck());
+        players.get(0).setHand(turnMessage.getHand());
     }
 
-    public void handleTurnMessage(ClientTurnMessage msg) {
-        this.clientTurnMessage = msg;
-        this.clientTurnMessage.setTurnTime(System.currentTimeMillis());
-        turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
+    private void updateAp() {
+        players.get(0).setAp(clientTurnMessage.getRemainingAP());
+    }
 
-        setPLayersUnits();
-        calcUnitsById();
-        calcMyTurnSpells();
-        calcPlayersPlayedUnits();
-        calcCastAreaSpells();
-        calcCastUnitSpells();
-
-        calcPlayersDuplicateUnits();
-        calcPlayersHastedUnits();
-        calcAffectedSpells();
-        calcKingsTargets();
-
-        calcUnitsTargets();
-        calcDiedUnits();
-        calcBaseUnits();
-
-        updateCastSpells();
-        calcDamageUpgradedUnits();
-        calcRangeUpgradedUnits();
-
+    private void setCellsUnits() {
+        for (int i = 0; i < getMapp().getRowNum(); i++)
+            for (int j = 0; j < getMapp().getColNum(); j++)
+                getMapp().getCells()[i][j].setUnits(new ArrayList<>());
+        for (Unit unit : turnMessage.getUnits())
+            unit.getCell().getUnits().add(unit);
     }
 
     private void createPLayers() {
+        players = new ArrayList<>();
         Player myPlayer = new Player(getMyId());
         Player friendPlayer = new Player(getFriendId());
         Player firstEnemyPlayer = new Player(getFirstEnemyId());
         Player secondEnemyPlayer = new Player(getSecondEnemyId());
-        myPlayer.setDeck(turnMessage.getDeck());
-        myPlayer.setHand(turnMessage.getHand());
-//        myPlayer.setAp(clientTurnMessage.getRemainingAP());
         players.add(myPlayer);
         players.add(friendPlayer);
         players.add(firstEnemyPlayer);
         players.add(secondEnemyPlayer);
-        for (Player player : players){
+    }
+
+    private void updateKings() {
+        for (Player player : players) {
             player.setKing(getPlayerKing(player.getPlayerId()));
         }
 
@@ -744,7 +735,7 @@ public class Game implements World {
             }
         }
         player.setShortestPathsToCellsCrossMyself(shortestPathsFromPlayer);
-     }
+    }
 
     private void setShortestPathsOfPlayer(Player player) {
         Path[][] shortestPaths = new Path[initMessage.getMapp().getRowNum()][initMessage.getMapp().getColNum()];
@@ -757,7 +748,6 @@ public class Game implements World {
         player.setShortestPathsToCells(shortestPaths);
     }
 
-    //todo shortestpaths
     private void setShortestPathsOfPlayers() {
         for (Player player : players) {
             setShortestPathsOfPlayerCrossMyself(player);
@@ -767,12 +757,9 @@ public class Game implements World {
         }
     }
 
-
-
     private void setSpellsById() {
         for (Spell spell : initMessage.getSpells()) {
-            if (spellsByTypeId.get(spell.getTypeId()) == null)
-                spellsByTypeId.put(spell.getTypeId(), spell);
+            spellsByTypeId.putIfAbsent(spell.getTypeId(), spell);
         }
     }
 
@@ -817,69 +804,55 @@ public class Game implements World {
                 baseUnitsById.put(baseUnit.getTypeId(), baseUnit);
     }
 
-    private void calcPathsById(){
-        for(Path path : initMessage.getMapp().getPaths())
-            if(pathsById.get(path.getId()) == null)
+    private void calcPathsById() {
+        for (Path path : initMessage.getMapp().getPaths())
+            if (pathsById.get(path.getId()) == null)
                 pathsById.put(path.getId(), path);
+    }
+
+    private void updateMessage(ClientInitMessage msg) {
+        this.clientInitMessage = msg;
+        this.initMessage = clientInitMessage.castToInitMessage();
+        setSpellsById();
+        calcBaseUnitsById();
+        calcPathsById();
+        updateKings();
+        calcPathsToFriends();
+        calcPathsFromPlayers();
     }
 
     public void handleInitMessage(ClientInitMessage msg) {
         this.clientInitMessage = msg;
-        this.initMessage = clientInitMessage.castToInitMessage();
+        this.turnTime = System.currentTimeMillis();
         createPLayers();
-        setSpellsById();
-        calcPathsToFriends();
-        calcPathsFromPlayers();
+        updateMessage(msg);
         setShortestPathsOfPlayers();
-        calcBaseUnitsById();
-        calcPathsById();
     }
 
-    @Override
-    public List<BaseUnit> getAllBaseUnits() {
-        return new ArrayList<>(initMessage.getBaseUnitList());
-    }
-
-    @Override
-    public List<Spell> getAllSpells() {
-        return new ArrayList<>(initMessage.getSpells());
-    }
-
-    @Override
-    public King getKingById(int playerId) {
-        for (Player player : players)
-            if (player.getPlayerId() == playerId)
-                return player.getKing();
-        return null;
-    }
-
-    @Override
-    public Spell getSpellById(int spellId) {
-        return spellsByTypeId.get(spellId);
-    }
-
-    @Override
-    public BaseUnit getBaseUnitById(int typeId) {
-        return baseUnitsById.get(typeId);
-    }
-
-    public HashMap<Integer, BaseUnit> getBaseUnitsById() {
-        return baseUnitsById;
-    }
-
-    public void setBaseUnitsById(HashMap<Integer, BaseUnit> baseUnitsById) {
-        this.baseUnitsById = baseUnitsById;
-    }
-
-    public HashMap<Integer, Path> getPathsById() {
-        return pathsById;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
+    public void handleTurnMessage(ClientTurnMessage msg) {
+        this.clientTurnMessage = msg;
+        this.turnTime = System.currentTimeMillis();
+        turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
+        updateMessage(clientInitMessage);
+        setPLayersUnits();
+        calcUnitsById();
+        calcBaseUnits();
+        updateCastSpells();
+        updateDeck();
+        updateAp();
+        calcMyTurnSpells();
+        calcMyFriendTurnSpells();
+        calcPlayersPlayedUnits();
+        calcCastAreaSpells();
+        calcCastUnitSpells();
+        calcPlayersDuplicateUnits();
+        calcPlayersHastedUnits();
+        calcAffectedSpells();
+        calcKingsTargets();
+        calcUnitsTargets();
+        calcDiedUnits();
+        calcDamageUpgradedUnits();
+        calcRangeUpgradedUnits();
+        setCellsUnits();
     }
 }

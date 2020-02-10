@@ -1,5 +1,10 @@
 package Client.dto.init;
 
+/**
+ * This class has constants of the game.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
 
 public class GameConstants {
     private int maxAP;

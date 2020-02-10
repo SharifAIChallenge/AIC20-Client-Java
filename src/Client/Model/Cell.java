@@ -5,17 +5,24 @@ import Client.dto.ClientCell;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class has properties of the cell in the map.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class Cell {
     private int row;
     private int col;
     private List<Unit> units = new ArrayList<>(); //private access ? what should we do
-    //todo equal bara cell
-    /*@Override
-    public boolean equals(Cell cell){
-        if(cell.getCol() == col && cell.getRow() == row)
-            return true;
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || !(object instanceof Cell)) return false;
+        Cell cell = (Cell) object;
+        if (cell.getRow() == this.row && cell.getCol() == this.col) return true;
         return false;
-    }*/
+    }
 
     public Cell(int row, int col) {
         this.row = row;

@@ -6,49 +6,56 @@ import Client.dto.ClientCell;
 
 import java.util.List;
 
+/**
+ * This class has properties of unit which is used. The data is sent by server each turn.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class TurnUnit {
-    private boolean wasDamageUpgraded;
-    private boolean wasRangeUpgraded;
     private int unitId;
     private int playerId;
+    private int hp;
     private int typeId;
     private int pathId;     // valid for player and his friend
-    private ClientCell cell;
-    private int hp;
     private int damageLevel;
     private int rangeLevel;
-    private boolean isHasted;
-    private boolean isDuplicate;
     private int range;
     private int attack;
-    private boolean wasPlayedThisTurn;
-    private List<Integer> affectedSpells;
     private int target;
+    private boolean wasDamageUpgraded;
+    private boolean wasRangeUpgraded;
+    private boolean isHasted;
+    private boolean isDuplicate;
+    private boolean wasPlayedThisTurn;
+    private ClientCell cell;
     private ClientCell targetCell;
-    //todo target cell i darim ke nemidunam chie
+    private List<Integer> affectedSpells;
 
     public Unit castToUnit(){
         Unit unit = new Unit();
-        unit.setUnitId(unitId);
-        unit.setRange(range);
-        unit.setPlayerId(playerId);
-        unit.setHp(hp);
-        unit.setHasted(isHasted);
-        unit.setDamageLevel(damageLevel);
-        unit.setRangeLevel(rangeLevel);
-        unit.setAttack(attack);
-        unit.setDuplicate(isDuplicate);
-        unit.setHasted(isHasted);
-        for(BaseUnit gameBaseUnit: InitMessage.getInitMessage().getBaseUnitList())
-            if(gameBaseUnit.getTypeId() == typeId)
-                unit.setBaseUnit(gameBaseUnit);
 
-        unit.setPath(InitMessage.getInitMessage().getPathById(pathId));
+        unit.setUnitId(this.unitId);
+        unit.setRange(this.range);
+        unit.setPlayerId(this.playerId);
+        unit.setHp(this.hp);
+        unit.setHasted(this.isHasted);
+        unit.setDamageLevel(this.damageLevel);
+        unit.setRangeLevel(this.rangeLevel);
+        unit.setAttack(this.attack);
+        unit.setDuplicate(this.isDuplicate);
+        unit.setHasted(this.isHasted);
 
-        if(targetCell != null)
-            unit.setTargetCell(Mapp.getMapp().getCells()[targetCell.getRow()][targetCell.getCol()]);
-        unit.setCell(Mapp.getMapp().getCells()[cell.getRow()][cell.getCol()]);
-        unit.setUnitId(unitId);
+        for(BaseUnit baseUnit: InitMessage.getInitMessage().getBaseUnitList())
+            if(baseUnit.getTypeId() == this.typeId)
+                unit.setBaseUnit(baseUnit);
+
+        unit.setPath(InitMessage.getInitMessage().getPathById(this.pathId));
+
+        if(this.targetCell != null)
+            unit.setTargetCell(Mapp.getMapp().getCells()[this.targetCell.getRow()][this.targetCell.getCol()]);
+        unit.setCell(Mapp.getMapp().getCells()[this.cell.getRow()][this.cell.getCol()]);
+        unit.setUnitId(this.unitId);
         return unit;
     }
 

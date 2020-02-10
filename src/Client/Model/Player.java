@@ -1,15 +1,22 @@
 package Client.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+/**
+ * This class has information of the player.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
 
 public class Player {
     private int playerId;
+    Path[][] shortestPathsToCellsCrossMyself;
     private List<BaseUnit> deck;
     private List<BaseUnit> hand;
-    private int ap;
-    private King king;
     private List<Path> pathsFromPlayer = new ArrayList<>();
+    Path[][] shortestPathsToCells;
     private Path pathToFriend;
     private List<Unit> units = new ArrayList<>();
     private CastAreaSpell castAreaSpell;
@@ -22,10 +29,11 @@ public class Player {
     private Unit rangeUpgradedUnit;
     private Unit damageUpgradedUnit;
 
-    ////////
-    private Path[][] shortestPathsToCellsCrossMyself;
-    private Path[][] shortestPathsToCells;
-////////
+    private List<Spell> spells = new ArrayList<>();
+    private HashMap<Spell, Integer> turnSpells = new HashMap<>();
+    private int ap;
+    private King king;
+
 
     public Player(int playerID) {
         this.playerId = playerID;
@@ -159,8 +167,6 @@ public class Player {
         this.damageUpgradedUnit = damageUpgradedUnit;
     }
 
-    /////////////
-
     Path[][] getShortestPathsToCellsCrossMyself() {
         return shortestPathsToCellsCrossMyself;
     }
@@ -177,8 +183,6 @@ public class Player {
         this.shortestPathsToCells = shortestPathsToCells;
     }
 
-    ///////////////////////
-
     public boolean isAlive() {
         return king.isAlive();
     }
@@ -187,4 +191,29 @@ public class Player {
         return king.getHp();
     }
 
+    public List<Spell> getSpells() {
+        return spells;
+    }
+
+    public void setSpells(List<Spell> spells){
+        this.spells = spells;
+    }
+
+    void calcTurnSpells() {
+        turnSpells = new HashMap<>();
+        for (Spell spell : spells) {
+            int currentCounter = 0;
+            if (turnSpells.containsKey(spell)) {
+                currentCounter = turnSpells.get(spell);
+                turnSpells.remove(spell);
+            }
+            currentCounter++;
+            turnSpells.put(spell, currentCounter + 1);
+        }
+    }
+
+    public int getSpellCount(Spell spell){
+        if(!turnSpells.containsKey(spell))return 0;
+        return turnSpells.get(spell);
+    }
 }

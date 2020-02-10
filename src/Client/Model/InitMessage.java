@@ -1,24 +1,24 @@
 package Client.Model;
 
-import Client.dto.init.GameConstants;
-
-import java.net.PortUnreachableException;
 import java.util.List;
+
+/**
+ * This class has initial information of the game.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
 
 public class InitMessage {
     private static InitMessage initMessage = new InitMessage();
     private Mapp mapp;
-    private List<BaseUnit> baseUnitList;
     private List<Spell> spells;
-
+    private List<BaseUnit> baseUnitList;
 
     public static InitMessage getInitMessage() {
         return initMessage;
     }
 
-    private InitMessage() {
-
-    }
+    private InitMessage() { }
 
     public Path getPathById(int pathId){
         for(Path path : Mapp.getMapp().getPaths())
@@ -31,7 +31,6 @@ public class InitMessage {
         for (Spell spell : initMessage.getSpells())
             if (spell.getTypeId() == spellId)
                 return spell;
-
         return null;
     }
 

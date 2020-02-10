@@ -1,14 +1,20 @@
 package Client.Model;
 
+/**
+ * This class has properties of spell that is not used yet.
+ * Please do not change this class, it is a piece of the internal implementation
+ * and you do not need to know anything about this class.
+ */
+
 public class Spell {
-    private SpellType type;
     private int typeId;
     private int duration;
     private int priority;
-    private SpellTarget target;
     private int range;
     private int power;
     private boolean isDamaging;
+    private SpellType type;
+    private SpellTarget target;
 
     public boolean isAreaSpell() {
         return type != SpellType.TELE;
