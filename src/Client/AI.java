@@ -1,8 +1,6 @@
 package Client;
 
 import Client.Model.*;
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,13 +11,19 @@ public class AI
     public void pick(World world)
     {
         System.out.println("pre process started");
-        world.chooseDeckById(Arrays.asList(3, -324, 4, 0, 1, 400, 2, 3, 4, 5,6 ,7, 8,9));
+        System.out.println(world.getGameConstants().getHandSize());
+        world.chooseDeck(world.getAllBaseUnits());
     }
 
     public void turn(World world) {
         System.out.println("turn started: " + world.getCurrentTurn());
         List<Path> myPaths = world.getMe().getPathsFromPlayer();
-        world.putUnit(0, myPaths.get(0));
+        System.out.println("base units:");
+        for(BaseUnit baseUnit:world.getMe().getHand()){
+            world.putUnit(baseUnit.getTypeId(), myPaths.get(0));
+            System.out.println("TypeId:"+baseUnit.getTypeId());
+        }
+
     }
 
     public void end(World world, Map<Integer, Integer> scores) {
