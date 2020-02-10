@@ -3,10 +3,8 @@ package Client.Model;
 import Client.dto.ClientCell;
 import Client.dto.init.*;
 import Client.dto.turn.*;
-
 import java.util.*;
 import java.util.function.Consumer;
-
 import com.google.gson.JsonObject;
 import common.network.Json;
 import common.network.data.Message;
@@ -29,8 +27,6 @@ public class Game implements World {
         this.sender = sender;
     }
 
-    //todo
-    //there is a problem. some of properties have to pass to the next game, but they don't.
     public Game(Game game) {
         this.clientInitMessage = game.getClientInitMessage();
         this.initMessage = game.getInitMessage();
@@ -166,7 +162,7 @@ public class Game implements World {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("typeId", Json.GSON.toJsonTree(typeId));
         jsonObject.add("pathId", Json.GSON.toJsonTree(pathId));
-        Message message = new Message("putUnit", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("putUnit", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
@@ -211,7 +207,7 @@ public class Game implements World {
         jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
         jsonObject.add("pathId", Json.GSON.toJsonTree(pathId));
         jsonObject.add("cell", Json.GSON.toJsonTree(cell.castToClientCell()));
-        Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("castSpell", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
@@ -228,7 +224,7 @@ public class Game implements World {
         jsonObject.add("typeId", Json.GSON.toJsonTree(spellId));
         if (center == null) return;
         jsonObject.add("cell", Json.GSON.toJsonTree(center.castToClientCell()));
-        Message message = new Message("castSpell", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("castSpell", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
@@ -335,7 +331,7 @@ public class Game implements World {
     public void upgradeUnitRange(int unitId) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
-        Message message = new Message("rangeUpgrade", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("rangeUpgrade", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
@@ -349,7 +345,7 @@ public class Game implements World {
     public void upgradeUnitDamage(int unitId) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("unitId", Json.GSON.toJsonTree(unitId));
-        Message message = new Message("damageUpgrade", this.getCurrentTurn(), jsonObject);
+        Message message = new Message("damageUpgrade", jsonObject, this.getCurrentTurn());
         sender.accept(message);
     }
 
@@ -478,25 +474,6 @@ public class Game implements World {
         return spells;
     }
 
-    //////////////////////////////////////////////////// ino badan behtar konim
-/*    private List<Unit> getUnitsWithSpellOfPlayer(SpellType spellType, int playerId) {
-        //todo kamel optimize nashode
-        List<Unit> units = new ArrayList<>();
-        Player player = getPlayerById(playerId);
-        if (player == null) return new ArrayList<>();
-        for (Unit unit : player.getUnits()) {
-            for (CastSpell castSpell : unit.getAffectedSpells()) {
-                if (castSpell.getSpell().getType() == spellType) {
-                    units.add(unit);
-                    break;
-                }
-            }
-        }
-        return units;
-    }*/
-
-    //////////////////////////////////////////////////////////
-
     public ClientInitMessage getClientInitMessage() {
         return clientInitMessage;
     }
@@ -562,8 +539,7 @@ public class Game implements World {
             player.setDuplicateUnits(duplicateUnits);
         }
     }
-/////////////////////////////////////////////////////
-    //todo ta inja check shod
+
     private void calcPlayersHastedUnits() {
         for (Player player : players) {
             List<Unit> hastedUnits = new ArrayList<>();
@@ -684,12 +660,6 @@ public class Game implements World {
                 if (turnUnit.getUnitId() == unit.getUnitId())
                     unit.setBaseUnit(baseUnitsById.get(turnUnit.getTypeId()));
             }
-        }
-    }
-
-    public void calcCastSpellsOnUnits() {
-        for (Unit unit : turnMessage.getUnits()) {
-
         }
     }
 

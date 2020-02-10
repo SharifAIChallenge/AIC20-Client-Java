@@ -37,9 +37,4 @@ public class Message
         this.info = args;
         this.turn = turn;
     }
-
-    public Message(String name, int turn, Object... args)   //todo remove this!!
-    {
-        this(name, Json.GSON.toJsonTree(args[0]).getAsJsonObject(), turn);
-    }
 }

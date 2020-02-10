@@ -31,7 +31,6 @@ public class TurnUnit {
     private ClientCell cell;
     private ClientCell targetCell;
     private List<Integer> affectedSpells;
-    //todo target cell i darim ke nemidunam chie
 
     public Unit castToUnit(){
         Unit unit = new Unit();
