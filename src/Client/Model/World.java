@@ -2,7 +2,6 @@ package Client.Model;
 
 import Client.dto.init.GameConstants;
 
-import java.util.HashMap;
 import java.util.List;
 
 public interface World {
@@ -192,7 +191,7 @@ public interface World {
      * @return
      */
 
-    public Mapp getMapp();
+    public Map getMapp();
 
     /**
      * returns targets of given area spell if cast spell in given cell

@@ -53,8 +53,8 @@ public class TurnUnit {
         unit.setPath(InitMessage.getInitMessage().getPathById(this.pathId));
 
         if(this.targetCell != null)
-            unit.setTargetCell(Mapp.getMapp().getCells()[this.targetCell.getRow()][this.targetCell.getCol()]);
-        unit.setCell(Mapp.getMapp().getCells()[this.cell.getRow()][this.cell.getCol()]);
+            unit.setTargetCell(Map.getMap().getCells()[this.targetCell.getRow()][this.targetCell.getCol()]);
+        unit.setCell(Map.getMap().getCells()[this.cell.getRow()][this.cell.getCol()]);
         unit.setUnitId(this.unitId);
         return unit;
     }

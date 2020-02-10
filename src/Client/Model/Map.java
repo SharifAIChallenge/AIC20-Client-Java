@@ -9,27 +9,27 @@ package Client.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mapp {
-    private static Mapp mapp; //is it ok?
+public class Map {
+    private static Map map; //is it ok?
     private int colNum, rowNum;
     private Cell[][] cells;
     private List<Path> paths;
     private List<Unit> units = new ArrayList<>();
     private List<King> kings;
 
-    public static Mapp createMapp(int rows, int cols) {
-        if (mapp != null) return mapp;
-        mapp = new Mapp(rows, cols);
-        return mapp;
-    }
-
-    private Mapp(int rows, int cols) {
+    private Map(int rows, int cols) {
         this.rowNum = rows;
         this.colNum = cols;
         this.cells = new Cell[rows][cols];
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 this.cells[i][j] = new Cell(i, j);
+    }
+
+    public static Map createMapp(int rows, int cols) {
+        if (map != null) return map;
+        map = new Map(rows, cols);
+        return map;
     }
 
     public Cell getCell(int row, int col) {
@@ -86,11 +86,11 @@ public class Mapp {
         this.cells = cells;
     }
 
-    public static Mapp getMapp() {
-        return mapp;
+    public static Map getMap() {
+        return map;
     }
 
-    public static void setMapp(Mapp mapp) {
-        Mapp.mapp = mapp;
+    public static void setMap(Map map) {
+        Map.map = map;
     }
 }
