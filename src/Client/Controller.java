@@ -178,7 +178,11 @@ public class Controller
     {
         new Thread(() ->
         {
-            ai.turn(game);
+            try {
+                ai.turn(game);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             sendEndMsg(msg);
         }).start();
     }

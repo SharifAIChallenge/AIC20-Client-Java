@@ -65,7 +65,6 @@ public class ClientTurnMessage {
             turnKing.updateKing(king);
             turnMessage.getKings().add(king);
         }
-
         turnMessage.setCastSpells(
                 this.castSpells.stream().map(turnCastSpell -> turnCastSpell.castToCastSpell(spellsByTypeId)).
                         collect(Collectors.toList())
