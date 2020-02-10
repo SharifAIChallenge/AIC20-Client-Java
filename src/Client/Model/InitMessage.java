@@ -10,7 +10,7 @@ import java.util.List;
 
 public class InitMessage {
     private static InitMessage initMessage = new InitMessage();
-    private Mapp mapp;
+    private Map map;
     private List<Spell> spells;
     private List<BaseUnit> baseUnitList;
 
@@ -21,7 +21,7 @@ public class InitMessage {
     private InitMessage() { }
 
     public Path getPathById(int pathId){
-        for(Path path : Mapp.getMapp().getPaths())
+        for(Path path : Map.getMap().getPaths())
             if(path.getId() == pathId)
                 return path;
         return null;
@@ -34,12 +34,12 @@ public class InitMessage {
         return null;
     }
 
-    public Mapp getMapp() {
-        return mapp;
+    public Map getMap() {
+        return map;
     }
 
-    public void setMapp(Mapp mapp) {
-        this.mapp = mapp;
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     public List<BaseUnit> getBaseUnitList() {

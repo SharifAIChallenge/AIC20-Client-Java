@@ -1,7 +1,7 @@
 package Client.dto;
 
 import Client.Model.Cell;
-import Client.Model.Mapp;
+import Client.Model.Map;
 
 /**
  * This class has properties of the cell which is sent by the server.
@@ -14,7 +14,7 @@ public class ClientCell {
     private int col;
 
     public Cell castToCell() {
-        return Mapp.getMapp().getCells()[row][col];
+        return Map.getMap().getCells()[row][col];
     }
 
     public ClientCell(int row, int col) {

@@ -106,18 +106,16 @@ public class Game implements World {
     }
 
     @Override
-    public Mapp getMapp() {
-        return Mapp.getMapp();
+    public Map getMapp() {
+        return Map.getMap();
     }
 
-
-    //be in dast nazanan
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
         if (cell == null) return new ArrayList<>();
         if (pathsCrossingCells.get(cell) == null) {
             List<Path> paths = new ArrayList<>();
-            for (Path path : initMessage.getMapp().getPaths())
+            for (Path path : initMessage.getMap().getPaths())
                 if (path.getCells().contains(cell))
                     paths.add(path);
             pathsCrossingCells.put(cell, paths);
@@ -256,12 +254,12 @@ public class Game implements World {
         if (center == null || spell == null) return new ArrayList<>();
         List<Unit> units = new ArrayList<>();
         int minRow = Math.max(0, center.getRow() - spell.getRange());
-        int maxRow = Math.min(initMessage.getMapp().getRowNum() - 1, center.getRow() + spell.getRange());
+        int maxRow = Math.min(initMessage.getMap().getRowNum() - 1, center.getRow() + spell.getRange());
         int minCol = Math.max(0, center.getCol() - spell.getRange());
-        int maxCol = Math.min(initMessage.getMapp().getColNum() - 1, center.getCol() + spell.getRange());
+        int maxCol = Math.min(initMessage.getMap().getColNum() - 1, center.getCol() + spell.getRange());
         for (int i = minRow; i <= maxRow; i++) {
             for (int j = minCol; j <= maxCol; j++) {
-                units.addAll(initMessage.getMapp().getCells()[i][j].getUnits());
+                units.addAll(initMessage.getMap().getCells()[i][j].getUnits());
             }
         }
         return units;
@@ -416,7 +414,7 @@ public class Game implements World {
 
 
     private King getPlayerKing(int playerId) {
-        for (King king : initMessage.getMapp().getKings())
+        for (King king : initMessage.getMap().getKings())
             if (king.getPlayerId() == playerId) {
                 return king;
             }
@@ -462,9 +460,9 @@ public class Game implements World {
     }
 
     private Cell getCellByCoordination(int row, int col) {
-        if (row >= initMessage.getMapp().getRowNum() || row < 0) return null;
-        if (col >= initMessage.getMapp().getColNum() || col < 0) return null;
-        return initMessage.getMapp().getCells()[row][col];
+        if (row >= initMessage.getMap().getRowNum() || row < 0) return null;
+        if (col >= initMessage.getMap().getColNum() || col < 0) return null;
+        return initMessage.getMap().getCells()[row][col];
     }
 
     private List<Spell> getSpellsByIds(List<Integer> list) {
@@ -713,7 +711,7 @@ public class Game implements World {
         Cell playerCell = player.getKing().getCenter();
         if (cell == null) return null;
         Path bestPath = null;
-        for (Path path : initMessage.getMapp().getPaths()) {
+        for (Path path : initMessage.getMap().getPaths()) {
             if (path.getCells().indexOf(playerCell) != 0) Collections.reverse(path.getCells());
             if (path.getCells().indexOf(playerCell) == 0) {
                 int index = path.getCells().indexOf(cell);
@@ -727,10 +725,10 @@ public class Game implements World {
     }
 
     private void setShortestPathsOfPlayerCrossMyself(Player player) {
-        Path[][] shortestPathsFromPlayer = new Path[initMessage.getMapp().getRowNum()][initMessage.getMapp().getColNum()];
-        for (int i = 0; i < initMessage.getMapp().getRowNum(); i++) {
-            for (int j = 0; j < initMessage.getMapp().getColNum(); j++) {
-                Cell cell = initMessage.getMapp().getCells()[i][j];
+        Path[][] shortestPathsFromPlayer = new Path[initMessage.getMap().getRowNum()][initMessage.getMap().getColNum()];
+        for (int i = 0; i < initMessage.getMap().getRowNum(); i++) {
+            for (int j = 0; j < initMessage.getMap().getColNum(); j++) {
+                Cell cell = initMessage.getMap().getCells()[i][j];
                 shortestPathsFromPlayer[i][j] = calcShortestPathToCellFromPlayer(player.getPlayerId(), cell);
             }
         }
@@ -738,10 +736,10 @@ public class Game implements World {
     }
 
     private void setShortestPathsOfPlayer(Player player) {
-        Path[][] shortestPaths = new Path[initMessage.getMapp().getRowNum()][initMessage.getMapp().getColNum()];
-        for (int i = 0; i < initMessage.getMapp().getRowNum(); i++) {
-            for (int j = 0; j < initMessage.getMapp().getColNum(); j++) {
-                Cell cell = initMessage.getMapp().getCells()[i][j];
+        Path[][] shortestPaths = new Path[initMessage.getMap().getRowNum()][initMessage.getMap().getColNum()];
+        for (int i = 0; i < initMessage.getMap().getRowNum(); i++) {
+            for (int j = 0; j < initMessage.getMap().getColNum(); j++) {
+                Cell cell = initMessage.getMap().getCells()[i][j];
                 shortestPaths[i][j] = calcShortestPathToCell(player.getPlayerId(), cell);
             }
         }
@@ -769,7 +767,7 @@ public class Game implements World {
         Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(player.getPlayerId())).getCenter();
 
         List<Path> paths = new ArrayList<>();
-        for (Path path : initMessage.getMapp().getPaths())
+        for (Path path : initMessage.getMap().getPaths())
             if (path.getCells().indexOf(playerKingCell) == 0 || path.getCells().lastIndexOf(playerKingCell) == path.getCells().size() - 1)
                 if (!path.getCells().contains(friendKingCell))
                     paths.add(path);
@@ -785,7 +783,7 @@ public class Game implements World {
         Cell playerKingCell = getPlayerKing(player.getPlayerId()).getCenter();
         Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(player.getPlayerId())).getCenter();
 
-        for (Path path : initMessage.getMapp().getPaths()) {
+        for (Path path : initMessage.getMap().getPaths()) {
             List<Cell> pathCells = path.getCells();
             if (pathCells.indexOf(playerKingCell) == 0 || pathCells.lastIndexOf(playerKingCell) == pathCells.size() - 1)
                 if (pathCells.indexOf(friendKingCell) == 0 || pathCells.lastIndexOf(friendKingCell) == pathCells.size() - 1)
@@ -805,7 +803,7 @@ public class Game implements World {
     }
 
     private void calcPathsById() {
-        for (Path path : initMessage.getMapp().getPaths())
+        for (Path path : initMessage.getMap().getPaths())
             if (pathsById.get(path.getId()) == null)
                 pathsById.put(path.getId(), path);
     }
