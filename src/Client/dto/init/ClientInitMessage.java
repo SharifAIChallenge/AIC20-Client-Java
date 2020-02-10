@@ -18,7 +18,7 @@ public class ClientInitMessage {
 
     public InitMessage castToInitMessage() {
         InitMessage initMessage = InitMessage.getInitMessage();
-        initMessage.setMapp(this.map.castToMap());
+        initMessage.setMap(this.map.castToMap());
         initMessage.setBaseUnitList(
                 this.baseUnits.stream().map(ClientBaseUnit::castToBaseUnit).collect(Collectors.toList())
         );

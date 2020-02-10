@@ -1,6 +1,7 @@
 package Client;
 
 import Client.Model.*;
+import Client.Model.Map;
 
 import java.util.*;
 
@@ -21,9 +22,9 @@ public class AI {
         System.out.println("pick started");
 
         // preprocess
-        Mapp mapp = world.getMapp();
-        rows = mapp.getRowNum();
-        cols = mapp.getColNum();
+        Map map = world.getMapp();
+        rows = map.getRowNum();
+        cols = map.getColNum();
 
         List<BaseUnit> allBaseUnits = world.getAllBaseUnits();
         List<BaseUnit> myDeck = new ArrayList<>();
@@ -95,7 +96,7 @@ public class AI {
         }
     }
 
-    public void end(World world, Map<Integer, Integer> scores) {
+    public void end(World world, java.util.Map scores) {
         System.out.println("end started");
         System.out.println("My score: " + scores.get(world.getMe().getPlayerId()));
     }
