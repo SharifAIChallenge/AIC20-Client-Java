@@ -22,10 +22,12 @@ public class ClientSpell {
 
     public Spell castToSpell() {
         Spell spell = new Spell();
-        spell.setType(SpellType.valueOf(type));
         spell.setTypeId(typeId);
         spell.setDuration(duration);
         spell.setPriority(priority);
+        spell.setRange(range);
+        spell.setPower(power);
+        spell.setType(SpellType.valueOf(type));
         spell.setTarget(SpellTarget.valueOf(target));
         return spell;
     }

@@ -29,8 +29,6 @@ public class ClientTurnMessage {
     private List<Integer> friendSpells;
     private List<TurnUnit> diedUnits;
     private int remainingAP;
-    private int rangeUpgradedUnit;
-    private int damageUpgradedUnit;
     private int availableRangeUpgrades;
     private int availableDamageUpgrades;
     private boolean gotRangeUpgrade;
@@ -217,22 +215,6 @@ public class ClientTurnMessage {
 
     public void setRemainingAP(int remainingAP) {
         this.remainingAP = remainingAP;
-    }
-
-    public int getRangeUpgradedUnit() {
-        return rangeUpgradedUnit;
-    }
-
-    public void setRangeUpgradedUnit(int rangeUpgradedUnit) {
-        this.rangeUpgradedUnit = rangeUpgradedUnit;
-    }
-
-    public int getDamageUpgradedUnit() {
-        return damageUpgradedUnit;
-    }
-
-    public void setDamageUpgradedUnit(int damageUpgradedUnit) {
-        this.damageUpgradedUnit = damageUpgradedUnit;
     }
 
     public List<TurnUnit> getDiedUnits() {
