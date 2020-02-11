@@ -10,7 +10,7 @@ To run the server:
 	java -jar <filename>.jar
 To run clients:
 3. Import directory you want to save and run the code. You must import Gson library.
-4. Run main function in Main.java as the number of players in a game(4 times). obviously you can run different clients.
+4. Run main function in Main.java as the number of players in a game(4 times). Obviously you can run different clients.
 ```
 
 
