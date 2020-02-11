@@ -191,7 +191,7 @@ public interface World {
      * @return
      */
 
-    public Map getMapp();
+    public Map getMap();
 
     /**
      * returns targets of given area spell if cast spell in given cell

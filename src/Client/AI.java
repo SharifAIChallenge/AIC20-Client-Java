@@ -2,7 +2,6 @@ package Client;
 
 import Client.Model.*;
 import Client.Model.Map;
-import Client.dto.init.GameConstants;
 
 import java.util.*;
 
@@ -23,7 +22,7 @@ public class AI {
         System.out.println("pick started");
 
         // preprocess
-        Map map = world.getMapp();
+        Map map = world.getMap();
         rows = map.getRowNum();
         cols = map.getColNum();
 
@@ -92,8 +91,8 @@ public class AI {
         Player myself = world.getMe();
         int maxAp = world.getGameConstants().getMaxAP();
         int someUnitId = -1;
-        for (int i = 0; i < world.getMapp().getRowNum(); i++) {
-            for (int j = 0; j < world.getMapp().getColNum(); j++) {
+        for (int i = 0; i < world.getMap().getRowNum(); i++) {
+            for (int j = 0; j < world.getMap().getColNum(); j++) {
                 char c = '.';
                 for (Unit unit : world.getCellUnits(i, j)) {
                     if (unit.getPlayerId() == world.getMe().getPlayerId()) {
