@@ -61,6 +61,24 @@ public class AI {
     }
 
     public void turn(World world) throws Exception {
+        int a = 1;
+        if(a == 1){
+            System.out.println("Deck:");
+            int i = 0;
+            for(BaseUnit baseUnit : world.getMe().getDeck()) {
+                System.out.println(i + ". " + baseUnit.getTypeId());
+                i++;
+            }
+            i = 0;
+            System.out.println("Hand:");
+            for(BaseUnit baseUnit : world.getMe().getHand()){
+                System.out.println(i + ". " + baseUnit.getTypeId());
+                i ++;
+            }
+            world.putUnit(world.getMe().getHand().get(0), world.getMe().getPathsFromPlayer().get(0));
+
+            return;
+        }
         System.out.println("getMe().hp" + world.getKingById(world.getMe().getPlayerId()).getHp());
         System.out.println("getMe().hp" + world.getMe().getHp());
         System.out.println("getFriend().hp" + world.getKingById(world.getFriend().getPlayerId()).getHp());
