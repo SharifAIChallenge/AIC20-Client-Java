@@ -26,7 +26,7 @@ public class Map {
                 this.cells[i][j] = new Cell(i, j);
     }
 
-    public static Map createMapp(int rows, int cols) {
+    public static Map createMap(int rows, int cols) {
         if (map != null) return map;
         map = new Map(rows, cols);
         return map;

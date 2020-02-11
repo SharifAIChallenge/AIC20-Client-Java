@@ -106,7 +106,7 @@ public class Game implements World {
     }
 
     @Override
-    public Map getMapp() {
+    public Map getMap() {
         return Map.getMap();
     }
 
@@ -678,9 +678,9 @@ public class Game implements World {
     }
 
     private void setCellsUnits() {
-        for (int i = 0; i < getMapp().getRowNum(); i++)
-            for (int j = 0; j < getMapp().getColNum(); j++)
-                getMapp().getCells()[i][j].setUnits(new ArrayList<>());
+        for (int i = 0; i < getMap().getRowNum(); i++)
+            for (int j = 0; j < getMap().getColNum(); j++)
+                getMap().getCells()[i][j].setUnits(new ArrayList<>());
         for (Unit unit : turnMessage.getUnits())
             unit.getCell().getUnits().add(unit);
     }
