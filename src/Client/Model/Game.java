@@ -724,16 +724,11 @@ public class Game implements World {
         Cell playerCell = player.getKing().getCenter();
         if (cell == null) return null;
         Path bestPath = null;
-        for (Path path : initMessage.getMap().getPaths()) {
-            if (path.getCells().indexOf(playerCell) != 0) Collections.reverse(path.getCells());
-            if (path.getCells().indexOf(playerCell) == 0) {
-                if (path.getCells().contains(getFriend().getKing().getCenter()))
-                    continue;
-                int index = path.getCells().indexOf(cell);
-                if (index < minDis) {
-                    minDis = index;
-                    bestPath = path;
-                }
+        for (Path path : player.getPathsFromPlayer()) {
+            int index = path.getCells().indexOf(cell);
+            if (index < minDis) {
+                minDis = index;
+                bestPath = path;
             }
         }
         return bestPath;
