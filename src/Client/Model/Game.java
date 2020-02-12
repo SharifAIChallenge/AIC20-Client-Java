@@ -727,6 +727,8 @@ public class Game implements World {
         for (Path path : initMessage.getMap().getPaths()) {
             if (path.getCells().indexOf(playerCell) != 0) Collections.reverse(path.getCells());
             if (path.getCells().indexOf(playerCell) == 0) {
+                if (path.getCells().contains(getFriend().getKing().getCenter()))
+                    continue;
                 int index = path.getCells().indexOf(cell);
                 if (index < minDis) {
                     minDis = index;
