@@ -725,11 +725,13 @@ public class Game implements World {
         if (cell == null) return null;
         Path bestPath = null;
         for (Path path : player.getPathsFromPlayer()) {
+            if (path.getCells().indexOf(playerCell) != 0) Collections.reverse(path.getCells());
             int index = path.getCells().indexOf(cell);
             if (index < minDis) {
                 minDis = index;
                 bestPath = path;
             }
+
         }
         return bestPath;
     }
