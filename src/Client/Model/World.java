@@ -141,6 +141,7 @@ public interface World {
     /**
      * put unit with type id
      * @param typeId id of unit that want to put
+     * @param typeId id of unit that want to put
      * @param pathId id of path that put unit on that
      */
 
@@ -170,8 +171,11 @@ public interface World {
      */
     public void castUnitSpell(Unit unit, Path path, Cell cell, Spell spell);
 
+    public void castUnitSpell(Unit unit, Path path, Cell cell, int spellId);
+
     public void castUnitSpell(Unit unit, Path path, int row, int col, Spell spell);
 
+    public void castUnitSpell(Unit unit, Path path, int row, int col, int spellId);
     /**
      * cast area spell
      * @param row row of cell that cast spell on it

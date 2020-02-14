@@ -212,9 +212,21 @@ public class Game implements World {
     }
 
     @Override
+    public void castUnitSpell(Unit unit, Path path, Cell cell, int spellId) {
+        Spell spell = initMessage.getSpellById(spellId);
+        castUnitSpell(unit, path, cell, spell);
+    }
+
+    @Override
     public void castUnitSpell(Unit unit, Path path, int row, int col, Spell spell) {
         Cell cell = getCellByCoordination(row, col);
         castUnitSpell(unit, path, cell, spell);
+    }
+
+    @Override
+    public void castUnitSpell(Unit unit, Path path, int row, int col, int spellId) {
+        Spell spell = initMessage.getSpellById(spellId);
+        castUnitSpell(unit, path, row, col, spell);
     }
 
     @Override
