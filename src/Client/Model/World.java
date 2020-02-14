@@ -132,6 +132,9 @@ public interface World {
      */
     public Path getShortestPathToCell(int fromPlayerId, int row, int col);
 
+    public Path getShortestPathToCell(Player fromPlayer, Cell cell);
+
+    public Path getShortestPathToCell(Player fromPlayer, int row, int col);
     /**
      * returns game constants
      * @return
