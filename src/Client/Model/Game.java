@@ -224,11 +224,6 @@ public class Game implements World {
         sender.accept(message);
     }
 
-    @Override
-    public void castUnitSpell(Unit unit, Path path, Cell cell, int spellId) {
-        Spell spell = initMessage.getSpellById(spellId);
-        castUnitSpell(unit, path, cell, spell);
-    }
 
     @Override
     public void castUnitSpell(Unit unit, Path path, int row, int col, Spell spell) {
@@ -237,10 +232,31 @@ public class Game implements World {
     }
 
     @Override
-    public void castUnitSpell(Unit unit, Path path, int row, int col, int spellId) {
+    public void castUnitSpell(Unit unit, int pathId, Cell cell, int spellId) {
+        Spell spell = initMessage.getSpellById(spellId);
+        Path path = initMessage.getPathById(pathId);
+        castUnitSpell(unit, path, cell, spell);
+    }
+
+    @Override
+    public void castUnitSpell(Unit unit, int pathId, Cell cell, Spell spell) {
+        Path path = initMessage.getPathById(pathId);
+        castUnitSpell(unit, path, cell, spell);
+    }
+
+    @Override
+    public void castUnitSpell(Unit unit, int pathId, int row, int col, int spellId) {
+        Path path = initMessage.getPathById(pathId);
         Spell spell = initMessage.getSpellById(spellId);
         castUnitSpell(unit, path, row, col, spell);
     }
+
+    @Override
+    public void castUnitSpell(Unit unit, int pathId, int row, int col, Spell spell) {
+        Path path = initMessage.getPathById(pathId);
+        castUnitSpell(unit, path, row, col, spell);
+    }
+
 
     @Override
     public void castAreaSpell(Cell center, int spellId) {
