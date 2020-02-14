@@ -174,11 +174,16 @@ public interface World {
      */
     public void castUnitSpell(Unit unit, Path path, Cell cell, Spell spell);
 
-    public void castUnitSpell(Unit unit, Path path, Cell cell, int spellId);
-
     public void castUnitSpell(Unit unit, Path path, int row, int col, Spell spell);
 
-    public void castUnitSpell(Unit unit, Path path, int row, int col, int spellId);
+
+    public void castUnitSpell(Unit unit, int pathId, Cell cell, int spellId);
+
+    public void castUnitSpell(Unit unit, int pathId, Cell cell, Spell spell);
+
+    public void castUnitSpell(Unit unit, int pathId, int row, int col, int spellId);
+
+    public void castUnitSpell(Unit unit, int pathId, int row, int col, Spell spell);
     /**
      * cast area spell
      * @param row row of cell that cast spell on it
