@@ -158,6 +158,19 @@ public class Game implements World {
     }
 
     @Override
+    public Path getShortestPathToCell(Player fromPlayer, Cell cell) {
+        if (fromPlayer == null || cell == null) return null;
+        return getShortestPathToCell(fromPlayer.getPlayerId(), cell);
+    }
+
+    @Override
+    public Path getShortestPathToCell(Player fromPlayer, int row, int col) {
+        Cell cell = getCellByCoordination(row, col);
+        if (fromPlayer == null || cell == null) return null;
+        return getShortestPathToCell(fromPlayer.getPlayerId(), cell);
+    }
+
+    @Override
     public void putUnit(int typeId, int pathId) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("typeId", Json.GSON.toJsonTree(typeId));
@@ -398,7 +411,7 @@ public class Game implements World {
     }
 
     @Override
-    public Unit getUnitById(int unitId){
+    public Unit getUnitById(int unitId) {
         return unitsById.get(unitId);
     }
 
@@ -509,7 +522,7 @@ public class Game implements World {
         players.get(0).calcTurnSpells();
     }
 
-    private void calcMyFriendTurnSpells(){
+    private void calcMyFriendTurnSpells() {
         players.get(1).setSpells(getSpellsByIds(clientTurnMessage.getFriendSpells()));
         players.get(1).calcTurnSpells();
     }
@@ -723,15 +736,14 @@ public class Game implements World {
         Cell playerCell = player.getKing().getCenter();
         if (cell == null) return null;
         Path bestPath = null;
-        for (Path path : initMessage.getMap().getPaths()) {
+        for (Path path : player.getPathsFromPlayer()) {
             if (path.getCells().indexOf(playerCell) != 0) Collections.reverse(path.getCells());
-            if (path.getCells().indexOf(playerCell) == 0) {
-                int index = path.getCells().indexOf(cell);
-                if (index < minDis) {
-                    minDis = index;
-                    bestPath = path;
-                }
+            int index = path.getCells().indexOf(cell);
+            if (index < minDis) {
+                minDis = index;
+                bestPath = path;
             }
+
         }
         return bestPath;
     }
