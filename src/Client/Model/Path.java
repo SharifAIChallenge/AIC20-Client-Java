@@ -1,5 +1,6 @@
 package Client.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,14 @@ public class Path {
         Path path = (Path) object;
         if (path.getId() == this.id) return true;
         return false;
+    }
+
+    public Path copy(){
+        Path newPath = new Path();
+        newPath.setId(this.id);
+        List<Cell> newList = new ArrayList<>(this.cells);
+        newPath.setCells(newList);
+        return newPath;
     }
 
     public int getId() {

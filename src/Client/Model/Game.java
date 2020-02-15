@@ -807,10 +807,16 @@ public class Game implements World {
         Cell friendKingCell = getPlayerKing(getFriendIdOfPlayer(player.getPlayerId())).getCenter();
 
         List<Path> paths = new ArrayList<>();
-        for (Path path : initMessage.getMap().getPaths())
-            if (path.getCells().indexOf(playerKingCell) == 0 || path.getCells().lastIndexOf(playerKingCell) == path.getCells().size() - 1)
-                if (!path.getCells().contains(friendKingCell))
-                    paths.add(path);
+        for (Path path : initMessage.getMap().getPaths()) {
+            if (path.getCells().indexOf(playerKingCell) == 0 || path.getCells().indexOf(playerKingCell) == path.getCells().size() - 1) {
+                if (!path.getCells().contains(friendKingCell)){
+                    Path newPath = path.copy();
+                    if(newPath.getCells().indexOf(playerKingCell) != 0)
+                        Collections.reverse(newPath.getCells());
+                    paths.add(newPath);
+                }
+            }
+        }
         player.setPathsFromPlayer(paths);
     }
 
@@ -826,8 +832,12 @@ public class Game implements World {
         for (Path path : initMessage.getMap().getPaths()) {
             List<Cell> pathCells = path.getCells();
             if (pathCells.indexOf(playerKingCell) == 0 || pathCells.lastIndexOf(playerKingCell) == pathCells.size() - 1)
-                if (pathCells.indexOf(friendKingCell) == 0 || pathCells.lastIndexOf(friendKingCell) == pathCells.size() - 1)
-                    player.setPathToFriend(path);
+                if (pathCells.indexOf(friendKingCell) == 0 || pathCells.lastIndexOf(friendKingCell) == pathCells.size() - 1) {
+                    Path newPath = path.copy();
+                    if(newPath.getCells().indexOf(playerKingCell) != 0)
+                        Collections.reverse(newPath.getCells());
+                    player.setPathToFriend(newPath);
+                }
         }
     }
 
