@@ -15,18 +15,17 @@ public class Path {
 
     @Override
     public boolean equals(Object object) {
-        if (object == null || !(object instanceof Path)) return false;
+        if (!(object instanceof Path))
+            return false;
         Path path = (Path) object;
-        if (path.getId() == this.id) return true;
-        return false;
+        return path.getId() == this.id;
     }
 
-    public Path copy(){
-        Path newPath = new Path();
-        newPath.setId(this.id);
-        List<Cell> newList = new ArrayList<>(this.cells);
-        newPath.setCells(newList);
-        return newPath;
+    public Path() {}
+
+    public Path(Path path) {
+        this.id = path.getId();
+        this.cells = new ArrayList<>(path.getCells());
     }
 
     public int getId() {
