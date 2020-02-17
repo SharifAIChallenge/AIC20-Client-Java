@@ -810,7 +810,7 @@ public class Game implements World {
         for (Path path : initMessage.getMap().getPaths()) {
             if (path.getCells().indexOf(playerKingCell) == 0 || path.getCells().indexOf(playerKingCell) == path.getCells().size() - 1) {
                 if (!path.getCells().contains(friendKingCell)){
-                    Path newPath = path.copy();
+                    Path newPath = new Path(path);
                     if(newPath.getCells().indexOf(playerKingCell) != 0)
                         Collections.reverse(newPath.getCells());
                     paths.add(newPath);
@@ -833,7 +833,7 @@ public class Game implements World {
             List<Cell> pathCells = path.getCells();
             if (pathCells.indexOf(playerKingCell) == 0 || pathCells.lastIndexOf(playerKingCell) == pathCells.size() - 1)
                 if (pathCells.indexOf(friendKingCell) == 0 || pathCells.lastIndexOf(friendKingCell) == pathCells.size() - 1) {
-                    Path newPath = path.copy();
+                    Path newPath = new Path(path);
                     if(newPath.getCells().indexOf(playerKingCell) != 0)
                         Collections.reverse(newPath.getCells());
                     player.setPathToFriend(newPath);
