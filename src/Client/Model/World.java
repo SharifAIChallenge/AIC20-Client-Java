@@ -30,18 +30,18 @@ public interface World {
     public Player getSecondEnemy();
 
     /**
-     * choose your deck by base units in the pick turn
+     * choose your hand by base units in the pick turn
      * @param baseUnits
      */
 
-    public void chooseDeck(List<BaseUnit> baseUnits);
+    public void chooseHand(List<BaseUnit> baseUnits);
 
     /**
-     * choose your deck by ids of Base Units in the pick turn
-     * @param typeIds ids of BaseUnits that put into your deck
+     * choose your hand by ids of Base Units in the pick turn
+     * @param typeIds ids of BaseUnits that put into your hand
      */
 
-    public void chooseDeckById(List<Integer> typeIds);
+    public void chooseHandById(List<Integer> typeIds);
 
     /**
      * returns all of base units that exists in the game

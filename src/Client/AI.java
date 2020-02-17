@@ -35,8 +35,8 @@ public class AI {
                 myDeck.add(baseUnit);
         }
 
-        // picking the chosen deck - rest of the deck will automatically be filled with random baseUnits
-        world.chooseDeck(myDeck);
+        // picking the chosen hand - rest of the hand will automatically be filled with random baseUnits
+        world.chooseHand(myDeck);
 
         //other preprocess
         pathForMyUnits = world.getFriend().getPathsFromPlayer().get(0);

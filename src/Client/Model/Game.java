@@ -70,7 +70,7 @@ public class Game implements World {
     }
 
     @Override
-    public void chooseDeckById(List<Integer> typeIds) {
+    public void chooseHandById(List<Integer> typeIds) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.add("units", Json.GSON.toJsonTree(typeIds));
         Message message = new Message("pick", jsonObject, this.getCurrentTurn());
@@ -78,11 +78,11 @@ public class Game implements World {
     }
 
     @Override
-    public void chooseDeck(List<BaseUnit> baseUnits) {
+    public void chooseHand(List<BaseUnit> baseUnits) {
         List<Integer> typeIds = new ArrayList<>();
         for (BaseUnit baseUnit : baseUnits)
             typeIds.add(baseUnit.getTypeId());
-        chooseDeckById(typeIds);
+        chooseHandById(typeIds);
     }
 
     @Override
