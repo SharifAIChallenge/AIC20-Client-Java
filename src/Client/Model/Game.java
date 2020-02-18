@@ -781,9 +781,17 @@ public class Game implements World {
             for (int j = 0; j < initMessage.getMap().getColNum(); j++) {
                 Cell cell = initMessage.getMap().getCells()[i][j];
                 shortestPaths[i][j] = calcShortestPathToCell(player.getPlayerId(), cell);
+                setOrderOfCellsOfShortestPath(player, i, j);
             }
         }
         player.setShortestPathsToCells(shortestPaths);
+    }
+
+    private void setOrderOfCellsOfShortestPath(Player player, int i, int j) {
+        if(player.getShortestPathsToCells()[i][j] == null) return;
+        player.getShortestPathsToCells()[i][j] = new Path(player.getShortestPathsToCells()[i][j]);
+        if(player.getShortestPathsToCells()[i][j].getCells().indexOf(player.getKing().getCenter()) != 0)
+            Collections.reverse(player.shortestPathsToCells[i][j].getCells());
     }
 
     private void setShortestPathsOfPlayers() {
