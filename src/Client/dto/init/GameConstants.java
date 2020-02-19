@@ -17,6 +17,7 @@ public class GameConstants {
     private int rangeUpgradeAddition;
     private int deckSize;
     private int handSize;
+    private int apAddition;
 
     public int getMaxAP() {
         return maxAP;
@@ -56,5 +57,9 @@ public class GameConstants {
 
     public int getHandSize() {
         return handSize;
+    }
+
+    public int getApAddition() {
+        return apAddition;
     }
 }
