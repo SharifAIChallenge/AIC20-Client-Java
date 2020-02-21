@@ -130,7 +130,6 @@ public class Controller
      */
     private void handleInitMessage(Message msg)
     {
-        game = new Game(game);
         ClientInitMessage clientInitMessage = Json.GSON.fromJson(msg.getInfo(), ClientInitMessage.class);
         game.handleInitMessage(clientInitMessage);
         Message endMsg = new Message("endTurn", new JsonObject(), 0);

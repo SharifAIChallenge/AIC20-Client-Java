@@ -12,11 +12,11 @@ import java.util.List;
 
 public class Player {
     private int playerId;
-    Path[][] shortestPathsToCellsCrossMyself;
+    private Path[][] shortestPathsToCellsCrossMyself;
     private List<BaseUnit> deck;
     private List<BaseUnit> hand;
     private List<Path> pathsFromPlayer = new ArrayList<>();
-    Path[][] shortestPathsToCells;
+    private Path[][] shortestPathsToCells;
     private Path pathToFriend;
     private List<Unit> units = new ArrayList<>();
     private CastAreaSpell castAreaSpell;
@@ -37,6 +37,12 @@ public class Player {
 
     public Player(int playerID) {
         this.playerId = playerID;
+    }
+
+    public Player(Player player) {
+        this.playerId = player.getPlayerId();
+        this.shortestPathsToCellsCrossMyself = player.getShortestPathsToCellsCrossMyself();
+        this.shortestPathsToCells = player.getShortestPathsToCells();
     }
 
     public int getPlayerId() {

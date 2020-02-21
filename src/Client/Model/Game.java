@@ -6,6 +6,7 @@ import Client.dto.turn.*;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import common.network.Json;
@@ -34,7 +35,8 @@ public class Game implements World {
         this.initMessage = game.getInitMessage();
         this.sender = game.getSender();
         this.spellsByTypeId = game.spellsByTypeId;
-        players = game.getPlayers();
+
+        this.players = game.getPlayers().stream().map(Player::new).collect(Collectors.toList());
     }
 
     public HashMap<Integer, BaseUnit> getBaseUnitsById() {
@@ -534,16 +536,16 @@ public class Game implements World {
     }
 
     private void calcMyTurnSpells() {
-        players.get(0).setSpells(getSpellsByIds(clientTurnMessage.getMySpells()));
-        players.get(0).calcTurnSpells();
+        getMe().setSpells(getSpellsByIds(clientTurnMessage.getMySpells()));
+        getMe().calcTurnSpells();
     }
 
     private void calcMyFriendTurnSpells() {
-        players.get(1).setSpells(getSpellsByIds(clientTurnMessage.getFriendSpells()));
-        players.get(1).calcTurnSpells();
+        getFriend().setSpells(getSpellsByIds(clientTurnMessage.getFriendSpells()));
+        getFriend().calcTurnSpells();
     }
 
-    private void calcPlayerplayedUnits(Player player) {
+    private void calcPlayerPlayedUnits(Player player) {
         List<Unit> playedUnits = new ArrayList<>();
         for (TurnUnit turnUnit : clientTurnMessage.getUnits())
             if (turnUnit.getPlayerId() == player.getPlayerId() && turnUnit.isWasPlayedThisTurn())
@@ -553,7 +555,7 @@ public class Game implements World {
 
     private void calcPlayersPlayedUnits() {
         for (Player player : players)
-            calcPlayerplayedUnits(player);
+            calcPlayerPlayedUnits(player);
     }
 
     private void calcCastAreaSpells() {
