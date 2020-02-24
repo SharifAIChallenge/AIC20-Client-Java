@@ -300,12 +300,30 @@ public class Game implements World {
         int maxRow = Math.min(initMessage.getMap().getRowNum() - 1, center.getRow() + spell.getRange());
         int minCol = Math.max(0, center.getCol() - spell.getRange());
         int maxCol = Math.min(initMessage.getMap().getColNum() - 1, center.getCol() + spell.getRange());
-        for (int i = minRow; i <= maxRow; i++) {
-            for (int j = minCol; j <= maxCol; j++) {
-                units.addAll(initMessage.getMap().getCells()[i][j].getUnits());
+        List<Player> affectedPlayers = new ArrayList<>();
+        switch (spell.getTarget()){
+            case SELF:
+                affectedPlayers.add(getMe());
+                break;
+            case ALLIED:
+                affectedPlayers.add(getFriend());
+                break;
+            case ENEMY:
+                affectedPlayers.add(getFirstEnemy());
+                affectedPlayers.add(getSecondEnemy());
+        }
+        for(Player affectedPlayer : affectedPlayers){
+            for(Unit unit : affectedPlayer.getUnits()){
+                if(isInRange(unit, minRow, maxRow, minCol, maxCol))
+                    units.add(unit);
             }
         }
         return units;
+    }
+
+    private boolean isInRange(Unit unit, int minRow, int maxRow, int minCol, int maxCol) {
+        return (minRow <= unit.getCell().getRow() && unit.getCell().getRow() <= maxRow) &&
+                (minCol <= unit.getCell().getCol() && unit.getCell().getCol() <= maxCol);
     }
 
     @Override
