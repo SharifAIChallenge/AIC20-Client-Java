@@ -1,5 +1,7 @@
 package Client.Model;
 
+import Client.dto.turn.TurnKing;
+
 /**
  * This class has properties of the player's king.
  * Please do not change this class, it is a piece of the internal implementation
@@ -15,6 +17,17 @@ public class King {
     private Unit target;
     private Cell targetCell;
     private Cell center;
+
+    public King copy(TurnKing turnKing){
+        King king = new King();
+        king.setHp(turnKing.getHp());
+        king.setAttack(this.attack);
+        king.setRange(this.range);
+        king.setPlayerId(this.playerId);
+        king.setAlive(turnKing.isAlive());
+        king.setCenter(this.center);
+        return king;
+    }
 
     public int getPlayerId() {
         return playerId;

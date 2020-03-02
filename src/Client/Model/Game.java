@@ -301,7 +301,7 @@ public class Game implements World {
         int minCol = Math.max(0, center.getCol() - spell.getRange());
         int maxCol = Math.min(initMessage.getMap().getColNum() - 1, center.getCol() + spell.getRange());
         List<Player> affectedPlayers = new ArrayList<>();
-        switch (spell.getTarget()){
+        switch (spell.getTarget()) {
             case SELF:
                 affectedPlayers.add(getMe());
                 break;
@@ -312,9 +312,9 @@ public class Game implements World {
                 affectedPlayers.add(getFirstEnemy());
                 affectedPlayers.add(getSecondEnemy());
         }
-        for(Player affectedPlayer : affectedPlayers){
-            for(Unit unit : affectedPlayer.getUnits()){
-                if(isInRange(unit, minRow, maxRow, minCol, maxCol))
+        for (Player affectedPlayer : affectedPlayers) {
+            for (Unit unit : affectedPlayer.getUnits()) {
+                if (isInRange(unit, minRow, maxRow, minCol, maxCol))
                     units.add(unit);
             }
         }
@@ -808,9 +808,9 @@ public class Game implements World {
     }
 
     private void setOrderOfCellsOfShortestPath(Path[][] shortestPaths, Player player, int i, int j) {
-        if(shortestPaths[i][j] == null) return;
+        if (shortestPaths[i][j] == null) return;
         shortestPaths[i][j] = new Path(shortestPaths[i][j]);
-        if(shortestPaths[i][j].getCells().indexOf(player.getKing().getCenter()) != 0)
+        if (shortestPaths[i][j].getCells().indexOf(player.getKing().getCenter()) != 0)
             Collections.reverse(shortestPaths[i][j].getCells());
     }
 
@@ -824,6 +824,7 @@ public class Game implements World {
     }
 
     private void setSpellsById() {
+        spellsByTypeId = new HashMap<>();
         for (Spell spell : initMessage.getSpells()) {
             spellsByTypeId.putIfAbsent(spell.getTypeId(), spell);
         }
@@ -837,9 +838,9 @@ public class Game implements World {
         List<Path> paths = new ArrayList<>();
         for (Path path : initMessage.getMap().getPaths()) {
             if (path.getCells().indexOf(playerKingCell) == 0 || path.getCells().indexOf(playerKingCell) == path.getCells().size() - 1) {
-                if (!path.getCells().contains(friendKingCell)){
+                if (!path.getCells().contains(friendKingCell)) {
                     Path newPath = new Path(path);
-                    if(newPath.getCells().indexOf(playerKingCell) != 0)
+                    if (newPath.getCells().indexOf(playerKingCell) != 0)
                         Collections.reverse(newPath.getCells());
                     paths.add(newPath);
                 }
@@ -862,7 +863,7 @@ public class Game implements World {
             if (pathCells.indexOf(playerKingCell) == 0 || pathCells.lastIndexOf(playerKingCell) == pathCells.size() - 1)
                 if (pathCells.indexOf(friendKingCell) == 0 || pathCells.lastIndexOf(friendKingCell) == pathCells.size() - 1) {
                     Path newPath = new Path(path);
-                    if(newPath.getCells().indexOf(playerKingCell) != 0)
+                    if (newPath.getCells().indexOf(playerKingCell) != 0)
                         Collections.reverse(newPath.getCells());
                     player.setPathToFriend(newPath);
                 }
@@ -875,15 +876,25 @@ public class Game implements World {
     }
 
     void calcBaseUnitsById() {
+        baseUnitsById = new HashMap<>();
         for (BaseUnit baseUnit : initMessage.getBaseUnitList())
             if (baseUnitsById.get(baseUnit.getTypeId()) == null)
                 baseUnitsById.put(baseUnit.getTypeId(), baseUnit);
     }
 
     private void calcPathsById() {
+        pathsById = new HashMap<>();
         for (Path path : initMessage.getMap().getPaths())
             if (pathsById.get(path.getId()) == null)
                 pathsById.put(path.getId(), path);
+    }
+
+    private void setPlayerKings() {
+        for (Player player : players) {
+            for (King king : turnMessage.getKings())
+                if (king.getPlayerId() == player.getPlayerId())
+                    player.setKing(king);
+        }
     }
 
     private void updateMessage(ClientInitMessage msg) {
@@ -891,9 +902,19 @@ public class Game implements World {
         setSpellsById();
         calcBaseUnitsById();
         calcPathsById();
-        updateKings();
         calcPathsToFriends();
         calcPathsFromPlayers();
+    }
+
+    private void setOrderOfUnitsPaths() {
+        for (Player player : players) {
+            for (Unit unit : player.getUnits()) {
+                Path newPath = new Path(unit.getPath());
+                if (newPath.getCells().indexOf(player.getKing().getCenter()) != 0)
+                    Collections.reverse(newPath.getCells());
+                unit.setPath(newPath);
+            }
+        }
     }
 
     public void handleInitMessage(ClientInitMessage msg) {
@@ -901,6 +922,7 @@ public class Game implements World {
         this.initMessage = clientInitMessage.castToInitMessage();
         this.turnTime = System.currentTimeMillis();
         createPLayers();
+        updateKings();
         updateMessage(msg);
         setShortestPathsOfPlayers();
     }
@@ -909,6 +931,7 @@ public class Game implements World {
         this.clientTurnMessage = msg;
         this.turnTime = System.currentTimeMillis();
         turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
+        setPlayerKings();
         updateMessage(clientInitMessage);
         setPLayersUnits();
         calcUnitsById();
@@ -930,5 +953,6 @@ public class Game implements World {
         calcDamageUpgradedUnits();
         calcRangeUpgradedUnits();
         setCellsUnits();
+        setOrderOfUnitsPaths();
     }
 }
