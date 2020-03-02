@@ -16,6 +16,13 @@ public class Spell {
     private SpellType type;
     private SpellTarget target;
 
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Spell)) return false;
+        Spell spell = (Spell) object;
+        return spell.getTypeId() == this.typeId;
+    }
+
     public boolean isAreaSpell() {
         return type != SpellType.TELE;
     }
