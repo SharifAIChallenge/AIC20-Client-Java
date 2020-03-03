@@ -906,14 +906,12 @@ public class Game implements World {
         calcPathsFromPlayers();
     }
 
-    private void setOrderOfUnitsPaths() {
-        for (Player player : players) {
-            for (Unit unit : player.getUnits()) {
-                Path newPath = new Path(unit.getPath());
-                if (newPath.getCells().indexOf(player.getKing().getCenter()) != 0)
-                    Collections.reverse(newPath.getCells());
-                unit.setPath(newPath);
-            }
+    private void setOrderOfUnitsPaths(Player player) {
+        for (Unit unit : player.getUnits()) {
+            Path newPath = new Path(unit.getPath());
+            if (newPath.getCells().indexOf(player.getKing().getCenter()) != 0)
+                Collections.reverse(newPath.getCells());
+            unit.setPath(newPath);
         }
     }
 
@@ -954,6 +952,7 @@ public class Game implements World {
         calcDamageUpgradedUnits();
         calcRangeUpgradedUnits();
         setCellsUnits();
-        setOrderOfUnitsPaths();
+        setOrderOfUnitsPaths(getMe());
+        setOrderOfUnitsPaths(getFriend());
     }
 }
