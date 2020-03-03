@@ -13,8 +13,8 @@ public class ClientCell {
     private int row;
     private int col;
 
-    public Cell castToCell() {
-        return Map.getMap().getCells()[row][col];
+    public Cell castToCell(Map map) {
+        return map.getCells()[row][col];
     }
 
     public ClientCell(int row, int col) {
