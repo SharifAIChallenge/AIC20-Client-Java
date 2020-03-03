@@ -37,7 +37,7 @@ public class ClientTurnMessage {
     public ClientTurnMessage() { }
 
     private void updateMapUnits(TurnMessage turnMessage){
-        Map.getMap().getUnits().clear();
+        Map.getMap().setUnits(new ArrayList<>());
         for(Unit unit : turnMessage.getUnits())
             Map.getMap().getUnits().add(unit);
     }
