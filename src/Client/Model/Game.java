@@ -109,7 +109,7 @@ public class Game implements World {
 
     @Override
     public Map getMap() {
-        return Map.getMap();
+        return initMessage.getMap();
     }
 
     @Override
@@ -672,7 +672,7 @@ public class Game implements World {
         for (Player player : players) {
             List<Unit> diedUnits = new ArrayList<>();
             for (TurnUnit diedUnit : clientTurnMessage.getDiedUnits()) {
-                if (diedUnit.getPlayerId() == player.getPlayerId()) diedUnits.add(diedUnit.castToUnit());
+                if (diedUnit.getPlayerId() == player.getPlayerId()) diedUnits.add(diedUnit.castToUnit(initMessage.getMap()));
             }
             player.setDiedUnits(diedUnits);
         }
@@ -929,7 +929,7 @@ public class Game implements World {
         this.initMessage = clientInitMessage.castToInitMessage();
         this.clientTurnMessage = msg;
         this.turnTime = System.currentTimeMillis();
-        turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
+        turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId, initMessage.getMap());
         setPlayerKings();
         updateMessage(clientInitMessage);
         setPLayersUnits();

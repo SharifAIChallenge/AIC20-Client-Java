@@ -1,6 +1,7 @@
 package Client.dto.init;
 
 import  Client.Model.King;
+import Client.Model.Map;
 import Client.dto.ClientCell;
 
 /**
@@ -16,9 +17,9 @@ public class ClientBaseKing {
     private int range;
     private ClientCell center;
 
-    public King castToKing() {
+    public King castToKing(Map map) {
         King king = new King();
-        king.setCenter(center.castToCell());
+        king.setCenter(center.castToCell(map));
         king.setHp(hp);
         king.setAlive(true);
         king.setAttack(attack);

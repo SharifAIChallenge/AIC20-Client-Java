@@ -10,25 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Map {
-    private static Map map; //is it ok?
     private int colNum, rowNum;
     private Cell[][] cells;
     private List<Path> paths;
     private List<Unit> units = new ArrayList<>();
     private List<King> kings;
 
-    private Map(int rows, int cols) {
+    public Map(int rows, int cols) {
         this.rowNum = rows;
         this.colNum = cols;
         this.cells = new Cell[rows][cols];
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 this.cells[i][j] = new Cell(i, j);
-    }
-
-    public static Map createMap(int rows, int cols) {
-        map = new Map(rows, cols);
-        return map;
     }
 
     public Cell getCell(int row, int col) {
@@ -85,11 +79,4 @@ public class Map {
         this.cells = cells;
     }
 
-    public static Map getMap() {
-        return map;
-    }
-
-    public static void setMap(Map map) {
-        Map.map = map;
-    }
 }

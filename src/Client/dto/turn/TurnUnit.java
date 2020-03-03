@@ -32,7 +32,7 @@ public class TurnUnit {
     private ClientCell targetCell;
     private List<Integer> affectedSpells;
 
-    public Unit castToUnit(){
+    public Unit castToUnit(Map map){
         Unit unit = new Unit();
 
         unit.setUnitId(this.unitId);
@@ -53,8 +53,8 @@ public class TurnUnit {
         unit.setPath(InitMessage.getInitMessage().getPathById(this.pathId));
 
         if(this.targetCell != null)
-            unit.setTargetCell(Map.getMap().getCells()[this.targetCell.getRow()][this.targetCell.getCol()]);
-        unit.setCell(Map.getMap().getCells()[this.cell.getRow()][this.cell.getCol()]);
+            unit.setTargetCell(map.getCells()[this.targetCell.getRow()][this.targetCell.getCol()]);
+        unit.setCell(map.getCells()[this.cell.getRow()][this.cell.getCol()]);
         unit.setUnitId(this.unitId);
         return unit;
     }

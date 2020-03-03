@@ -36,16 +36,16 @@ public class ClientTurnMessage {
 
     public ClientTurnMessage() { }
 
-    private void updateMapUnits(TurnMessage turnMessage){
-        Map.getMap().setUnits(new ArrayList<>());
+    private void updateMapUnits(TurnMessage turnMessage, Map map){
+        map.setUnits(new ArrayList<>());
         for(Unit unit : turnMessage.getUnits())
-            Map.getMap().getUnits().add(unit);
+            map.getUnits().add(unit);
     }
 
-    private void updateCellsUnits(TurnMessage turnMessage){
-        for(int i = 0; i < Map.getMap().getRowNum(); i ++){
-            for(int j = 0; j < Map.getMap().getColNum(); j ++){
-                Map.getMap().getCells()[i][j].getUnits().clear();
+    private void updateCellsUnits(TurnMessage turnMessage, Map map){
+        for(int i = 0; i < map.getRowNum(); i ++){
+            for(int j = 0; j < map.getColNum(); j ++){
+                map.getCells()[i][j].getUnits().clear();
             }
         }
         for(Unit unit : turnMessage.getUnits()){
@@ -53,7 +53,7 @@ public class ClientTurnMessage {
         }
     }
 
-    public TurnMessage castToTurnMessage(InitMessage initMessage, HashMap<Integer, Spell> spellsByTypeId){
+    public TurnMessage castToTurnMessage(InitMessage initMessage, HashMap<Integer, Spell> spellsByTypeId, Map map){
         TurnMessage turnMessage = new TurnMessage();
         for(int i = 0; i < this.kings.size(); i++){
             TurnKing turnKing = this.kings.get(i);
@@ -65,7 +65,7 @@ public class ClientTurnMessage {
         }
         turnMessage.setKings(initMessage.getMap().getKings());
         turnMessage.setCastSpells(
-                this.castSpells.stream().map(turnCastSpell -> turnCastSpell.castToCastSpell(spellsByTypeId)).
+                this.castSpells.stream().map(turnCastSpell -> turnCastSpell.castToCastSpell(spellsByTypeId, map)).
                         collect(Collectors.toList())
         );
         for(int i = 0; i < this.castSpells.size(); i++){
@@ -75,7 +75,7 @@ public class ClientTurnMessage {
         }
 
         turnMessage.setUnits(
-                this.units.stream().map(TurnUnit::castToUnit).collect(Collectors.toList())
+                this.units.stream().map(turnUnit -> turnUnit.castToUnit(map)).collect(Collectors.toList())
         );
 
         for (int unitId : this.getDeck())
@@ -92,8 +92,8 @@ public class ClientTurnMessage {
                     break;
                 }
 
-        updateCellsUnits(turnMessage);
-        updateMapUnits(turnMessage);
+        updateCellsUnits(turnMessage, map);
+        updateMapUnits(turnMessage, map);
         return turnMessage;
     }
 

@@ -22,11 +22,11 @@ public class TurnCastSpell {
     private ClientCell cell;
     private List<Integer> affectedUnits;
 
-    public CastSpell castToCastSpell(HashMap<Integer, Spell> spellsByTypeId){
+    public CastSpell castToCastSpell(HashMap<Integer, Spell> spellsByTypeId, Map map){
         if(spellsByTypeId.get(this.getTypeId()).getType() == SpellType.TELE){
             CastUnitSpell castUnitSpell = new CastUnitSpell();
             castUnitSpell.setCasterId(casterId);
-            castUnitSpell.setCell(cell.castToCell());
+            castUnitSpell.setCell(cell.castToCell(map));
             castUnitSpell.setId(id);
             castUnitSpell.setWasCastThisTurn(wasCastThisTurn);
             return castUnitSpell;
@@ -34,7 +34,7 @@ public class TurnCastSpell {
         else{
             CastAreaSpell castAreaSpell = new CastAreaSpell();
             castAreaSpell.setCasterId(casterId);
-            castAreaSpell.setCell(cell.castToCell());
+            castAreaSpell.setCell(cell.castToCell(map));
             castAreaSpell.setId(id);
             castAreaSpell.setWasCastThisTurn(wasCastThisTurn);
             return castAreaSpell;

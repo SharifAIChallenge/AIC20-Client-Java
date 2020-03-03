@@ -1,5 +1,6 @@
 package Client.dto.init;
 
+import Client.Model.Map;
 import Client.Model.Path;
 import Client.dto.ClientCell;
 import java.util.List;
@@ -15,12 +16,12 @@ public class ClientPath {
     private int id;
     private List<ClientCell> cells;
 
-    public Path castToPath() {
+    public Path castToPath(Map map) {
         Path path = new Path();
         path.setId(getId());
-        path.setCells(getCells().stream().map(
-                ClientCell::castToCell
-        ).collect(Collectors.toList()));
+
+        path.setCells(getCells().stream().map(clientCell -> clientCell.castToCell(map)).collect(Collectors.toList()));
+
         return path;
     }
 

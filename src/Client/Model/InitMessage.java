@@ -21,7 +21,7 @@ public class InitMessage {
     private InitMessage() { }
 
     public Path getPathById(int pathId){
-        for(Path path : Map.getMap().getPaths())
+        for(Path path : this.map.getPaths())
             if(path.getId() == pathId)
                 return path;
         return null;

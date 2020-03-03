@@ -15,12 +15,13 @@ public class ClientMap {
     private List<ClientBaseKing> kings;
 
     public Map castToMap() {
-        Map map = Map.createMap(this.rows, this.cols);
+        Map map = new Map(this.rows, this.cols);
         map.setPaths(
-                this.paths.stream().map(ClientPath::castToPath).collect(Collectors.toList())
+                this.paths.stream().map(clientPath -> clientPath.castToPath(map)).collect(Collectors.toList())
         );
         map.setKings(
-                this.kings.stream().map(ClientBaseKing::castToKing).collect(Collectors.toList())
+                this.kings.stream().map(clientBaseKing -> clientBaseKing.castToKing(map)).
+                        collect(Collectors.toList())
         );
 
         return map;
