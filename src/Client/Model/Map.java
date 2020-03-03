@@ -27,7 +27,6 @@ public class Map {
     }
 
     public static Map createMap(int rows, int cols) {
-        if (map != null) return map;
         map = new Map(rows, cols);
         return map;
     }
