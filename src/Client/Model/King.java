@@ -18,15 +18,13 @@ public class King {
     private Cell targetCell;
     private Cell center;
 
-    public King copy(TurnKing turnKing){
-        King king = new King();
-        king.setHp(turnKing.getHp());
-        king.setAttack(this.attack);
-        king.setRange(this.range);
-        king.setPlayerId(this.playerId);
-        king.setAlive(turnKing.isAlive());
-        king.setCenter(this.center);
-        return king;
+    public void update(TurnKing turnKing){
+        this.setHp(turnKing.getHp());
+        this.setAttack(this.attack);
+        this.setRange(this.range);
+        this.setPlayerId(this.playerId);
+        this.setAlive(turnKing.isAlive());
+        this.setCenter(this.center);
     }
 
     public int getPlayerId() {

@@ -16,6 +16,13 @@ public class BaseUnit {
     private boolean isFlying;
     private boolean isMultiple;
 
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof BaseUnit)) return false;
+        BaseUnit baseUnit = (BaseUnit) object;
+        return baseUnit.getTypeId() == this.typeId;
+    }
+
     public int getTypeId() {
         return typeId;
     }

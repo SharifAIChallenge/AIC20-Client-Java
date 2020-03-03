@@ -928,6 +928,7 @@ public class Game implements World {
     }
 
     public void handleTurnMessage(ClientTurnMessage msg) {
+        this.initMessage = clientInitMessage.castToInitMessage();
         this.clientTurnMessage = msg;
         this.turnTime = System.currentTimeMillis();
         turnMessage = clientTurnMessage.castToTurnMessage(initMessage, spellsByTypeId);
