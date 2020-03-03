@@ -55,18 +55,15 @@ public class ClientTurnMessage {
 
     public TurnMessage castToTurnMessage(InitMessage initMessage, HashMap<Integer, Spell> spellsByTypeId){
         TurnMessage turnMessage = new TurnMessage();
-
-        List<King> turnKings = new ArrayList<>();
         for(int i = 0; i < this.kings.size(); i++){
             TurnKing turnKing = this.kings.get(i);
             for(King king : initMessage.getMap().getKings())
                 if(king.getPlayerId() == turnKing.getPlayerId()){
-                    King newKing = king.copy(turnKing);
-                    turnKings.add(newKing);
+                    king.update(turnKing);
                     break;
                 }
         }
-        turnMessage.setKings(turnKings);
+        turnMessage.setKings(initMessage.getMap().getKings());
         turnMessage.setCastSpells(
                 this.castSpells.stream().map(turnCastSpell -> turnCastSpell.castToCastSpell(spellsByTypeId)).
                         collect(Collectors.toList())
