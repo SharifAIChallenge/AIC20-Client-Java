@@ -115,6 +115,14 @@ public class Game implements World {
     @Override
     public List<Path> getPathsCrossingCell(Cell cell) {
         if (cell == null) return new ArrayList<>();
+        return getPathsCrossingCell(cell.getRow(), cell.getCol());
+    }
+
+    @Override
+    public List<Path> getPathsCrossingCell(int row, int col) {
+        Cell cell = getCellByCoordination(row, col);
+
+        if (cell == null) return new ArrayList<>();
         if (pathsCrossingCells.get(cell) == null) {
             List<Path> paths = new ArrayList<>();
             for (Path path : initMessage.getMap().getPaths())
@@ -126,50 +134,42 @@ public class Game implements World {
     }
 
     @Override
-    public List<Path> getPathsCrossingCell(int row, int col) {
-        Cell cell = getCellByCoordination(row, col);
-        if (cell == null) return new ArrayList<>();
-        return getPathsCrossingCell(cell);
-    }
-
-    @Override
     public List<Unit> getCellUnits(Cell cell) {
         if (cell == null) return new ArrayList<>();
-        return new ArrayList<>(cell.getUnits());
+        return getCellUnits(cell.getRow(), cell.getCol());
     }
 
     @Override
     public List<Unit> getCellUnits(int row, int col) {
         Cell cell = getCellByCoordination(row, col);
         if (cell == null) return new ArrayList<>();
-        return getCellUnits(cell);
+        return new ArrayList<>(cell.getUnits());
     }
 
     @Override
     public Path getShortestPathToCell(int fromPlayerId, Cell cell) {
-        Player player = getPlayerById(fromPlayerId);
-        if (player == null || cell == null) return null;
-        return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
+        if (cell == null) return null;
+        return getShortestPathToCell(fromPlayerId, cell.getRow(), cell.getCol());
     }
 
     @Override
     public Path getShortestPathToCell(int fromPlayerId, int row, int col) {
         Cell cell = getCellByCoordination(row, col);
-        if (cell == null) return null;
-        return getShortestPathToCell(fromPlayerId, cell);
+        Player player = getPlayerById(fromPlayerId);
+        if (cell == null || player == null) return null;
+        return player.getShortestPathsToCells()[cell.getRow()][cell.getCol()];
     }
 
     @Override
     public Path getShortestPathToCell(Player fromPlayer, Cell cell) {
         if (fromPlayer == null || cell == null) return null;
-        return getShortestPathToCell(fromPlayer.getPlayerId(), cell);
+        return getShortestPathToCell(fromPlayer.getPlayerId(), cell.getRow(), cell.getCol());
     }
 
     @Override
     public Path getShortestPathToCell(Player fromPlayer, int row, int col) {
-        Cell cell = getCellByCoordination(row, col);
-        if (fromPlayer == null || cell == null) return null;
-        return getShortestPathToCell(fromPlayer.getPlayerId(), cell);
+        if (fromPlayer == null) return null;
+        return getShortestPathToCell(fromPlayer.getPlayerId(), row, col);
     }
 
     @Override
@@ -295,6 +295,31 @@ public class Game implements World {
     @Override
     public List<Unit> getAreaSpellTargets(Cell center, Spell spell) {
         if (center == null || spell == null) return new ArrayList<>();
+       return getAreaSpellTargets(center.getRow(), center.getCol(), spell.getTypeId());
+    }
+
+    private boolean isInRange(Unit unit, int minRow, int maxRow, int minCol, int maxCol) {
+        return (minRow <= unit.getCell().getRow() && unit.getCell().getRow() <= maxRow) &&
+                (minCol <= unit.getCell().getCol() && unit.getCell().getCol() <= maxCol);
+    }
+
+    @Override
+    public List<Unit> getAreaSpellTargets(Cell center, int spellId) {
+        if (center == null) return new ArrayList<>();
+        return new ArrayList<>(getAreaSpellTargets(center.getRow(), center.getCol(), spellId));
+    }
+
+    @Override
+    public List<Unit> getAreaSpellTargets(int row, int col, Spell spell) {
+        if (spell == null) return new ArrayList<>();
+        return new ArrayList<>(getAreaSpellTargets(row, col, spell.getTypeId()));
+    }
+
+    @Override
+    public List<Unit> getAreaSpellTargets(int row, int col, int spellId) {
+        Cell center = getCellByCoordination(row, col);
+        if (center == null) return new ArrayList<>();
+        Spell spell = spellsByTypeId.get(spellId);
         List<Unit> units = new ArrayList<>();
         int minRow = Math.max(0, center.getRow() - spell.getRange());
         int maxRow = Math.min(initMessage.getMap().getRowNum() - 1, center.getRow() + spell.getRange());
@@ -319,35 +344,6 @@ public class Game implements World {
             }
         }
         return units;
-    }
-
-    private boolean isInRange(Unit unit, int minRow, int maxRow, int minCol, int maxCol) {
-        return (minRow <= unit.getCell().getRow() && unit.getCell().getRow() <= maxRow) &&
-                (minCol <= unit.getCell().getCol() && unit.getCell().getCol() <= maxCol);
-    }
-
-    @Override
-    public List<Unit> getAreaSpellTargets(Cell center, int spellId) {
-        if (center == null) return new ArrayList<>();
-        Spell spell = spellsByTypeId.get(spellId);
-        if (spell == null) return new ArrayList<>();
-        return new ArrayList<>(getAreaSpellTargets(center, spell));
-    }
-
-    @Override
-    public List<Unit> getAreaSpellTargets(int row, int col, Spell spell) {
-        if (spell == null) return new ArrayList<>();
-        Cell cell = getCellByCoordination(row, col);
-        if (cell == null) return new ArrayList<>();
-        return new ArrayList<>(getAreaSpellTargets(cell, spell));
-    }
-
-    @Override
-    public List<Unit> getAreaSpellTargets(int row, int col, int spellId) {
-        Cell cell = getCellByCoordination(row, col);
-        if (cell == null) return new ArrayList<>();
-        Spell spell = spellsByTypeId.get(spellId);
-        return new ArrayList<>(getAreaSpellTargets(cell, spell));
     }
 
     @Override
