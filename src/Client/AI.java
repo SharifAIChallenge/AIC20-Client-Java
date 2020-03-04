@@ -16,7 +16,7 @@ public class AI {
     private int rows;
     private int cols;
     private Random random = new Random();
-    private Path pathForMyUnits;
+    private int pathIdForMyUnits;
 
     public void pick(World world) {
         System.out.println("pick started");
@@ -39,7 +39,7 @@ public class AI {
         world.chooseHand(myDeck);
 
         //other preprocess
-        pathForMyUnits = world.getFriend().getPathsFromPlayer().get(0);
+        pathIdForMyUnits = world.getFriend().getPathsFromPlayer().get(0).getId();
     }
 
     public void turn(World world) {
@@ -51,7 +51,7 @@ public class AI {
         // play all of hand once your ap reaches maximum. if ap runs out, putUnit doesn't do anything
         if (myself.getAp() == maxAp) {
             for (BaseUnit baseUnit : myself.getHand())
-                world.putUnit(baseUnit, pathForMyUnits);
+                world.putUnit(baseUnit, pathIdForMyUnits);
         }
 
         // this code tries to cast the received spell
