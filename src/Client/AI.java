@@ -81,7 +81,7 @@ public class AI {
                     List<Path> myPaths = myself.getPathsFromPlayer();
                     Path path = myPaths.get(random.nextInt(myPaths.size()));
                     int size = path.getCells().size();
-                    Cell cell = path.getCells().get((size + 1) / 2);
+                    Cell cell = path.getCells().get((size - 1) / 2);
 
                     world.castUnitSpell(unit, path, cell, receivedSpell);
                 }
